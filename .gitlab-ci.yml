@@ -6,13 +6,13 @@ services:
   - docker:dind  
 
 variables:
-  REGISTRY_URL: registry.gitlab.com/fiuba-memo2/ejemplos
+  REGISTRY_URL: registry.gitlab.com/fiuba-memo2/tp2
   POSTGRES_DB: db_test
   POSTGRES_USER: webapi
   POSTGRES_PASSWORD: Passw0rd!
   TEST_DB_URL: postgres://webapi:Passw0rd!@postgres/db_test
   DB_HOST: postgres
-  K8SNAMESPACE: docentes-nicopaez
+  K8SNAMESPACE: tokio-nicopaez
 
 stages:
   - build
@@ -63,8 +63,7 @@ deploy_test_job:
   script:
     - VERSION=$(cat VERSION.txt)
     - cp ${KUBECONFIG} $HOME/.kube/config
-    - kubectl config set-context –current –namespace=$K8SNAMESPACE
-    - kubectl apply -f infra/test.configmap.yaml
+    - kubectl -n $K8SNAMESPACE apply -f infra/test.configmap.yaml
     - kubectl set image deployment/restapi restapi=$REGISTRY_URL/$APP_NAME:$VERSION
   only:
     - tags

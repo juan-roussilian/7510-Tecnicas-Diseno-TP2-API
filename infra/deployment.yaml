@@ -1,24 +1,24 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: restapi
+  name: restapi-test
   labels:
-    app: restapi
+    app: restapi-test
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: restapi
+      app: restapi-test
   template:
     metadata:
       labels:
-        app: restapi
+        app: restapi-test
     spec:
       containers:
       - name: restapi
-        image: registry.gitlab.com/fiuba-memo2/ejemplos/restapi:0.0.2
+        image: registry.gitlab.com/fiuba-memo2/ejemplos/tokio-api:0.0.5
         envFrom:
           - secretRef:
-              name: restapisecret
+              name: restapisecret-test
           - configMapRef:
-              name: restapiconfig
+              name: restapiconfig-test
