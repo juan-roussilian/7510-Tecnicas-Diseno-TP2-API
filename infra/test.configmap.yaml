@@ -5,4 +5,4 @@ metadata:
 data:
   PORT: "3000"
   LOG_LEVEL: "info"
-  RACK_ENV: "production"
+  APP_ENV: "production"

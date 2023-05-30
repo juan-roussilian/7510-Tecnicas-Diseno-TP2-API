@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
       - name: restapi
-        image: registry.gitlab.com/fiuba-memo2/ejemplos/tokio-api:0.0.5
+        image: registry.gitlab.com/fiuba-memo2/tp2/tokio-api:0.0.5
         envFrom:
           - secretRef:
               name: restapisecret-test

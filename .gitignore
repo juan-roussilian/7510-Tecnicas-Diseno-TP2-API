@@ -19,3 +19,4 @@ VERSION.txt
 /bin/
 /.bundle/
 /coverage
+*.secret.yaml

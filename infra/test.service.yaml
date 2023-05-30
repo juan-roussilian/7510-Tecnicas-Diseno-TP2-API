@@ -1,14 +1,14 @@
 kind: Service
 apiVersion: v1
 metadata:
-  name: restapi
+  name: restapi-test
   labels:
     app: restapi
   annotations:
     dev.okteto.com/auto-ingress: "true"
 spec:
   selector:
-    app: restapi
+    app: restapi-test
   ports:
   - protocol: TCP
     port: 8080
