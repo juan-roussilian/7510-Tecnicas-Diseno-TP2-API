@@ -62,7 +62,7 @@ deploy_test_job:
   environment: test
   script:
     - VERSION=$(cat VERSION.txt)
-    - cp ${KUBECONFIG} $HOME/.kube/config
+    - cp ${KUBECONFIG_OKTETO} $HOME/.kube/config
     - kubectl -n $K8SNAMESPACE apply -f infra/test.configmap.yaml
     - kubectl set image deployment/restapi restapi=$REGISTRY_URL/$CI_PROJECT_NAME:$VERSION
     - ./smoke_test.sh https://restapi-test-tokio-nicopaez.cloud.okteto.net $VERSION    
