@@ -69,3 +69,17 @@ deploy_test_job:
   only:
     - tags
 
+deploy_test_prod:
+  stage: deploy_prod
+  image: nicopaez/kubectl:1.22.0
+  environment: production
+  script:
+    - VERSION=$(cat VERSION.txt)
+    - cp ${KUBECONFIG_OKTETO} $HOME/.kube/config
+    - kubectl -n $K8SNAMESPACE apply -f infra/prod.configmap.yaml
+    - kubectl -n $K8SNAMESPACE set image deployment/restapi-prod restapi=$REGISTRY_URL/$CI_PROJECT_NAME:$VERSION
+    - ./smoke_test.sh https://restapi-prod-tokio-nicopaez.cloud.okteto.net $VERSION    
+
+  only:
+    - tags
+  when: manual
