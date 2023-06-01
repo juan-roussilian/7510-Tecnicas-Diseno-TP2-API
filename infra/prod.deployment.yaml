@@ -1,0 +1,24 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: restapi-prod
+  labels:
+    app: restapi-prod
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: restapi-prod
+  template:
+    metadata:
+      labels:
+        app: restapi-prod
+    spec:
+      containers:
+      - name: restapi
+        image: registry.gitlab.com/fiuba-memo2/tp2/tokio-api:0.0.5
+        envFrom:
+          - secretRef:
+              name: restapisecret-prod
+          - configMapRef:
+              name: restapiconfig-prod

@@ -1,0 +1,8 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: restapiconfig-prod
+data:
+  PORT: "3000"
+  LOG_LEVEL: "info"
+  APP_ENV: "production"
