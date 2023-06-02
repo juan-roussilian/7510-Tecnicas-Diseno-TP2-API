@@ -31,3 +31,7 @@ services:
     image: postgres
     environment:
       POSTGRES_PASSWORD: example
+
+networks:
+  default:
+    name: localdev
