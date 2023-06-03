@@ -1,8 +1,9 @@
 class Usuario
-  attr_reader :email, :updated_on, :created_on
+  attr_reader :nombre, :email, :updated_on, :created_on
   attr_accessor :id
 
-  def initialize(email, id = nil)
+  def initialize(nombre, email, id = nil)
+    @nombre = nombre
     @email = email
     @id = id
   end

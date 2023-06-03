@@ -32,8 +32,8 @@ post '/usuarios' do
   @body ||= request.body.read
   parametros_usuario = JSON.parse(@body)
 
-  usuario = Usuario.new(parametros_usuario['email'])
+  usuario = Usuario.new(parametros_usuario['nombre'], parametros_usuario['email'])
   RepositorioUsuarios.new.save(usuario)
   status 201
-  { id: usuario.id, email: usuario.email }.to_json
+  { id: usuario.id, nombre: usuario.nombre, email: usuario.email }.to_json
 end
