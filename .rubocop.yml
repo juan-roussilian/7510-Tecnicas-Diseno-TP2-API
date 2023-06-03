@@ -19,4 +19,7 @@ Style/Documentation:
   Exclude: ['**/*']
 Style/GuardClause:
   Enabled: false
+Layout/EndOfLine:
+  Enabled: False
+
 

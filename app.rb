@@ -23,7 +23,7 @@ end
 get '/usuarios' do
   usuarios = RepositorioUsuarios.new.all
   respuesta = []
-  usuarios.map { |u| respuesta << { email: u.email, id: u.id } }
+  usuarios.map { |u| respuesta << { email: u.email, id: u.id, saldo: u.saldo.to_i } }
   status 200
   respuesta.to_json
 end
