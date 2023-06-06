@@ -15,6 +15,6 @@ Característica: Como usuario quiero poder cargar saldo para usar en la aplicaci
 
   @wip
   Escenario: 3.3 Usuario carga saldo negativo para un usuario existente y la aplicación no lo modifica
-    Dado que soy un usuario con saldo "200"
+    Dado que soy un usuario con saldo "1000"
     Cuando cargo saldo "-500"
-    Entonces mi saldo pasa a ser "200"
+    Entonces mi saldo pasa a ser "1000"

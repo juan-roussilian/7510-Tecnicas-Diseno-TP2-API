@@ -32,12 +32,6 @@ post '/usuarios' do
   @body ||= request.body.read
   parametros_usuario = JSON.parse(@body)
 
-  # begin
-  # RepositorioUsuarios.new.find_by_mail(parametros_usuario['email'])
-  # rescue => ObjectNotFound
-  # else
-  # end
-
   usuario = Usuario.new(parametros_usuario['nombre'], parametros_usuario['email'])
   RepositorioUsuarios.new.save(usuario)
   status 201
