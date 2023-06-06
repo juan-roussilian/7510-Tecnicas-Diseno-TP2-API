@@ -1,6 +1,20 @@
 TOKIO: REST API
 ========
 
+## Integrantes
+- Gabriel Belletti
+- Mateo Craviotto
+- Juan Cruz Roussilian
+
+## Product Owner
+- Joaquin Casal
+
+## Detalles de la aplicación
+- URL de API en ambiente de *test*: https://restapi-test-tokio-nicopaez.cloud.okteto.net/
+- URL de API en ambiente de *producción*: https://restapi-prod-tokio-nicopaez.cloud.okteto.net/
+- Nombre del bot en ambiente de *test*: **tokio-test-bot**
+- Nombre del bot en ambiente de *producción*: **tokio-prod-bot**
+
 Este proyecto está basado en:
 
 * Sinatra (micro framework web) y Sequel (componente de acceso datos)
