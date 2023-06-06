@@ -28,3 +28,12 @@ Y('tiene {string} como mail') do |mail_esperado|
   email = response_parseado['email']
   expect(email).to eq mail_esperado
 end
+
+Dado('existe un usuario con el mail {string}') do |mail|
+  request_body = { nombre: 'nombre', email: mail }.to_json
+  Faraday.post('/usuarios', request_body, { 'Content-Type' => 'application/json' })
+end
+
+Entonces('no se crea el usuario') do
+  expect(@response.status).to be 409
+end

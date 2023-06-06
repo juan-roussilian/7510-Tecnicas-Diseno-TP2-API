@@ -1,13 +1,19 @@
 class GestorDeSaldo
-  def cargar_saldo(saldo, cantidad)
-    if cantidad.positive?
-      saldo + cantidad
-    else
-      saldo
-    end
+  attr_reader :saldo
+
+  def initialize(propietario)
+    @propietario = propietario
+    @saldo = 0
   end
 
-  def actualizar_saldo(usuario)
-    RepositorioUsuarios.new.save(usuario) unless usuario.id.nil?
+  def cargar_saldo(cantidad)
+    @saldo += cantidad if cantidad.positive?
+    actualizar_saldo
+  end
+
+  private
+
+  def actualizar_saldo
+    RepositorioUsuarios.new.save(@propietario) unless @propietario.nil? || @propietario.id.nil?
   end
 end
