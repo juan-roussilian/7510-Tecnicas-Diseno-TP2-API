@@ -14,12 +14,15 @@ class RepositorioUsuarios < AbstractRepository
   protected
 
   def load_object(a_hash)
-    Usuario.new(a_hash[:nombre], a_hash[:email], a_hash[:id])
+    usuario = Usuario.new(a_hash[:nombre], a_hash[:email], a_hash[:id])
+    usuario.cargar_saldo(a_hash[:saldo])
+    usuario
   end
 
   def changeset(usuario)
     {
       nombre: usuario.nombre,
+      saldo: usuario.saldo,
       email: usuario.email
     }
   end
