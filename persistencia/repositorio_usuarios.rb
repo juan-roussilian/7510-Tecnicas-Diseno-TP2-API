@@ -5,7 +5,7 @@ class RepositorioUsuarios < AbstractRepository
   self.model_class = 'Usuario'
 
   def find_by_name(nombre)
-    found_record = dataset.first(:nombre => nombre)
+    found_record = dataset.first(nombre:)
     raise ObjectNotFound.new(self.class.model_class, nombre) if found_record.nil?
 
     load_object dataset.first(found_record)
