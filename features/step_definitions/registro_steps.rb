@@ -1,8 +1,8 @@
 Dado('que soy un usuario no registrado') do
   # nada que hacer aqui
 end
-  
-Cuando('quiero registrarme con el mail {string} y el nombre {string}') do |mail, nombre|
+
+Cuando('quiero registrarme con el comando \/registrar nombre, mail con el mail {string} y el nombre {string}') do |mail, nombre|
   request_body = { nombre: nombre, email: mail }.to_json
   @response = Faraday.post('/usuarios', request_body, { 'Content-Type' => 'application/json' })
 end

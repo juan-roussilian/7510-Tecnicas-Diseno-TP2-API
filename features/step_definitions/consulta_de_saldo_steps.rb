@@ -9,7 +9,7 @@ Dado('que soy un usuario registrado con saldo "{int}"') do |saldo|
   RepositorioUsuarios.new.save(@usuario)
 end
 
-Cuando(/^quiero consultar mi saldo$/) do
+Cuando(/^quiero consultar mi saldo con el comando \/saldo$/) do
   @saldo = @usuario.saldo
 end
 
@@ -24,7 +24,7 @@ Dado('que soy un nuevo usuario registrado') do
   )
 end
 
-Cuando('consulto mi saldo') do
+Cuando('consulto mi saldo con el comando \/saldo') do
   @usuario = RepositorioUsuarios.new.find(@carga_de_usuario['id'])
   @saldo = @usuario.saldo
 end
