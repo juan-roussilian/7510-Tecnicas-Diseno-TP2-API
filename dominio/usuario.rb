@@ -17,4 +17,8 @@ class Usuario
   def saldo
     @saldo.saldo
   end
+
+  def transferir(otro_usuario, cantidad)
+    @saldo.transferir(otro_usuario, cantidad)
+  end
 end

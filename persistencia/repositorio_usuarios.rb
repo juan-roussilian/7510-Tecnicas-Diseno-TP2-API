@@ -4,9 +4,9 @@ class RepositorioUsuarios < AbstractRepository
   self.table_name = :usuarios
   self.model_class = 'Usuario'
 
-  def find_by_mail(mail)
-    found_record = dataset.first(pk_column => mail)
-    raise ObjectNotFound.new(self.class.model_class, mail) if found_record.nil?
+  def find_by_name(nombre)
+    found_record = dataset.first(:nombre => nombre)
+    raise ObjectNotFound.new(self.class.model_class, nombre) if found_record.nil?
 
     load_object dataset.first(found_record)
   end
