@@ -18,6 +18,11 @@ class RepositorioUsuarios < AbstractRepository
     load_object dataset.first(found_record)
   end
 
+  def find_by_telegram_id(telegram_id)
+    found_record = dataset.first(telegram_id:)
+    raise ObjectNotFound.new(self.class.model_class, telegram_id) if found_record.nil?
+    load_object dataset.first(found_record)
+  end
   protected
 
   def load_object(a_hash)
