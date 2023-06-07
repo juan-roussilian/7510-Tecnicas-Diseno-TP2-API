@@ -11,6 +11,13 @@ class RepositorioUsuarios < AbstractRepository
     load_object dataset.first(found_record)
   end
 
+  def find_by_id(id)
+    found_record = dataset.first(id:)
+    raise ObjectNotFound.new(self.class.model_class, id) if found_record.nil?
+
+    load_object dataset.first(found_record)
+  end
+
   protected
 
   def load_object(a_hash)
@@ -25,5 +32,13 @@ class RepositorioUsuarios < AbstractRepository
       saldo: usuario.saldo,
       email: usuario.email
     }
+  end
+end
+
+class ObjectNotFound < StandardError
+  def initialize(class_name, id)
+    @class_name = class_name
+    @id = id
+    super("Object #{@class_name} with id #{@id} not found")
   end
 end

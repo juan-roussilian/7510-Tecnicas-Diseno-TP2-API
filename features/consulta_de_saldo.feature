@@ -18,7 +18,6 @@ Característica: Como usuario quiero poder consultar mi saldo actual en la aplic
     Cuando consulto mi saldo con el comando /saldo
     Entonces veo en saldo "0"
 
-  @wip
   Escenario: 2.4 Usuario registrado con saldo 500 consulta su saldo
     Dado que soy un nuevo usuario registrado
     Y cargo saldo "500"

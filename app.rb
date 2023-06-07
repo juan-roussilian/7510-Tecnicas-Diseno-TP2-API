@@ -31,8 +31,7 @@ end
 post '/usuarios' do
   @body ||= request.body.read
   parametros_usuario = JSON.parse(@body)
-
-  usuario = Usuario.new(parametros_usuario['nombre'], parametros_usuario['email'])
+  usuario = Usuario.new(parametros_usuario['nombre'], parametros_usuario['email'], parametros_usuario['id'])
   RepositorioUsuarios.new.save(usuario)
   status 201
   { id: usuario.id, nombre: usuario.nombre, email: usuario.email }.to_json
@@ -40,7 +39,13 @@ end
 
 get '/saldo' do
   id = params[:usuario]
-  usuario = RepositorioUsuarios.new.find(id)
-  status 201
-  { usuario: usuario.id, saldo: usuario.saldo }.to_json
+  begin
+    usuario = RepositorioUsuarios.new.find_by_id(id)
+  rescue ObjectNotFound
+    status 400
+    { saldo: 'debe registrarse primero' }.to_json
+  else
+    status 200
+    { usuario: usuario.id, saldo: usuario.saldo }.to_json
+  end
 end
