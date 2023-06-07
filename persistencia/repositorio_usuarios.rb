@@ -21,7 +21,7 @@ class RepositorioUsuarios < AbstractRepository
   protected
 
   def load_object(a_hash)
-    usuario = Usuario.new(a_hash[:nombre], a_hash[:email], a_hash[:id])
+    usuario = Usuario.new(a_hash[:nombre], a_hash[:email],a_hash[:telegram_id] ,a_hash[:id])
     usuario.cargar_saldo(a_hash[:saldo])
     usuario
   end
@@ -30,7 +30,8 @@ class RepositorioUsuarios < AbstractRepository
     changes = {
       nombre: usuario.nombre,
       saldo: usuario.saldo,
-      email: usuario.email
+      email: usuario.email,
+      telegram_id:usuario.telegram_id
     }
     changes[:id] = usuario.id unless usuario.id.nil?
     changes
