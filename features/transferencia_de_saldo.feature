@@ -1,7 +1,7 @@
 # language: es
 Característica: Como usuario quiero poder transferir saldo a otros usuarios
 
-  @wip
+
   Escenario: 4.1 Usuario registrado con saldo suficiente transfiere todo su saldo a otro usuario registrado sin saldo
     Dado que soy un usuario registrado y poseo saldo 500
     Y existe un usuario con el nombre "juan" con saldo 0

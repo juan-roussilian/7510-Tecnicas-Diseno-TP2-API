@@ -60,7 +60,15 @@ end
 post '/transferir' do
   @body ||= request.body.read
   parametros_usuario = JSON.parse(@body)
-  usuario_objetivo = RepositorioUsuarios.new.find_by_name(parametros_usuario['usuario_objetivo'])
-  usuario = RepositorioUsuarios.new.find_by_id(parametros_usuario['id'])
-  usuario.transferir(usuario_objetivo, parametros_usuario['saldo'])
+  begin
+    usuario = RepositorioUsuarios.new.find_by_telegram_id(parametros_usuario['usuario'])
+  rescue ObjectNotFound
+    status 400
+    { saldo: 'debe registrarse primero' }.to_json
+  else
+    destinatario = RepositorioUsuarios.new.find_by_name(parametros_usuario['destinatario'])
+    usuario.transferir(destinatario, parametros_usuario['saldo'])
+    status 200
+    ''
+  end
 end
