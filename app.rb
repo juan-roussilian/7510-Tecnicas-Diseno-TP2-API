@@ -23,7 +23,7 @@ end
 get '/usuarios' do
   usuarios = RepositorioUsuarios.new.all
   respuesta = []
-  usuarios.map { |u| respuesta << { email: u.email, id: u.id, saldo: u.saldo.to_i, telegram_id: u.telegram_id } }
+  usuarios.map { |u| respuesta << { email: u.email, id: u.id, saldo: u.saldo.to_i, telegram_id: u.telegram_id.to_s } }
   status 200
   respuesta.to_json
 end
@@ -31,7 +31,7 @@ end
 post '/usuarios' do
   @body ||= request.body.read
   parametros_usuario = JSON.parse(@body)
-  usuario = Usuario.new(parametros_usuario['nombre'], parametros_usuario['email'], parametros_usuario['telegram_id'])
+  usuario = Usuario.new(parametros_usuario['nombre'], parametros_usuario['email'], parametros_usuario['telegram_id'].to_s)
   RepositorioUsuarios.new.save(usuario)
   status 201
   { id: usuario.id, nombre: usuario.nombre, email: usuario.email, telegram_id: usuario.telegram_id }.to_json
@@ -40,7 +40,7 @@ end
 get '/saldo' do
   telegram_id = params[:usuario]
   begin
-    usuario = RepositorioUsuarios.new.find_by_telegram_id(telegram_id)
+    usuario = RepositorioUsuarios.new.find_by_telegram_id(telegram_id.to_s)
   rescue ObjectNotFound
     status 400
     { saldo: 'debe registrarse primero' }.to_json
@@ -53,7 +53,7 @@ end
 post '/saldo' do
   @body ||= request.body.read
   parametros_usuario = JSON.parse(@body)
-  usuario = RepositorioUsuarios.new.find_by_telegram_id(parametros_usuario['telegram_id'])
+  usuario = RepositorioUsuarios.new.find_by_telegram_id(parametros_usuario['telegram_id'].to_s)
   usuario.cargar_saldo(parametros_usuario['saldo'])
 end
 
@@ -61,7 +61,7 @@ post '/transferir' do
   @body ||= request.body.read
   parametros_usuario = JSON.parse(@body)
   begin
-    usuario = RepositorioUsuarios.new.find_by_telegram_id(parametros_usuario['usuario'])
+    usuario = RepositorioUsuarios.new.find_by_telegram_id(parametros_usuario['usuario'].to_s)
   rescue ObjectNotFound
     status 400
     { saldo: 'debe registrarse primero' }.to_json

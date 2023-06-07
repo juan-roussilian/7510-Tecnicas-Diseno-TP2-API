@@ -1,5 +1,5 @@
 def usuario_de_prueba(saldo)
-  usuario = Usuario.new('Juan', 'juan@test.com', 1)
+  usuario = Usuario.new('Juan', 'juan@test.com', "1")
   usuario.cargar_saldo(saldo)
   usuario
 end
