@@ -27,3 +27,8 @@ end
 Entonces('veo en saldo "{int}"') do |saldo_esperado|
   expect(@saldo).to eq saldo_esperado
 end
+
+Dado('cargo saldo "{int}"') do |saldo|
+  @usuario = RepositorioUsuarios.new.find(@respuesta['id'])
+  @usuario.cargar_saldo(saldo)
+end

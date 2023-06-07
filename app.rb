@@ -49,3 +49,10 @@ get '/saldo' do
     { usuario: usuario.id, saldo: usuario.saldo }.to_json
   end
 end
+
+post '/saldo' do
+  @body ||= request.body.read
+  parametros_usuario = JSON.parse(@body)
+  usuario = RepositorioUsuarios.new.find_by_id(parametros_usuario['id'])
+  usuario.cargar_saldo(parametros_usuario['saldo'])
+end
