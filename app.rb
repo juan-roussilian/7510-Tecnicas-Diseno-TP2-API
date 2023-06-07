@@ -31,7 +31,8 @@ end
 post '/usuarios' do
   @body ||= request.body.read
   parametros_usuario = JSON.parse(@body)
-  usuario = Usuario.new(parametros_usuario['nombre'], parametros_usuario['email'], parametros_usuario['telegram_id'].to_s)
+  usuario = Usuario.new(parametros_usuario['nombre'], parametros_usuario['email'],
+                        parametros_usuario['telegram_id'].to_s)
   RepositorioUsuarios.new.save(usuario)
   status 201
   { id: usuario.id, nombre: usuario.nombre, email: usuario.email, telegram_id: usuario.telegram_id }.to_json
