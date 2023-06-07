@@ -37,3 +37,10 @@ post '/usuarios' do
   status 201
   { id: usuario.id, nombre: usuario.nombre, email: usuario.email }.to_json
 end
+
+get '/saldo' do
+  id = params[:usuario]
+  usuario = RepositorioUsuarios.new.find(id)
+  status 201
+  { usuario: usuario.id, saldo: usuario.saldo }.to_json
+end

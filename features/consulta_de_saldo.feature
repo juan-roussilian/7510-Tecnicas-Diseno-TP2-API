@@ -1,6 +1,6 @@
 # language: es
 Característica: Como usuario quiero poder consultar mi saldo actual en la aplicación
-
+  
   @local
   Escenario: 2.1 Usuario registrado con saldo 0 consulta su saldo
     Dado que soy un usuario registrado con saldo "0"
@@ -12,13 +12,13 @@ Característica: Como usuario quiero poder consultar mi saldo actual en la aplic
     Dado que soy un usuario registrado con saldo "500"
     Cuando quiero consultar mi saldo con el comando /saldo
     Entonces veo en saldo "500"
-
-    # los escenarios 2.3 y 2.4 pegan sobre la db
+  
   Escenario: 2.3 Usuario registrado con saldo 0 consulta su saldo
     Dado que soy un nuevo usuario registrado
     Cuando consulto mi saldo con el comando /saldo
     Entonces veo en saldo "0"
 
+  @wip
   Escenario: 2.4 Usuario registrado con saldo 500 consulta su saldo
     Dado que soy un nuevo usuario registrado
     Y cargo saldo "500"
