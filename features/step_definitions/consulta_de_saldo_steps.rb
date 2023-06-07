@@ -14,14 +14,14 @@ Cuando(/^quiero consultar mi saldo$/) do
 end
 
 Dado('que soy un nuevo usuario registrado') do
-  request_body = { nombre: 'Juan', email: 'juan@mail.com', id: 1 }.to_json
+  request_body = { nombre: 'Juan', email: 'juan@mail.com', telegram_id: 1 }.to_json
   @respuesta = JSON.parse(
     Faraday.post('/usuarios', request_body, { 'Content-Type' => 'application/json' }).body
     )
 end
   
 Cuando('consulto mi saldo') do
-  @saldo = JSON.parse(Faraday.get('/saldo',{ usuario: @respuesta['id'] } ).body)['saldo']
+  @saldo = JSON.parse(Faraday.get('/saldo',{ usuario: @respuesta['telegram_id'] } ).body)['saldo']
 end
   
 Entonces('veo en saldo "{int}"') do |saldo_esperado|

@@ -39,9 +39,9 @@ post '/usuarios' do
 end
 
 get '/saldo' do
-  id = params[:usuario]
+  telegram_id = params[:usuario]
   begin
-    usuario = RepositorioUsuarios.new.find_by_id(id)
+    usuario = RepositorioUsuarios.new.find_by_telegram_id(telegram_id)
   rescue ObjectNotFound
     status 400
     { saldo: 'debe registrarse primero' }.to_json
@@ -54,6 +54,6 @@ end
 post '/saldo' do
   @body ||= request.body.read
   parametros_usuario = JSON.parse(@body)
-  usuario = RepositorioUsuarios.new.find_by_id(parametros_usuario['id'])
+  usuario = RepositorioUsuarios.new.find_by_telegram_id(parametros_usuario['telegram_id'])
   usuario.cargar_saldo(parametros_usuario['saldo'])
 end
