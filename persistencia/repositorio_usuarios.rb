@@ -21,12 +21,14 @@ class RepositorioUsuarios < AbstractRepository
   def find_by_telegram_id(telegram_id)
     found_record = dataset.first(telegram_id:)
     raise ObjectNotFound.new(self.class.model_class, telegram_id) if found_record.nil?
+
     load_object dataset.first(found_record)
   end
+
   protected
 
   def load_object(a_hash)
-    usuario = Usuario.new(a_hash[:nombre], a_hash[:email],a_hash[:telegram_id] ,a_hash[:id])
+    usuario = Usuario.new(a_hash[:nombre], a_hash[:email], a_hash[:telegram_id], a_hash[:id])
     usuario.cargar_saldo(a_hash[:saldo])
     usuario
   end
@@ -36,7 +38,7 @@ class RepositorioUsuarios < AbstractRepository
       nombre: usuario.nombre,
       saldo: usuario.saldo,
       email: usuario.email,
-      telegram_id:usuario.telegram_id
+      telegram_id: usuario.telegram_id
     }
     changes[:id] = usuario.id unless usuario.id.nil?
     changes
