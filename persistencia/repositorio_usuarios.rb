@@ -27,11 +27,13 @@ class RepositorioUsuarios < AbstractRepository
   end
 
   def changeset(usuario)
-    {
+    changes = {
       nombre: usuario.nombre,
       saldo: usuario.saldo,
       email: usuario.email
     }
+    changes[:id] = usuario.id unless usuario.id.nil?
+    changes
   end
 end
 

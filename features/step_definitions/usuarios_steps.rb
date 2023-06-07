@@ -1,5 +1,5 @@
 Cuando(/^creo un usuario$/) do
-  request_body = { email: 'juan@test.com'}.to_json
+  request_body = { email: 'juan@test.com', id: 1 }.to_json
   @response = Faraday.post('/usuarios', request_body, { 'Content-Type' => 'application/json' })
 end
 

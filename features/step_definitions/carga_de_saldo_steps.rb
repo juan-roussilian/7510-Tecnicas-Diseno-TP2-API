@@ -1,6 +1,6 @@
 
 Dado('que soy un usuario con saldo "{int}"') do |saldo|
-  request_body = { nombre: 'Juan', email: 'juan@test.com' }.to_json
+  request_body = { nombre: 'Juan', email: 'juan@test.com', id: 1 }.to_json
   respuesta = JSON.parse(
     Faraday.post('/usuarios', request_body, { 'Content-Type' => 'application/json' }).body
   )
