@@ -9,7 +9,7 @@ Dado('que soy un usuario registrado con saldo "{int}"') do |saldo|
   RepositorioUsuarios.new.save(@usuario)
 end
 # step que no usa el comando 
-Cuando(/^quiero consultar mi saldo con el comando \/saldo$/) do
+Cuando(/^quiero consultar mi saldo$/) do
   @saldo = @usuario.saldo
 end
 
@@ -20,7 +20,7 @@ Dado('que soy un nuevo usuario registrado') do
     )
 end
   
-Cuando('consulto mi saldo con el comando \/saldo') do
+Cuando('consulto mi saldo') do
   @saldo = JSON.parse(Faraday.get('/saldo',{ usuario: @respuesta['id'] } ).body)['saldo']
 end
   
