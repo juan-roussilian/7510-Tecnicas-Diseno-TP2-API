@@ -12,10 +12,11 @@ class GestorDeSaldo
   end
 
   def transferir(otro_usuario, cantidad)
-    if transferencia_posible?(cantidad)
-      @saldo -= cantidad
-      otro_usuario.cargar_saldo(cantidad)
-    end
+    return unless transferencia_posible?(cantidad)
+
+    @saldo -= cantidad
+    otro_usuario.cargar_saldo(cantidad)
+    actualizar_saldo
   end
 
   private

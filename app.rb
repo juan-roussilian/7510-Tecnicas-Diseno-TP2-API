@@ -57,3 +57,11 @@ post '/saldo' do
   usuario = RepositorioUsuarios.new.find_by_telegram_id(parametros_usuario['telegram_id'])
   usuario.cargar_saldo(parametros_usuario['saldo'])
 end
+
+post '/transferir' do
+  @body ||= request.body.read
+  parametros_usuario = JSON.parse(@body)
+  usuario_objetivo = RepositorioUsuarios.new.find_by_name(parametros_usuario['usuario_objetivo'])
+  usuario = RepositorioUsuarios.new.find_by_id(parametros_usuario['id'])
+  usuario.transferir(usuario_objetivo, parametros_usuario['saldo'])
+end
