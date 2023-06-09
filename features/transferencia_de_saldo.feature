@@ -16,7 +16,6 @@ Característica: Como usuario quiero poder transferir saldo a otros usuarios
     Entonces mi saldo pasa a ser 400
     Y el saldo del usuario al que le transferi es de 100
 
-  @wip
   Escenario: 4.3 Usuario registrado con saldo suficiente transfiere parte de su saldo a otro usuario registrado con saldo preexistente
     Dado que soy un usuario registrado con saldo "500"
     Y existe un usuario con el nombre de telegram "@juan" con saldo 1000
