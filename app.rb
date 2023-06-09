@@ -23,7 +23,10 @@ end
 get '/usuarios' do
   usuarios = RepositorioUsuarios.new.all
   respuesta = []
-  usuarios.map { |u| respuesta << { email: u.email, id: u.id, saldo: u.saldo.to_i, telegram_id: u.telegram_id.to_s } }
+  usuarios.map do |u|
+    respuesta << { email: u.email, id: u.id, saldo: u.saldo.to_i, telegram_id: u.telegram_id.to_s,
+                   telegram_username: u.telegram_username }
+  end
   status 200
   respuesta.to_json
 end
@@ -32,10 +35,11 @@ post '/usuarios' do
   @body ||= request.body.read
   parametros_usuario = JSON.parse(@body)
   usuario = Usuario.new(parametros_usuario['nombre'], parametros_usuario['email'],
-                        parametros_usuario['telegram_id'].to_s)
+                        parametros_usuario['telegram_id'].to_s, parametros_usuario['telegram_username'])
   RepositorioUsuarios.new.save(usuario)
   status 201
-  { id: usuario.id, nombre: usuario.nombre, email: usuario.email, telegram_id: usuario.telegram_id }.to_json
+  { id: usuario.id, nombre: usuario.nombre, email: usuario.email, telegram_id: usuario.telegram_id,
+    telegram_username: usuario.telegram_username }.to_json
 end
 
 get '/saldo' do
@@ -67,7 +71,7 @@ post '/transferir' do
     status 400
     { saldo: 'debe registrarse primero' }.to_json
   else
-    destinatario = RepositorioUsuarios.new.find_by_name(parametros_usuario['destinatario'])
+    destinatario = RepositorioUsuarios.new.find_by_telegram_username(parametros_usuario['destinatario'])
     usuario.transferir(destinatario, parametros_usuario['saldo'])
     status 200
     ''
