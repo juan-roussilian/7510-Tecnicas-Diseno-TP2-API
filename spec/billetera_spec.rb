@@ -1,13 +1,13 @@
 require 'spec_helper'
-require './dominio/gestor_de_saldo'
+require './dominio/billetera'
 
 def crear_billetera_con_saldo(saldo)
-  gestor = GestorDeSaldo.new(nil)
+  gestor = Billetera.new(nil)
   gestor.cargar_saldo(saldo)
   gestor
 end
 
-describe GestorDeSaldo do
+describe Billetera do
   describe 'cargar saldo' do
     it 'nuevo gestor tiene saldo 0' do
       gestor = described_class.new(nil)

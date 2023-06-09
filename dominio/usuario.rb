@@ -1,4 +1,4 @@
-require_relative 'gestor_de_saldo'
+require_relative 'billetera'
 class Usuario
   attr_reader :nombre, :email, :updated_on, :created_on, :telegram_id, :telegram_username
   attr_accessor :id
@@ -9,7 +9,7 @@ class Usuario
     @id = id
     @telegram_id = telegram_id
     @telegram_username = telegram_username
-    @saldo = GestorDeSaldo.new(self)
+    @saldo = Billetera.new(self)
   end
 
   def cargar_saldo(cantidad)

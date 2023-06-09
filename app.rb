@@ -48,7 +48,7 @@ get '/saldo' do
     usuario = RepositorioUsuarios.new.find_by_telegram_id(telegram_id.to_s)
   rescue ObjectNotFound
     status 400
-    { saldo: 'debe registrarse primero' }.to_json
+    { error: 'debe registrarse primero' }.to_json
   else
     status 200
     { usuario: usuario.id, saldo: usuario.saldo }.to_json
@@ -63,10 +63,10 @@ post '/saldo' do
     usuario.cargar_saldo(parametros_usuario['saldo'])
   rescue ObjectNotFound
     status 400
-    { saldo: 'debe registrarse primero' }.to_json
+    { error: 'debe registrarse primero' }.to_json
   rescue CargaNegativa
     status 400
-    { saldo: 'se ha intentado cargar un valor negativo de saldo' }.to_json
+    { error: 'se ha intentado cargar un valor negativo de saldo' }.to_json
   else
     status 200
     { saldo: usuario.saldo }.to_json
@@ -80,19 +80,18 @@ post '/transferir' do
     usuario = RepositorioUsuarios.new.find_by_telegram_id(parametros_usuario['usuario'].to_s)
   rescue ObjectNotFound
     status 400
-    { saldo: 'debe registrarse primero' }.to_json
+    { error: 'debe registrarse primero' }.to_json
   else
     begin
       destinatario = RepositorioUsuarios.new.find_by_telegram_username(parametros_usuario['destinatario'])
       usuario.transferir(destinatario, parametros_usuario['saldo'])
     rescue ObjectNotFound
       status 400
-      { saldo: 'destinatario no registrado' }.to_json
+      { error: 'destinatario no registrado' }.to_json
     rescue SaldoInsuficiente
       status 400
-      { saldo: 'saldo insuficiente para llevar a cabo la operacion' }.to_json
+      { error: 'saldo insuficiente para llevar a cabo la operacion' }.to_json
     else
-      { saldo: usuario.saldo }.to_json
       status 200
       ''
     end

@@ -1,4 +1,4 @@
-class GestorDeSaldo
+class Billetera
   attr_reader :saldo
 
   def initialize(propietario)
