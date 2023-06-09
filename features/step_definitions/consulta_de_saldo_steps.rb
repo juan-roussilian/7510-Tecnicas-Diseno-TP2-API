@@ -1,5 +1,5 @@
 def usuario_de_prueba(saldo)
-  usuario = Usuario.new('Juan', 'juan@test.com', "1", '@juan')
+  usuario = Usuario.new('Juan', 'juan@test.com', "1", 'juan')
   usuario.cargar_saldo(saldo)
   usuario
 end
@@ -14,7 +14,7 @@ Cuando(/^quiero consultar mi saldo$/) do
 end
 
 Dado('que soy un nuevo usuario registrado') do
-  request_body = { nombre: 'Juan', email: 'juan@mail.com', telegram_id: 1, telegram_username: '@juan' }.to_json
+  request_body = { nombre: 'Juan', email: 'juan@mail.com', telegram_id: 1, telegram_username: 'juan' }.to_json
   @respuesta = JSON.parse(
     Faraday.post('/usuarios', request_body, { 'Content-Type' => 'application/json' }).body
     )

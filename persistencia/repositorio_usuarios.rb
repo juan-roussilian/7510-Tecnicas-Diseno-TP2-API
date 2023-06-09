@@ -29,7 +29,7 @@ class RepositorioUsuarios < AbstractRepository
   end
 
   def find_by_telegram_username(telegram_username)
-    telegram_username = CARACTER_NOMBRE + telegram_username if telegram_username[0] != CARACTER_NOMBRE
+    telegram_username = telegram_username[1..] if telegram_username[0] == CARACTER_NOMBRE
     found_record = dataset.where(telegram_username:).first
     raise ObjectNotFound.new(self.class.model_class, telegram_username) if found_record.nil?
 
