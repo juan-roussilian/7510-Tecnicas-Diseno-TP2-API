@@ -42,17 +42,25 @@ describe GestorDeSaldo do
       billetera.transferir(usuario, 10)
       expect(billetera.saldo).to eq 40
     end
+    it 'dado un saldo 50 quiero transferir 10 y el receptor obtiene 10' do
+      billetera = crear_billetera_con_saldo(50)
+      usuario = MockUsuario.new(0)
+      billetera.transferir(usuario, 10)
+      expect(usuario.saldo).to eq 10
+    end
   end
 end
 
 class MockUsuario
-  attr_accessor :saldo
-
   def initialize(saldo)
     @saldo = crear_billetera_con_saldo(saldo)
   end
 
   def cargar_saldo(monto)
     @saldo.cargar_saldo(monto)
+  end
+
+  def saldo
+    @saldo.saldo
   end
 end
