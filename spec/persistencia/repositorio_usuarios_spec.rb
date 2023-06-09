@@ -16,4 +16,12 @@ describe RepositorioUsuarios do
     repositorio.save(juan)
     expect(repositorio.all.size).to be(cantidad_de_usuarios_iniciales + 1)
   end
+
+  it 'deberia recuperar un usuario mediante su id de telegram' do
+    repositorio = described_class.new
+    carlos = Usuario.new('carlos', 'carlos@test.com', 'Id')
+    repositorio.save(carlos)
+    usuario_recuperado = repositorio.find_by_telegram_id(carlos.telegram_id)
+    expect(usuario_recuperado.id).to eq(carlos.id)
+  end
 end
