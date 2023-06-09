@@ -24,11 +24,7 @@ class GestorDeSaldo
   private
 
   def carga_posible(cantidad)
-    nombre = if @propietario.nil?
-               'test'
-             else
-               @propietario.nombre
-             end
+    nombre = @propietario.nil? ? 'test' : @propietario.nombre
     raise CargaNegativa.new(nombre, cantidad) unless cantidad.positive? || cantidad.zero?
   end
 
@@ -37,11 +33,7 @@ class GestorDeSaldo
   end
 
   def transferencia_posible(cantidad)
-    nombre = if @propietario.nil?
-               'test'
-             else
-               @propietario.nombre
-             end
+    nombre = @propietario.nil? ? 'test' : @propietario.nombre
     raise SaldoInsuficiente.new(self.class, nombre) unless cantidad <= @saldo && cantidad.positive?
   end
 end

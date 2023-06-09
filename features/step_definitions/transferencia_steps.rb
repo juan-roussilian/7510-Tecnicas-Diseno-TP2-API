@@ -30,8 +30,6 @@ Entonces('mi saldo pasa a ser {int}') do |saldo_esperado|
 end
 
 When(/^veo que no se puede transferir$/) do
-  #resultado = JSON.parse(@transferencia.body)
-  #expect(resultado['saldo']).to eq 'saldo insuficiente para llevar a cabo la operacion'
   expect(@transferencia.status).to eq 400
 end
 
