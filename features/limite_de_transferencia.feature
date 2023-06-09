@@ -1,7 +1,6 @@
 # language: es
 Característica: Como usuario no puedo transferir mas saldo del que poseo
 
-  @wip
   Escenario: 7.1 Usuario registrado quiere transferir mas saldo del que posee
     Dado que soy un usuario registrado y poseo saldo 500
     Y existe un usuario con el nombre de telegram "@juan" con saldo 10

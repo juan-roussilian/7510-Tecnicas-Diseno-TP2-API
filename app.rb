@@ -70,13 +70,17 @@ post '/transferir' do
   rescue ObjectNotFound
     status 400
     { saldo: 'debe registrarse primero' }.to_json
-  rescue SaldoInsuficiente
-    status 400
-    { saldo: 'saldo insuficiente para llevar a cabo la operacion' }.to_json
   else
     destinatario = RepositorioUsuarios.new.find_by_telegram_username(parametros_usuario['destinatario'])
-    usuario.transferir(destinatario, parametros_usuario['saldo'])
-    status 200
-    ''
+    begin
+      usuario.transferir(destinatario, parametros_usuario['saldo'])
+    rescue SaldoInsuficiente
+      status 400
+      { saldo: 'saldo insuficiente para llevar a cabo la operacion' }.to_json
+    else
+      { saldo: usuario.saldo }.to_json
+      status 200
+      ''
+    end
   end
 end
