@@ -22,14 +22,25 @@ describe Usuario do
 
     it 'usuario no puede cargar saldo negativo' do
       usuario = described_class.new('nuevo usuario', 'test@test.com', 'unId', '@username')
-      usuario.cargar_saldo(-10)
-      expect(usuario.saldo).to eq 0
+      begin
+        usuario.cargar_saldo(-10)
+      rescue CargaNegativa
+        expect(usuario.saldo).to eq 0
+      else
+        expect(false).to eq true
+      end
     end
 
     it 'usuario (con carga) no puede cargar saldo negativo' do
       usuario = described_class.new('nuevo usuario', 'test@test.com', 'unId', '@username')
       usuario.cargar_saldo(500)
-      usuario.cargar_saldo(-10)
+      begin
+        usuario.cargar_saldo(-10)
+      rescue CargaNegativa
+        expect(usuario.saldo).to eq 500
+      else
+        expect(false).to eq true
+      end
       expect(usuario.saldo).to eq 500
     end
   end

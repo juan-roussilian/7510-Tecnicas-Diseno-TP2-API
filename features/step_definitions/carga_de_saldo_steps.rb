@@ -10,7 +10,7 @@ end
 
 Cuando('quiero cargar saldo "{int}"') do |saldo|
   request_body = { telegram_id: @usuario.telegram_id, saldo: saldo }.to_json
-  Faraday.post('/saldo', request_body, { 'Content-Type' => 'application/json' }).body
+  @resultado_carga = Faraday.post('/saldo', request_body, { 'Content-Type' => 'application/json' })
 end
 
 Entonces('mi saldo pasa a ser "{int}"') do |saldo_esperado|

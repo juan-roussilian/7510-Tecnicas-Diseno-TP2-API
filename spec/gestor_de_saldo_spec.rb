@@ -25,13 +25,28 @@ describe GestorDeSaldo do
     end
     it 'dado un saldo 10 quiero cargar -10 obtengo 10' do
       gestor = crear_billetera_con_saldo(10)
-      gestor.cargar_saldo(-10)
-      expect(gestor.saldo).to eq 10
+      begin
+        gestor.cargar_saldo(-10)
+      rescue CargaNegativa
+        expect(gestor.saldo).to eq 10
+      else
+        expect(false).to eq true
+      end
     end
     it 'dado un saldo 10 quiero cargar 0 obtengo 10' do
       gestor = crear_billetera_con_saldo(10)
       gestor.cargar_saldo(0)
       expect(gestor.saldo).to eq 10
+    end
+    it 'dado un saldo 50 y quiero cargar -10 y emite excepcion' do
+      gestor = crear_billetera_con_saldo(50)
+      begin
+        gestor.cargar_saldo(-10)
+      rescue CargaNegativa
+        expect(gestor.saldo).to eq 50
+      else
+        expect(false).to eq true
+      end
     end
   end
 

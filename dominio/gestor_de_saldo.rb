@@ -7,7 +7,9 @@ class GestorDeSaldo
   end
 
   def cargar_saldo(cantidad)
-    @saldo += cantidad if cantidad.positive?
+    carga_posible(cantidad)
+
+    @saldo += cantidad
     actualizar_saldo
   end
 
@@ -20,6 +22,15 @@ class GestorDeSaldo
   end
 
   private
+
+  def carga_posible(cantidad)
+    nombre = if @propietario.nil?
+               'test'
+             else
+               @propietario.nombre
+             end
+    raise CargaNegativa.new(nombre, cantidad) unless cantidad.positive? || cantidad.zero?
+  end
 
   def actualizar_saldo
     RepositorioUsuarios.new.save(@propietario) unless @propietario.nil? || @propietario.id.nil?
@@ -39,6 +50,14 @@ class SaldoInsuficiente < StandardError
   def initialize(class_name, id)
     @class_name = class_name
     @id = id
-    super("Object #{@class_name} with id #{@id} not found")
+    super("En #{@class_name} con el nombre #{@id} no tiene saldo suficiente")
+  end
+end
+
+class CargaNegativa < StandardError
+  def initialize(nombre, carga)
+    @nombre = nombre
+    @carga = carga
+    super("#{@nombre} intento cargar #{@carga} negativos")
   end
 end
