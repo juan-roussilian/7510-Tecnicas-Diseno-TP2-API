@@ -58,8 +58,16 @@ end
 post '/saldo' do
   @body ||= request.body.read
   parametros_usuario = JSON.parse(@body)
-  usuario = RepositorioUsuarios.new.find_by_telegram_id(parametros_usuario['telegram_id'].to_s)
-  usuario.cargar_saldo(parametros_usuario['saldo'])
+  begin
+    usuario = RepositorioUsuarios.new.find_by_telegram_id(parametros_usuario['telegram_id'].to_s)
+  rescue ObjectNotFound
+    status 400
+    { saldo: 'debe registrarse primero' }.to_json
+  else
+    usuario.cargar_saldo(parametros_usuario['saldo'])
+    status 200
+    { saldo: usuario.saldo }.to_json
+  end
 end
 
 post '/transferir' do

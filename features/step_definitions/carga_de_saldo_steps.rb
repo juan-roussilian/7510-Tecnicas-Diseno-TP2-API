@@ -17,3 +17,12 @@ Entonces('mi saldo pasa a ser "{int}"') do |saldo_esperado|
   @saldo = JSON.parse(Faraday.get('/saldo',{ usuario: @usuario.telegram_id } ).body)['saldo']
   expect(@saldo).to eq saldo_esperado
 end
+
+Cuando('quiero cargar un saldo de "{int}" siendo usuario no registrado') do |saldo|
+  request_body = { telegram_id: 0, saldo: saldo }.to_json
+  @resultado_carga = Faraday.post('/saldo', request_body, { 'Content-Type' => 'application/json' })
+end
+
+Entonces(/^veo que no puedo cargar$/) do
+  expect(@resultado_carga.status).to eq 400
+end
