@@ -54,6 +54,17 @@ describe GestorDeSaldo do
       billetera.transferir(usuario, 20)
       expect(usuario.saldo).to eq 120
     end
+    it 'dado un saldo 50 y un receptor con saldo 100 quiero transferir 51 y emite excepcion' do
+      billetera = crear_billetera_con_saldo(50)
+      usuario = MockUsuario.new(100)
+      begin
+        billetera.transferir(usuario, 51)
+      rescue SaldoInsuficiente
+        expect(usuario.saldo).to eq 100
+      else
+        expect(false).to eq true
+      end
+    end
   end
 end
 

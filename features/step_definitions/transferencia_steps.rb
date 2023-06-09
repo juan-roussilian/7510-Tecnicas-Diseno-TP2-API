@@ -21,10 +21,15 @@ end
 
 Cuando('quiero transferir {float} al usuario registrado {string}') do |saldo, nombre|
   request_body = { usuario: @usuario.telegram_id, saldo: saldo, destinatario: nombre }.to_json
-  Faraday.post("/transferir", request_body, { 'Content-Type' => 'application/json' })
+  @transferencia = Faraday.post("/transferir", request_body, { 'Content-Type' => 'application/json' })
 end
 
 Entonces('mi saldo pasa a ser {int}') do |saldo_esperado|
   saldo = JSON.parse(Faraday.get('/saldo',{ usuario: @usuario.telegram_id } ).body)['saldo']
   expect(saldo).to eq saldo_esperado
+end
+
+When(/^veo que no se puede transferir$/) do
+  resultado = JSON.parse(@transferencia.body)
+  expect(resultado).to eq saldo_esperado
 end

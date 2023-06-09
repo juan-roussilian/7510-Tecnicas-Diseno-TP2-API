@@ -12,7 +12,7 @@ class GestorDeSaldo
   end
 
   def transferir(otro_usuario, cantidad)
-    return unless transferencia_posible?(cantidad)
+    transferencia_posible(cantidad)
 
     @saldo -= cantidad
     otro_usuario.cargar_saldo(cantidad)
@@ -25,7 +25,20 @@ class GestorDeSaldo
     RepositorioUsuarios.new.save(@propietario) unless @propietario.nil? || @propietario.id.nil?
   end
 
-  def transferencia_posible?(cantidad)
-    cantidad <= @saldo && cantidad.positive?
+  def transferencia_posible(cantidad)
+    nombre = if @propietario.nil?
+               'test'
+             else
+               @propietario.nombre
+             end
+    raise SaldoInsuficiente.new(self.class, nombre) unless cantidad <= @saldo && cantidad.positive?
+  end
+end
+
+class SaldoInsuficiente < StandardError
+  def initialize(class_name, id)
+    @class_name = class_name
+    @id = id
+    super("Object #{@class_name} with id #{@id} not found")
   end
 end
