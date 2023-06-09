@@ -48,6 +48,12 @@ describe GestorDeSaldo do
       billetera.transferir(usuario, 10)
       expect(usuario.saldo).to eq 10
     end
+    it 'dado un saldo 50 y un receptor con saldo 100 quiero transferir 20 y el receptor obtiene 120' do
+      billetera = crear_billetera_con_saldo(50)
+      usuario = MockUsuario.new(100)
+      billetera.transferir(usuario, 20)
+      expect(usuario.saldo).to eq 120
+    end
   end
 end
 
