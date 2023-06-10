@@ -1,5 +1,5 @@
 class Grupo
-  attr_reader :nombre, :usuarios
+  attr_reader :nombre, :usuarios, :updated_on, :created_on
 
   MINIMO_USUARIOS_POR_GRUPO = 2
 
