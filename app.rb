@@ -84,7 +84,7 @@ post '/transferir' do
   else
     begin
       destinatario = RepositorioUsuarios.new.find_by_telegram_username(parametros_usuario['destinatario'])
-      usuario.transferir(destinatario, parametros_usuario['saldo'])
+      usuario.transferir(destinatario, parametros_usuario['monto'])
     rescue ObjectNotFound
       status 400
       { error: 'destinatario no registrado' }.to_json
