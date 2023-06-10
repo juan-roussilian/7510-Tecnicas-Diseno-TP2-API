@@ -5,36 +5,43 @@ describe Grupo do
   describe 'new' do
     it 'dado un nombre de grupo y dos usuarios puedo crear un grupo' do
       repo = MockRepositorioUsuarios.new
-      repo.load_example_users
-      grupo = Grupo.new('nombre', %w[juan pedro], repo)
+      repo.load_example_users(2)
+      grupo = Grupo.new('nombre', %w[user1 user2], repo)
       expect(grupo.nombre).to eq 'nombre'
       lista_usuarios = []
       grupo.usuarios.each do |usuario|
         lista_usuarios << usuario.telegram_username
       end
-      expect(lista_usuarios).to contain_exactly('juan', 'pedro')
+      expect(lista_usuarios).to contain_exactly('user1', 'user2')
+    end
+
+    it 'dado un nombre de grupo y un usuario no puedo crear un grupo' do
+      repo = MockRepositorioUsuarios.new
+      repo.load_example_users(1)
+      expect { Grupo.new('nombre', %w[user1], repo) }.to raise_error(MiembrosInsuficientesParaGrupo)
     end
   end
 end
 
 class MockRepositorioUsuarios
   def initialize
-    @usuarios = []
+    @users = []
   end
 
   def find_by_telegram_username(telegram_username)
-    usuario = @usuarios.find { |u| u.telegram_username == telegram_username }
-    raise ObjectNotFound.new(self.class.model_class, telegram_username) if usuario.nil?
+    user = @users.find { |u| u.telegram_username == telegram_username }
+    raise ObjectNotFound.new(self.class.model_class, telegram_username) if user.nil?
 
-    usuario
+    user
   end
 
-  def save(usuario)
-    @usuarios << usuario
+  def save(user)
+    @users << user
   end
 
-  def load_example_users
-    save(Usuario.new('nuevo usuario', 'test@test.com', 'unId', 'juan'))
-    save(Usuario.new('otro usuario', 'test2@test.com', 'otroId', 'pedro'))
+  def load_example_users(number_of_users)
+    (0..number_of_users).each do |i|
+      save(Usuario.new("usuario#{i}", "test#{i}@test.com", i.to_s, "user#{i}"))
+    end
   end
 end
