@@ -1,16 +1,32 @@
 require_relative './abstract_repository'
-
+require 'byebug'
 class RepositorioGrupos < AbstractRepository
   self.table_name = :grupos
   self.model_class = 'Grupo'
 
   def save(a_record)
-    if find_dataset_by_name(a_record.nombre).first
+    if find_dataset_by_id(a_record.id).first
       update(a_record)
     else
-      insert(a_record)
+      !insert(a_record)
     end
+    save_users(a_record)
     a_record
+  end
+
+  def destroy(group)
+    users_group_dataset = DB[:grupos_usuarios]
+    users_group = users_group_dataset.where(id_grupo: group.id)
+    users_group.delete
+    find_dataset_by_id(group.id).delete
+  end
+
+  alias delete destroy
+
+  def delete_all
+    users_group_dataset = DB[:grupos_usuarios]
+    users_group_dataset.delete
+    super
   end
 
   def find_by_name(nombre)
@@ -26,28 +42,26 @@ class RepositorioGrupos < AbstractRepository
 
   protected
 
-  def find_dataset_by_name(nombre)
-    dataset.where(nombre:)
+  def load_object(a_hash)
+    nombre = a_hash[:nombre]
+    id = a_hash[:id]
+    users = RepositorioUsuarios.new.find_by_group_name(nombre)
+    Grupo.new(nombre, users, id:)
   end
 
-  def load_object(a_hash)
-    # grupo = Grupo.new(a_hash['nombre'])
-    # grupo
+  def save_users(group)
+    users_group_dataset = DB[:grupos_usuarios]
+    users_repo = RepositorioUsuarios.new
+    group.usuarios.each do |user|
+      users_repo.save(user)
+      users_group_dataset.insert(grupo_id: group.id, usuario_id: user.id)
+    end
   end
 
   def changeset(grupo)
     {
       nombre: grupo.nombre
     }
-  end
-
-  def update(a_record)
-    find_dataset_by_name(a_record.nombre).update(update_changeset(a_record))
-  end
-
-  def insert(a_record)
-    dataset.insert(insert_changeset(a_record))
-    a_record
   end
 end
 

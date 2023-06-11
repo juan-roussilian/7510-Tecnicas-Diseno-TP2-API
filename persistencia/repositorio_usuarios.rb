@@ -14,13 +14,6 @@ class RepositorioUsuarios < AbstractRepository
     load_object dataset.first(found_record)
   end
 
-  def find_by_id(id)
-    found_record = dataset.first(id:)
-    raise ObjectNotFound.new(self.class.model_class, id) if found_record.nil?
-
-    load_object dataset.first(found_record)
-  end
-
   def find_by_telegram_id(telegram_id)
     found_record = dataset.first(telegram_id:)
     raise ObjectNotFound.new(self.class.model_class, telegram_id) if found_record.nil?
@@ -34,6 +27,32 @@ class RepositorioUsuarios < AbstractRepository
     raise ObjectNotFound.new(self.class.model_class, telegram_username) if found_record.nil?
 
     load_object dataset.first(found_record)
+  end
+
+  def find_by_group_name(nombre_grupo)
+    grupo_buscado = DB[:grupos].where(nombre: nombre_grupo).first
+    raise ObjectNotFound.new('grupo', nombre_grupo) if grupo_buscado.nil?
+
+    usuarios_grupos_dataset = DB[:grupos_usuarios]
+    usuarios_en_grupo = usuarios_grupos_dataset.where(grupo_id: grupo_buscado[:id])
+    usuarios = []
+    usuarios_en_grupo.each do |usuario_en_grupo|
+      usuarios << find(usuario_en_grupo[:usuario_id])
+    end
+    usuarios
+  end
+
+  def destroy(usuario)
+    grupos_usuario = DB[:grupos_usuarios].where(usuario_id: usuario.id)
+    grupos_usuario.delete
+    super
+  end
+  alias delete destroy
+
+  def delete_all
+    grupos_usuarios_dataset = DB[:grupos_usuarios]
+    grupos_usuarios_dataset.delete
+    super
   end
 
   protected

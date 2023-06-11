@@ -1,12 +1,13 @@
 class Grupo
   attr_reader :nombre, :usuarios, :updated_on, :created_on
+  attr_accessor :id
 
   MINIMO_USUARIOS_POR_GRUPO = 2
 
-  def initialize(nombre, usuarios, repositorio_grupos = nil)
+  def initialize(nombre, usuarios, repositorio_grupos = nil, id: nil)
     miembros_suficientes(nombre, usuarios)
     nombre_unico(nombre, repositorio_grupos)
-
+    @id = id
     @nombre = nombre
     @usuarios = usuarios
   end

@@ -5,6 +5,7 @@ require './spec/mocks/mock_repositorio_usuarios'
 
 describe RepositorioGrupos do
   it 'deberia guardar el grupo si es nuevo' do
+    described_class.new.delete_all
     repositorio_usuarios = MockRepositorioUsuarios.new
     repositorio_usuarios.load_example_users(5)
     user1 = repositorio_usuarios.find_by_telegram_username('user1')
@@ -32,7 +33,7 @@ describe RepositorioGrupos do
     expect(described_class.new.all.size).to eq 1
   end
 
-  xit 'deberia recuperar un grupo mediante su nombre' do
+  it 'deberia recuperar un grupo mediante su nombre' do
     described_class.new.delete_all
     repositorio_usuarios = MockRepositorioUsuarios.new
     repositorio_usuarios.load_example_users(2)
