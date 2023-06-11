@@ -108,9 +108,14 @@ post '/grupo' do
   @body ||= request.body.read
   parametros_grupo = JSON.parse(@body)
   begin
-    grupo = Grupo.new(parametros_grupo['nombre'], parametros_grupo['usuarios'], RepositorioUsuarios.new,
-                      RepositorioGrupos.new)
-    RepositorioGrupos.new.save(grupo)
+    usuarios = []
+    parametros_grupo['usuarios'].each do |telegram_username|
+      usuario = repositorio_usuarios.find_by_telegram_username(telegram_username)
+      usuarios.push(usuario)
+    end
+    repositorio_usuarios = RepositorioUsuarios.new
+    grupo = Grupo.new(parametros_grupo['nombre'], usuarios, repositorio_usuarios)
+    repositorio_usuarios.save(grupo)
   rescue MiembrosInsuficientesParaGrupo
     status 400
     { error: 'miembros del grupo insuficiente para llevar a cabo la operacion' }.to_json

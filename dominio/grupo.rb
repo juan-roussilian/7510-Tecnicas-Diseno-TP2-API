@@ -3,16 +3,12 @@ class Grupo
 
   MINIMO_USUARIOS_POR_GRUPO = 2
 
-  def initialize(nombre, usuarios, repositorio_usuarios, repositorio_grupos = nil)
+  def initialize(nombre, usuarios, repositorio_grupos = nil)
     miembros_suficientes(nombre, usuarios)
     nombre_unico(nombre, repositorio_grupos)
 
     @nombre = nombre
-    @usuarios = []
-    usuarios.each do |telegram_username|
-      usuario = repositorio_usuarios.find_by_telegram_username(telegram_username)
-      @usuarios.push(usuario)
-    end
+    @usuarios = usuarios
   end
 
   private

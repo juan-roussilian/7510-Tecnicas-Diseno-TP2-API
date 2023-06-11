@@ -2,12 +2,20 @@ require 'spec_helper'
 require './dominio/grupo'
 require './spec/mocks/mock_repositorio_usuarios'
 
+def crear_grupo_con_usuarios(nombre, cantidad, repositorio_usuarios, repositorio_grupos = nil)
+  repositorio_usuarios.load_example_users(cantidad)
+  usuarios = []
+  cantidad.times do |i|
+    usuarios << repositorio_usuarios.find_by_telegram_username("user#{i + 1}")
+  end
+  Grupo.new(nombre, usuarios, repositorio_grupos)
+end
+
 describe Grupo do
   describe 'new' do
     it 'dado un nombre de grupo y dos usuarios puedo crear un grupo' do
-      repo = MockRepositorioUsuarios.new
-      repo.load_example_users(2)
-      grupo = Grupo.new('nombre', %w[user1 user2], repo)
+      repositorio_usuarios = MockRepositorioUsuarios.new
+      grupo = crear_grupo_con_usuarios('nombre', 2, repositorio_usuarios)
       expect(grupo.nombre).to eq 'nombre'
       lista_usuarios = []
       grupo.usuarios.each do |usuario|
@@ -17,21 +25,22 @@ describe Grupo do
     end
 
     it 'dado un nombre de grupo y un usuario no puedo crear un grupo' do
-      repo = MockRepositorioUsuarios.new
-      repo.load_example_users(1)
-      expect { Grupo.new('nombre', %w[user1], repo) }.to raise_error(MiembrosInsuficientesParaGrupo)
+      repositorio_usuarios = MockRepositorioUsuarios.new
+      expect do
+        crear_grupo_con_usuarios('grupo', 1, repositorio_usuarios)
+      end.to raise_error(MiembrosInsuficientesParaGrupo)
     end
   end
 
   it 'el nuevo grupo debe tener nombre unico en el repositorio de grupos si no lanza excepcion' do
-    repo_grupo = RepositorioGrupos.new
-    repo_grupo.delete_all
+    repositorio_grupos = RepositorioGrupos.new
+    repositorio_grupos.delete_all
     repositorio_usuarios = MockRepositorioUsuarios.new
-    repositorio_usuarios.load_example_users(3)
-    repo_grupo.save(Grupo.new('grupoTest', %w[user1 user2 user3], repositorio_usuarios, repo_grupo))
-    expect(RepositorioGrupos.new.all.size).to eq 1
+    grupo = crear_grupo_con_usuarios('grupoTest', 3, repositorio_usuarios, repositorio_grupos)
+    repositorio_grupos.save(grupo)
+    expect(repositorio_grupos.all.size).to eq 1
     expect do
-      Grupo.new('grupoTest', %w[user1 user2], repositorio_usuarios, repo_grupo)
+      crear_grupo_con_usuarios('grupoTest', 2, repositorio_usuarios, repositorio_grupos)
     end.to raise_error(NombreDeGrupoRepetido)
   end
 end
