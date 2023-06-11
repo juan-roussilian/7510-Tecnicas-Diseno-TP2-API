@@ -21,3 +21,18 @@ Característica: Como usuario quiero que, al intentar registrarme con un correo 
     Cuando quiero registrarme con el mail "gabriel@com" y el nombre "gabriel"
     Entonces no se crea el usuario
 
+  Escenario: 14.5 Usuario quiere registrarse con mail invalido con mala extension
+    Dado que soy un usuario no registrado
+    Cuando quiero registrarme con el mail "mateo@.com" y el nombre "mateo"
+    Entonces no se crea el usuario
+
+  Escenario: 14.6 Usuario quiere registrarse con mail invalido con mala extension
+    Dado que soy un usuario no registrado
+    Cuando quiero registrarme con el mail "juan@mail.com.ar." y el nombre "juan"
+    Entonces no se crea el usuario
+
+  Escenario: 14.7 Usuario quiere registrarse con mail invalido con mala extension
+    Dado que soy un usuario no registrado
+    Cuando quiero registrarme con el mail "juan@mail.com..ar" y el nombre "juan"
+    Entonces no se crea el usuario
+

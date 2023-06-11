@@ -47,6 +47,8 @@ class Usuario
   def dominios_validos(dominio, mail)
     dominios = dominio.split(CARACTER_SEPARADOR_DOMINIO, SECCIONES_SEPARADOR_DOMINIO)
     raise EmailInvalido.new(@nombre, mail) if dominios.count == 1
+
+    raise EmailInvalido.new(@nombre, mail) unless dominios.find_index('').nil?
   end
 end
 
