@@ -36,15 +36,15 @@ class Usuario
     secciones = mail.split(CARACTER_SEPARADOR_EMAIL, SECCIONES_SEPARADOR_EMAIL)
     raise EmailInvalido.new(@nombre, mail) unless secciones.count == 2
 
-    # secciones_validas(secciones)
+    secciones_validas(secciones, mail)
     # dominios_validos(secciones[1])
   end
 
-  def secciones_validas(secciones)
+  def secciones_validas(secciones, mail)
     raise EmailInvalido.new(@nombre, mail) if secciones[0].empty? || secciones[1].empty?
   end
 
-  def dominios_validos(dominio)
+  def dominios_validos(dominio, mail)
     dominios = dominio.split(CARACTER_SEPARADOR_DOMINIO, SECCIONES_SEPARADOR_DOMINIO)
     raise EmailInvalido.new(@nombre, mail) if dominios.count == 1 || secciones[0].empty? || secciones[1].empty?
   end

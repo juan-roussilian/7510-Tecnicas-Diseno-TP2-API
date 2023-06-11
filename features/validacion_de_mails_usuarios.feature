@@ -11,7 +11,6 @@ Característica: Como usuario quiero que, al intentar registrarme con un correo 
     Cuando quiero registrarme con el mail "mateo.com" y el nombre "mateo"
     Entonces no se crea el usuario
 
-  @wip
   Escenario: 14.3 Usuario quiere registrarse con mail invalido sin extension
     Dado que soy un usuario no registrado
     Cuando quiero registrarme con el mail "gabriel@" y el nombre "gabriel"
