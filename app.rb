@@ -34,12 +34,18 @@ end
 post '/usuarios' do
   @body ||= request.body.read
   parametros_usuario = JSON.parse(@body)
-  usuario = Usuario.new(parametros_usuario['nombre'], parametros_usuario['email'],
-                        parametros_usuario['telegram_id'].to_s, parametros_usuario['telegram_username'])
-  RepositorioUsuarios.new.save(usuario)
-  status 201
-  { id: usuario.id, nombre: usuario.nombre, email: usuario.email, telegram_id: usuario.telegram_id,
-    telegram_username: usuario.telegram_username }.to_json
+  begin
+    usuario = Usuario.new(parametros_usuario['nombre'], parametros_usuario['email'],
+                          parametros_usuario['telegram_id'].to_s, parametros_usuario['telegram_username'])
+  rescue EmailInvalido
+    status 409
+    { error: 'mail invalido' }.to_json
+  else
+    RepositorioUsuarios.new.save(usuario)
+    status 201
+    { id: usuario.id, nombre: usuario.nombre, email: usuario.email, telegram_id: usuario.telegram_id,
+      telegram_username: usuario.telegram_username }.to_json
+  end
 end
 
 get '/saldo' do

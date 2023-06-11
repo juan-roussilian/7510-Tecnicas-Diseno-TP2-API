@@ -3,8 +3,14 @@ class Usuario
   attr_reader :nombre, :email, :updated_on, :created_on, :telegram_id, :telegram_username
   attr_accessor :id
 
+  CARACTER_SEPARADOR_EMAIL = '@'.freeze
+  SECCIONES_SEPARADOR_EMAIL = 2
+  CARACTER_SEPARADOR_DOMINIO = '.'.freeze
+  SECCIONES_SEPARADOR_DOMINIO = -1
+
   def initialize(nombre, email, telegram_id, telegram_username, id = nil)
     @nombre = nombre
+    email_valido(email)
     @email = email
     @id = id
     @telegram_id = telegram_id
@@ -22,5 +28,32 @@ class Usuario
 
   def transferir(otro_usuario, cantidad)
     @saldo.transferir(otro_usuario, cantidad)
+  end
+
+  private
+
+  def email_valido(mail)
+    secciones = mail.split(CARACTER_SEPARADOR_EMAIL, SECCIONES_SEPARADOR_EMAIL)
+    raise EmailInvalido.new(@nombre, mail) unless secciones.count == 2
+
+    # secciones_validas(secciones)
+    # dominios_validos(secciones[1])
+  end
+
+  def secciones_validas(secciones)
+    raise EmailInvalido.new(@nombre, mail) if secciones[0].empty? || secciones[1].empty?
+  end
+
+  def dominios_validos(dominio)
+    dominios = dominio.split(CARACTER_SEPARADOR_DOMINIO, SECCIONES_SEPARADOR_DOMINIO)
+    raise EmailInvalido.new(@nombre, mail) if dominios.count == 1 || secciones[0].empty? || secciones[1].empty?
+  end
+end
+
+class EmailInvalido < StandardError
+  def initialize(nombre, mail)
+    @nombre = nombre
+    @mail = mail
+    super("El usuario #{@nombre} tiene mail #{@mail} que es invalido")
   end
 end
