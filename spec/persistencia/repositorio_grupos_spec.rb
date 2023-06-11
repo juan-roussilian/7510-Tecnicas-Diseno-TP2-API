@@ -36,4 +36,13 @@ describe RepositorioGrupos do
     repositorio.save(grupo)
     expect(repositorio.find_by_name('grupoTest').nombre).to eq 'grupoTest'
   end
+
+  it 'guardo un grupo nuevo por tanto existe un grupo con dicho nombre' do
+    described_class.new.delete_all
+    repositorio_usuarios = MockRepositorioUsuarios.new
+    repositorio_usuarios.load_example_users(2)
+    grupo = Grupo.new('grupoTest', %w[user1 user2], repositorio_usuarios)
+    described_class.new.save(grupo)
+    expect(described_class.new.existe_grupo('grupoTest')).to eq true
+  end
 end

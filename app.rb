@@ -97,3 +97,21 @@ post '/transferir' do
     end
   end
 end
+
+post '/grupo' do
+  @body ||= request.body.read
+  parametros_grupo = JSON.parse(@body)
+  begin
+    grupo = Grupo.new(parametros_grupo['nombre'], parametros_grupo['usuarios'], RepositorioUsuarios.new)
+    RepositorioGrupos.new.save(grupo)
+  rescue MiembrosInsuficientesParaGrupo
+    status 400
+    { error: 'miembros del grupo insuficiente para llevar a cabo la operacion' }.to_json
+  rescue NombreDeGrupoRepetido
+    status 400
+    { error: 'nombre repetido no se puede llevar a cabo la operacion' }.to_json
+  else
+    status 201
+    { grupo: 'nombre repetido no se puede llevar a cabo la operacion' }.to_json
+  end
+end

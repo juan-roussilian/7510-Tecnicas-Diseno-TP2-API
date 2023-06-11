@@ -20,6 +20,10 @@ class RepositorioGrupos < AbstractRepository
     load_object dataset.first(found_record)
   end
 
+  def existe_grupo(nombre)
+    !dataset.where(nombre:).first.nil?
+  end
+
   protected
 
   def find_dataset_by_name(nombre)

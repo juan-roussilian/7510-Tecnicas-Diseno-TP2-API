@@ -25,3 +25,17 @@ Entonces('veo el mensaje {string}') do |mensaje|
   expect(@response.body).to eq mensaje
 end
 
+When(/^hay algun grupo llamado "([^"]*)"$/) do |arg|
+  @usuario = usuario
+  request_body = { nombre_grupo: arg, usuarios: [@usuario, @otro_usuario] }.to_json
+  @response = Faraday.post('/grupo', request_body, { 'Content-Type' => 'application/json' })
+end
+
+When(/^quiero crear un grupo con el nombre "([^"]*)" con los usuarios "([^"]*)" y "([^"]*)"$/) do |arg1, arg2, arg3|
+  request_body = { nombre_grupo: , usuarios: [@usuario, arg2, arg3] }.to_json
+  @response = Faraday.post('/grupo', request_body, { 'Content-Type' => 'application/json' })
+end
+
+When(/^no se crea el grupo$/) do
+  pending
+end
