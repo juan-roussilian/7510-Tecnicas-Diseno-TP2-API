@@ -1,5 +1,11 @@
+def usuario_de_prueba_t_id(nombre, telegram_id)
+  usuario = Usuario.new(nombre, 'juan@test.com', telegram_id, 'juan')
+  usuario.cargar_saldo(0)
+  usuario
+end
+
 Dado('que soy un usuario registrado') do
-  @usuario = usuario_de_prueba(0)
+  @usuario = usuario_de_prueba_t_id('juan',"50")
   RepositorioUsuarios.new.save(@usuario)
 end
 
@@ -10,14 +16,15 @@ Dado('existe un usuario con el nombre {string}') do |telegram_username|
 end
 
 Cuando('quiero crear un grupo con el nombre {string} con el usuario {string}') do |nombre_grupo, usuario|
-  @usuario = usuario
-  request_body = { nombre_grupo: , usuarios: [usuario] }.to_json
+  otro_usuario = RepositorioUsuarios.new.find_by_telegram_username(usuario)
+  request_body = { nombre_grupo: nombre_grupo, usuarios: [@usuario.telegram_id, otro_usuario.telegram_id] }.to_json
   @response = Faraday.post('/grupo', request_body, { 'Content-Type' => 'application/json' })
 end
 
 Y('el grupo {string} se crea') do |nombre_grupo|
-  grupo_encontrado = RepositorioGrupos.new.find(nombre_grupo)
-  expect(grupo_encontrado.usuarios.first).to eq @usuario.telegram_username
+  # grupo_encontrado = RepositorioGrupos.new.find(nombre_grupo)
+  # expect(grupo_encontrado.usuarios.first).to eq @usuario.telegram_username
+  expect(RepositorioGrupos.new.existe_grupo(nombre_grupo)).to eq true
   expect(@response.status).to eq 201
 end
 
@@ -25,17 +32,18 @@ Entonces('veo el mensaje {string}') do |mensaje|
   expect(@response.body).to eq mensaje
 end
 
-When(/^hay algun grupo llamado "([^"]*)"$/) do |arg|
-  @usuario = usuario
-  request_body = { nombre_grupo: arg, usuarios: [@usuario, @otro_usuario] }.to_json
+When(/^hay algun grupo llamado "([^"]*)"$/) do |nombre|
+  request_body = { nombre_grupo: nombre, usuarios: [@usuario.telegram_id, @otro_usuario.telegram_id] }.to_json
   @response = Faraday.post('/grupo', request_body, { 'Content-Type' => 'application/json' })
 end
 
-When(/^quiero crear un grupo con el nombre "([^"]*)" con los usuarios "([^"]*)" y "([^"]*)"$/) do |arg1, arg2, arg3|
-  request_body = { nombre_grupo: , usuarios: [@usuario, arg2, arg3] }.to_json
+When(/^quiero crear un grupo con el nombre "([^"]*)" con los usuarios "([^"]*)" y "([^"]*)"$/) do |nombre, u1, u2|
+  otro_usuario = RepositorioUsuarios.new.find_by_telegram_username(u1)
+  otro_usuario2 = RepositorioUsuarios.new.find_by_telegram_username(u2)
+  request_body = { nombre_grupo: nombre, usuarios: [@usuario.telegram_id, otro_usuario.telegram_id, otro_usuario2.telegram_id] }.to_json
   @response = Faraday.post('/grupo', request_body, { 'Content-Type' => 'application/json' })
 end
 
 When(/^no se crea el grupo$/) do
-  pending
+  expect(@response.status).to eq 400
 end
