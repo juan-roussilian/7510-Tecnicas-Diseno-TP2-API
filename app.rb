@@ -102,7 +102,8 @@ post '/grupo' do
   @body ||= request.body.read
   parametros_grupo = JSON.parse(@body)
   begin
-    grupo = Grupo.new(parametros_grupo['nombre'], parametros_grupo['usuarios'], RepositorioUsuarios.new, RepositorioGrupos.new)
+    grupo = Grupo.new(parametros_grupo['nombre'], parametros_grupo['usuarios'], RepositorioUsuarios.new,
+                      RepositorioGrupos.new)
     RepositorioGrupos.new.save(grupo)
   rescue MiembrosInsuficientesParaGrupo
     status 400
