@@ -37,7 +37,7 @@ class Usuario
     raise EmailInvalido.new(@nombre, mail) unless secciones.count == 2
 
     secciones_validas(secciones, mail)
-    # dominios_validos(secciones[1])
+    dominios_validos(secciones[1], mail)
   end
 
   def secciones_validas(secciones, mail)
@@ -46,7 +46,7 @@ class Usuario
 
   def dominios_validos(dominio, mail)
     dominios = dominio.split(CARACTER_SEPARADOR_DOMINIO, SECCIONES_SEPARADOR_DOMINIO)
-    raise EmailInvalido.new(@nombre, mail) if dominios.count == 1 || secciones[0].empty? || secciones[1].empty?
+    raise EmailInvalido.new(@nombre, mail) if dominios.count == 1
   end
 end
 
