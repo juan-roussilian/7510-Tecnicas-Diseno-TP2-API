@@ -73,6 +73,7 @@ acceptance_tests_job:
   stage: acceptance_test
   environment: test
   script:
+    - bundle install
     - BASE_URL=https://restapi-test-tokio-nicopaez.cloud.okteto.net bundle exec rake acceptance_report_remote
 
   only:
