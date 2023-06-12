@@ -4,7 +4,7 @@ class Grupo
 
   MINIMO_USUARIOS_POR_GRUPO = 2
 
-  def initialize(nombre, usuarios, repositorio_grupos = nil, id: nil)
+  def initialize(nombre, usuarios, _repositorio_grupos = nil, id: nil)
     miembros_suficientes(nombre, usuarios)
     # nombre_unico(nombre, repositorio_grupos)
     @id = id
