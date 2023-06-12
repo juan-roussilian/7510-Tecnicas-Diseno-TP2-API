@@ -1,5 +1,5 @@
 Dado('que soy un usuario no registrado') do
-  # nada que hacer aqui
+  RepositorioUsuarios.new.delete_all
 end
 
 Cuando('quiero registrarme con el mail {string} y el nombre {string}') do |mail, nombre|

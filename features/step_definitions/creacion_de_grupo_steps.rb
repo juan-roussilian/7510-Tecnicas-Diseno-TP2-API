@@ -1,4 +1,3 @@
-require 'byebug'
 def usuario_de_prueba_telegram_id(nombre, telegram_id)
   usuario = Usuario.new(nombre, 'juan@test.com', telegram_id, 'juan')
   usuario.cargar_saldo(0)

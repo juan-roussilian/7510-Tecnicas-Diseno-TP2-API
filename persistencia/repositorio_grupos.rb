@@ -1,5 +1,4 @@
 require_relative './abstract_repository'
-require 'byebug'
 class RepositorioGrupos < AbstractRepository
   self.table_name = :grupos
   self.model_class = 'Grupo'
