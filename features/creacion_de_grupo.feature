@@ -8,7 +8,6 @@ Característica: Como usuario quiero poder crear grupos con otros usuarios para 
     Entonces veo el mensaje "Grupo creado"
     Y el grupo "grupo" se crea
 
-  @wip
   Escenario: 5.2 Usuario registrado quiere crear un grupo con dos personas
     Dado que soy un usuario registrado
     Y existe un usuario con el nombre "juan"
