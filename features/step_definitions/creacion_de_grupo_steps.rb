@@ -11,14 +11,14 @@ end
 
 Dado('existe un usuario con el nombre {string}') do |telegram_username|
   request_body = { nombre: 'usuario', email: 'usuario@test.com', telegram_username: }.to_json
-  respuesta = JSON.parse(Faraday.post('/usuarios', request_body, { 'Content-Type' => 'application/json' }).body)
+  respuesta = JSON.parse(Faraday.post(get_url_for('/usuarios'), request_body, { 'Content-Type' => 'application/json' }).body)
   @otro_usuario = RepositorioUsuarios.new.find(respuesta['id'])
 end
 
 Cuando('quiero crear un grupo con el nombre {string} con el usuario {string}') do |nombre, otro_usuario|
   RepositorioGrupos.new.delete_all
   request_body = { nombre:, usuarios: [@usuario.telegram_username, otro_usuario] }.to_json
-  @response = Faraday.post('/grupo', request_body, { 'Content-Type' => 'application/json' })
+  @response = Faraday.post(get_url_for('/grupo'), request_body, { 'Content-Type' => 'application/json' })
 end
 
 Y('el grupo {string} se crea') do |nombre_grupo|
@@ -33,13 +33,13 @@ end
 
 Cuando(/^hay algun grupo llamado "([^"]*)"$/) do |nombre|
   request_body = { nombre_grupo: nombre, usuarios: [@usuario.telegram_id, @otro_usuario.telegram_id] }.to_json
-  @response = Faraday.post('/grupo', request_body, { 'Content-Type' => 'application/json' })
+  @response = Faraday.post(get_url_for('/grupo'), request_body, { 'Content-Type' => 'application/json' })
 end
 
 Cuando(/^quiero crear un grupo con el nombre "([^"]*)" con los usuarios "([^"]*)" y "([^"]*)"$/) do |nombre, u1, u2|
   RepositorioGrupos.new.delete_all
   request_body = { nombre: nombre, usuarios: [@usuario.telegram_username, u1, u2] }.to_json
-  @response = Faraday.post('/grupo', request_body, { 'Content-Type' => 'application/json' })
+  @response = Faraday.post(get_url_for('/grupo'), request_body, { 'Content-Type' => 'application/json' })
 end
 
 Cuando(/^no se crea el grupo$/) do

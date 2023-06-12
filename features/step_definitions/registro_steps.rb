@@ -4,7 +4,7 @@ end
 
 Cuando('quiero registrarme con el mail {string} y el nombre {string}') do |mail, nombre|
   request_body = { nombre: nombre, email: mail, id: 1, telegram_username: 'user' }.to_json
-  @response = Faraday.post('/usuarios', request_body, { 'Content-Type' => 'application/json' })
+  @response = Faraday.post(get_url_for('/usuarios'), request_body, { 'Content-Type' => 'application/json' })
 end
 
 Entonces('veo que se crea correctamente el usuario') do
@@ -31,7 +31,7 @@ end
 
 Dado('existe un usuario con el mail {string}') do |mail|
   request_body = { nombre: 'nombre', email: mail, telegram_username: 'user' }.to_json
-  Faraday.post('/usuarios', request_body, { 'Content-Type' => 'application/json' })
+  Faraday.post(get_url_for('/usuarios'), request_body, { 'Content-Type' => 'application/json' })
 end
 
 Entonces('no se crea el usuario') do

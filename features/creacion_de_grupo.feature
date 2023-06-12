@@ -1,6 +1,7 @@
 # language: es
 Característica: Como usuario quiero poder crear grupos con otros usuarios para poder repartir gastos
 
+  @local
   Escenario: 5.1 Usuario registrado quiere crear un grupo con una persona
     Dado que soy un usuario registrado
     Y existe un usuario con el nombre "juan"
@@ -8,6 +9,7 @@ Característica: Como usuario quiero poder crear grupos con otros usuarios para 
     Entonces veo el mensaje "Grupo creado"
     Y el grupo "grupo" se crea
 
+  @local
   Escenario: 5.2 Usuario registrado quiere crear un grupo con dos personas
     Dado que soy un usuario registrado
     Y existe un usuario con el nombre "juan"

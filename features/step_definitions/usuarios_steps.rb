@@ -1,6 +1,6 @@
 Cuando(/^creo un usuario$/) do
   request_body = { email: 'juan@test.com', id: 1}.to_json
-  @response = Faraday.post('/usuarios', request_body, { 'Content-Type' => 'application/json' })
+  @response = Faraday.post(get_url_for('/usuarios'), request_body, { 'Content-Type' => 'application/json' })
 end
 
 Entonces(/^se le asigna un id$/) do
@@ -14,7 +14,7 @@ Cuando(/^que no existen usuario$/) do
 end
 
 Cuando(/^consulto los usuarios$/) do
-  @response = Faraday.get('/usuarios')
+  @response = Faraday.get(get_url_for('/usuarios'))
 end
 
 Entonces(/^tengo un listado vacio$/) do

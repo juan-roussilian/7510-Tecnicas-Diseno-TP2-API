@@ -13,13 +13,20 @@ db = Configuration.db
 db.loggers << logger
 Sequel::Migrator.run(db, 'db/migrations')
 
-
-include Rack::Test::Methods
-def app
-  Sinatra::Application
+BASE_URL = 'http://localhost:3000'.freeze
+if ENV['BASE_URL']
+  BASE_URL = ENV['BASE_URL']
+else
+  include Rack::Test::Methods
+  def app
+    Sinatra::Application
+  end
 end
 
+def get_url_for(route)
+  BASE_URL + route
+end
 
 After do |_scenario|
-  Faraday.post('/reset')
+  Faraday.post(get_url_for('/reset'))
 end
