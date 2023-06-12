@@ -71,7 +71,6 @@ deploy_test_job:
 
 acceptance_tests_job:
   stage: acceptance_test
-  image: nicopaez/kubectl:1.22.0
   environment: test
   script:
     - BASE_URL=https://restapi-test-tokio-nicopaez.cloud.okteto.net bundle exec rake acceptance_report_remote
