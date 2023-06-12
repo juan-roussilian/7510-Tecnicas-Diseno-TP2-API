@@ -115,7 +115,7 @@ post '/grupo' do
       usuarios.push(usuario)
     end
     repositorio_grupos = RepositorioGrupos.new
-    grupo = Grupo.new(parametros_grupo['nombre'], usuarios, repositorio_usuarios)
+    grupo = Grupo.new(parametros_grupo['nombre'], usuarios, repositorio_grupos)
     repositorio_grupos.save(grupo)
   rescue MiembrosInsuficientesParaGrupo
     status 400
@@ -125,6 +125,6 @@ post '/grupo' do
     { error: 'nombre repetido no se puede llevar a cabo la operacion' }.to_json
   else
     status 201
-    { grupo: 'nombre repetido no se puede llevar a cabo la operacion' }.to_json
+    'Grupo creado'
   end
 end

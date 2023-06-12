@@ -1,11 +1,11 @@
-def usuario_de_prueba_t_id(nombre, telegram_id)
+def usuario_de_prueba_telegram_id(nombre, telegram_id)
   usuario = Usuario.new(nombre, 'juan@test.com', telegram_id, 'juan')
   usuario.cargar_saldo(0)
   usuario
 end
 
 Dado('que soy un usuario registrado') do
-  @usuario = usuario_de_prueba_t_id('juan',"50")
+  @usuario = usuario_de_prueba_telegram_id('juan',"50")
   RepositorioUsuarios.new.save(@usuario)
 end
 
@@ -15,16 +15,15 @@ Dado('existe un usuario con el nombre {string}') do |telegram_username|
   @otro_usuario = RepositorioUsuarios.new.find(respuesta['id'])
 end
 
-Cuando('quiero crear un grupo con el nombre {string} con el usuario {string}') do |nombre_grupo, usuario|
-  otro_usuario = RepositorioUsuarios.new.find_by_telegram_username(usuario)
-  request_body = { nombre_grupo: nombre_grupo, usuarios: [@usuario.telegram_id, otro_usuario.telegram_id] }.to_json
+Cuando('quiero crear un grupo con el nombre {string} con el usuario {string}') do |nombre, otro_usuario|
+  RepositorioGrupos.new.delete_all
+  request_body = { nombre:, usuarios: [@usuario.telegram_username, otro_usuario] }.to_json
   @response = Faraday.post('/grupo', request_body, { 'Content-Type' => 'application/json' })
 end
 
 Y('el grupo {string} se crea') do |nombre_grupo|
-  # grupo_encontrado = RepositorioGrupos.new.find(nombre_grupo)
-  # expect(grupo_encontrado.usuarios.first).to eq @usuario.telegram_username
-  expect(RepositorioGrupos.new.existe_grupo(nombre_grupo)).to eq true
+  grupo_encontrado = RepositorioGrupos.new.find_by_name(nombre_grupo)
+  expect(grupo_encontrado.nombre).to eq nombre_grupo
   expect(@response.status).to eq 201
 end
 

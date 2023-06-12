@@ -31,7 +31,7 @@ class RepositorioGrupos < AbstractRepository
 
   def find_by_name(nombre)
     found_record = dataset.where(nombre:).first
-    raise GrupoNoEncontrado.new(self.class.model_class, nombre) if found_record.nil?
+    raise GrupoNoEncontrado, nombre if found_record.nil?
 
     load_object dataset.first(found_record)
   end

@@ -1,6 +1,6 @@
 # language: es
 Característica: Como usuario quiero poder crear grupos con otros usuarios para poder repartir gastos
-  @wip
+
   Escenario: 5.1 Usuario registrado quiere crear un grupo con una persona
     Dado que soy un usuario registrado
     Y existe un usuario con el nombre "juan"
