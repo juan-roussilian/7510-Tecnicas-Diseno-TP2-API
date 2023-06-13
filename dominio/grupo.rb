@@ -20,7 +20,15 @@ class Grupo
 
   def nombre_unico(nombre, repositorio_grupos)
     return if repositorio_grupos.nil?
-    raise NombreDeGrupoRepetido, nombre if repositorio_grupos.existe_grupo(nombre)
+    raise NombreDeGrupoRepetido, nombre if existe_grupo(nombre, repositorio_grupos)
+  end
+
+  def existe_grupo(nombre, _repositorio_grupos)
+    RepositorioGrupos.new.find_by_name(nombre)
+  rescue GrupoNoEncontrado
+    false
+  else
+    true
   end
 end
 

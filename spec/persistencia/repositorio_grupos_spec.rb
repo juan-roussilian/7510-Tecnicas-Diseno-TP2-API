@@ -4,6 +4,14 @@ require_relative '../../persistencia/repositorio_grupos'
 require './spec/mocks/mock_repositorio_usuarios'
 
 describe RepositorioGrupos do
+  def existe_grupo(nombre)
+    described_class.new.find_by_name(nombre)
+  rescue GrupoNoEncontrado
+    false
+  else
+    true
+  end
+
   it 'deberia guardar el grupo si es nuevo' do
     described_class.new.delete_all
     repositorio_usuarios = MockRepositorioUsuarios.new
@@ -53,6 +61,6 @@ describe RepositorioGrupos do
     user2 = repositorio_usuarios.find_by_telegram_username('user2')
     grupo = Grupo.new('grupoTest', [user1, user2])
     described_class.new.save(grupo)
-    expect(described_class.new.existe_grupo('grupoTest')).to eq true
+    expect(existe_grupo('grupoTest')).to eq true
   end
 end
