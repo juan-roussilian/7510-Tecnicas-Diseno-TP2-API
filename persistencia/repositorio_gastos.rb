@@ -26,7 +26,8 @@ class RepositorioGastos < AbstractRepository
     {
       nombre: gasto.nombre,
       monto: gasto.monto,
-      id_grupo: gasto.grupo.id
+      id_grupo: gasto.grupo.id,
+      id_creador: gasto.creador.id
     }
   end
 end
