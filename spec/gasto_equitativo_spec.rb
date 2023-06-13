@@ -1,5 +1,5 @@
 require 'spec_helper'
-require './dominio/gasto'
+require './dominio/gastoequitativo'
 require './spec/mocks/mock_usuario'
 require './spec/mocks/mock_grupo'
 require './spec/mocks/mock_repositorio_usuarios'
@@ -15,7 +15,7 @@ def crear_grupo_con_usuarios(nombre, cantidad, repositorio_usuarios, repositorio
   grupo
 end
 
-describe Gasto do
+describe GastoEquitativo do
   describe 'crear gasto' do
     it 'dado un gasto con nombre supermercado y monto 500 para el grupo casa, obtengo que su monto es 500' do
       grupo = crear_grupo_con_usuarios('casa', 2, MockRepositorioUsuarios.new)

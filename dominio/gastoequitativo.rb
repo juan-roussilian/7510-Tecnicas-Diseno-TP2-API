@@ -1,4 +1,4 @@
-class Gasto
+class GastoEquitativo
   attr_reader :monto
 
   def initialize(nombre, monto, nombre_grupo)
