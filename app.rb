@@ -17,6 +17,7 @@ end
 
 post '/reset' do
   RepositorioUsuarios.new.delete_all
+  RepositorioGrupos.new.delete_all
   status 200
 end
 
