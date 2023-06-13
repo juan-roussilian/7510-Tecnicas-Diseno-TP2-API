@@ -15,7 +15,7 @@ describe RepositorioGastos do
     repositorio_grupos.delete_all
     grupo = Grupo.new('GrupoDePrueba', [user1, user2], repositorio_grupos)
     repositorio_grupos.save(grupo)
-    gasto = GastoEquitativo.new('gastoTest', 100, grupo)
+    gasto = GastoEquitativo.new('gastoTest', 100, grupo, user1)
     described_class.new.save(gasto)
     expect(gasto.id).not_to be_nil
   end

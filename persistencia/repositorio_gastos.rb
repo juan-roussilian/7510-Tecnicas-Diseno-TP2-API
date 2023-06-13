@@ -17,8 +17,9 @@ class RepositorioGastos < AbstractRepository
     nombre = a_hash[:nombre]
     monto = a_hash[:monto]
     id_grupo = a_hash[:id]
+    creador = RepositorioUsuarios.new.find(a_hash[:id_creador])
     grupo = RepositorioGrupos.new.find(id_grupo)
-    GastoEquitativo.new(nombre, monto, grupo, id:)
+    GastoEquitativo.new(nombre, monto, grupo, creador, id:)
   end
 
   def changeset(gasto)
