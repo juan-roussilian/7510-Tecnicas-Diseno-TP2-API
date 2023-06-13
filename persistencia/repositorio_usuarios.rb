@@ -4,10 +4,7 @@ class RepositorioUsuarios < AbstractRepository
   self.table_name = :usuarios
   self.model_class = 'Usuario'
 
-  CARACTER_NOMBRE = '@'.freeze
-
   def find_by_name(nombre)
-    nombre = nombre[1..] if nombre[0] == CARACTER_NOMBRE
     found_record = dataset.where(nombre:).first
     raise ObjectNotFound.new(self.class.model_class, nombre) if found_record.nil?
 
@@ -22,7 +19,6 @@ class RepositorioUsuarios < AbstractRepository
   end
 
   def find_by_telegram_username(telegram_username)
-    telegram_username = telegram_username[1..] if telegram_username[0] == CARACTER_NOMBRE
     found_record = dataset.where(telegram_username:).first
     raise ObjectNotFound.new(self.class.model_class, telegram_username) if found_record.nil?
 

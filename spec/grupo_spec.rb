@@ -32,7 +32,7 @@ describe Grupo do
     end
   end
 
-  xit 'el nuevo grupo debe tener nombre unico en el repositorio de grupos si no lanza excepcion' do
+  it 'el nuevo grupo debe tener nombre unico en el repositorio de grupos si no lanza excepcion' do
     repositorio_grupos = RepositorioGrupos.new
     repositorio_grupos.delete_all
     repositorio_usuarios = MockRepositorioUsuarios.new
