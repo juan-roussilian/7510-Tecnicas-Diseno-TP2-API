@@ -15,7 +15,7 @@ def existe_grupo(nombre)
 end
 
 Dado('que soy un usuario registrado') do
-  @usuario = usuario_de_prueba_telegram_id('juan',"50")
+  @usuario = usuario_de_prueba_telegram_id('UsuarioRegistrado',"50")
   RepositorioUsuarios.new.save(@usuario)
 end
 
