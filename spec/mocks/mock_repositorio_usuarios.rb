@@ -19,4 +19,8 @@ class MockRepositorioUsuarios
       save(Usuario.new("usuario#{i}", "test#{i}@test.com", i.to_s, "user#{i}"))
     end
   end
+
+  def delete_all
+    @users = []
+  end
 end

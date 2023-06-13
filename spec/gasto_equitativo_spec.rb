@@ -1,5 +1,5 @@
 require 'spec_helper'
-require './dominio/gastoequitativo'
+require './dominio/gasto_equitativo'
 require './spec/mocks/mock_usuario'
 require './spec/mocks/mock_grupo'
 require './spec/mocks/mock_repositorio_usuarios'
