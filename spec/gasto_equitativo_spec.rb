@@ -22,5 +22,11 @@ describe GastoEquitativo do
       gasto = described_class.new('supermercado', 500, grupo)
       expect(gasto.monto).to eq 500
     end
+    it 'dado un gasto equitativo con monto 500 para un grupo de 2 usuarios, obtengo que la deuda de cada uno es 250' do
+      repositorio_usuarios = MockRepositorioUsuarios.new
+      grupo = crear_grupo_con_usuarios('casa', 2, repositorio_usuarios)
+      gasto = described_class.new('almacen', 500, grupo)
+      expect(gasto.deuda_por_usuario).to eq 250
+    end
   end
 end
