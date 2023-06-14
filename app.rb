@@ -116,7 +116,7 @@ post '/grupo' do
       usuarios.push(usuario)
     end
     repositorio_grupos = RepositorioGrupos.new
-    grupo = Grupo.new(parametros_grupo['nombre'], usuarios, repositorio_grupos)
+    grupo = Grupo.new(parametros_grupo['nombre_grupo'], usuarios, repositorio_grupos)
     repositorio_grupos.save(grupo)
   rescue MiembrosInsuficientesParaGrupo
     status 400
@@ -134,7 +134,7 @@ post '/gasto' do
   @body ||= request.body.read
   parametros_gasto = JSON.parse(@body)
   begin
-    nombre = parametros_gasto['nombre']
+    nombre = parametros_gasto['nombre_gasto']
     monto = parametros_gasto['monto']
     grupo = RepositorioGrupos.new.find_by_name(parametros_gasto['nombre_grupo'])
     creador = RepositorioUsuarios.new.find_by_telegram_id(parametros_gasto['usuario'].to_s)
@@ -149,6 +149,6 @@ post '/gasto' do
     { error: 'no se pudo crear el gasto, no existe el grupo' }.to_json
   else
     status 201
-    "Gasto creado id: #{gasto.id}"
+    { id: gasto.id, nombre_gasto: gasto.nombre }.to_json
   end
 end

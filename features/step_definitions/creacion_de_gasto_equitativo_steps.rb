@@ -29,11 +29,10 @@ Cuando('quiero crear un gasto equitativo de {string} con el nombre {string}') do
   @respuesta = Faraday.post(get_url_for('/gasto'), request_body, { 'Content-Type' => 'application/json' })
 end
 
-Entonces('veo el mensaje {string} con id numerico') do |mensaje|
-  response_body = @respuesta.body
-  mensaje_expected = response_body[/^(#{Regexp.escape(mensaje)})/]
-  @id_gasto = response_body.scan(/\d+/).first.to_i
-  expect(mensaje_expected).to eq mensaje
+Entonces('veo el mensaje gasto creado con id numerico') do
+  response_body = JSON.parse(@respuesta.body)
+  @id_gasto = response_body['id'] 
+  expect(@id_gasto.is_a? Integer).to eq true
 end
 
 Entonces('debo pagar {string}') do |deuda|
