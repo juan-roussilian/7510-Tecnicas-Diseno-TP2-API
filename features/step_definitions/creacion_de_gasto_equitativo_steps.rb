@@ -11,17 +11,21 @@ end
 
 Cuando('quiero crear un gasto equitativo de {string} con el nombre {string}') do |monto, nombre_gasto|
   request_body = { usuario: @usuario.telegram_id, nombre_gasto:, monto:, nombre_grupo: @grupo.nombre }.to_json
-  @response = Faraday.post(get_url_for('/gasto'), request_body, { 'Content-Type' => 'application/json' })
+  @respuesta = Faraday.post(get_url_for('/gasto'), request_body, { 'Content-Type' => 'application/json' })
 end
 
-Entonces('veo el mensaje {string} con id numerico') do |string|
-  expect(@response.body).to eq string
+Entonces('veo el mensaje {string} con id numerico') do |mensaje|
+  response_body = @respuesta.body
+  mensaje_expected = response_body[/^(#{Regexp.escape(mensaje)})/]
+  @id_gasto = response_body.scan(/\d+/).first.to_i
+  expect(mensaje_expected).to eq mensaje
 end
 
-Entonces('debo pagar {string}') do |string|
-  pending # Write code here that turns the phrase above into concrete actions
+Entonces('debo pagar {string}') do |deuda|
+  @gasto = RepositorioGastos.new.find(@id_gasto)
+  expect(@gasto.deuda_por_usuario).to eq deuda.to_i
 end
 
-Entonces('{string} debe pagar {string}') do |string, string2|
-  pending # Write code here that turns the phrase above into concrete actions
+Entonces('{string} debe pagar {string}') do |otro_usuario, deuda|
+  expect(@gasto.deuda_por_usuario).to eq deuda.to_i
 end

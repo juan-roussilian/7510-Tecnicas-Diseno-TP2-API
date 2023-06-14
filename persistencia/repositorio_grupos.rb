@@ -17,6 +17,7 @@ class RepositorioGrupos < AbstractRepository
     users_group_dataset = DB[:grupos_usuarios]
     users_group = users_group_dataset.where(id_grupo: group.id)
     users_group.delete
+    RepositorioGastos.new.find_by_grupo(group.id).each(&:delete)
     find_dataset_by_id(group.id).delete
   end
 
@@ -25,6 +26,7 @@ class RepositorioGrupos < AbstractRepository
   def delete_all
     users_group_dataset = DB[:grupos_usuarios]
     users_group_dataset.delete
+    RepositorioGastos.new.delete_all
     super
   end
 

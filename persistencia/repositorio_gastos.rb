@@ -10,13 +10,29 @@ class RepositorioGastos < AbstractRepository
     load_object dataset.first(found_record)
   end
 
+  def find_by_creador(id_creador)
+    gastos = []
+    dataset.where(id_creador:).each do |gasto|
+      gastos << load_object(gasto)
+    end
+    gastos
+  end
+
+  def find_by_grupo(id_grupo)
+    gastos = []
+    dataset.where(id_grupo:).each do |gasto|
+      gastos << load_object(gasto)
+    end
+    gastos
+  end
+
   protected
 
   def load_object(a_hash)
     id = a_hash[:id]
     nombre = a_hash[:nombre]
     monto = a_hash[:monto]
-    id_grupo = a_hash[:id]
+    id_grupo = a_hash[:id_grupo]
     creador = RepositorioUsuarios.new.find(a_hash[:id_creador])
     grupo = RepositorioGrupos.new.find(id_grupo)
     GastoEquitativo.new(nombre, monto, grupo, creador, id:)

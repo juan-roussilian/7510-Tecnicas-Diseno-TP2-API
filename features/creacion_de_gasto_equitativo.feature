@@ -1,6 +1,6 @@
 # language: es
 Característica: Como usuario quiero poder crear un gasto equitativo para repartirlo con un grupo
-  @wip
+  @local
   Escenario: 9.1 Usuario registrado en un grupo de dos personas crea un gasto equitativo y este se divide igualmente entre los miembros
     Dado que soy un usuario registrado
     Y estoy en un grupo con "juan"
