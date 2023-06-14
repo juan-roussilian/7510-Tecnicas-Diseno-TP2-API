@@ -9,7 +9,7 @@ Característica: Como usuario quiero poder crear un gasto equitativo para repart
     Y debo pagar "50"
     Y "juan" debe pagar "50"
 
-  @wip
+  @local
   Escenario: 9.2 Usuario registrado en un grupo de cuatro personas crea un gasto equitativo y este se divide igualmente entre los miembros
     Dado que soy un usuario registrado
     Y estoy en un grupo con "juan", "pedro" y "lucas"
