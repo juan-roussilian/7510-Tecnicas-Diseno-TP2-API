@@ -144,6 +144,9 @@ post '/gasto' do
   rescue ObjectNotFound
     status 400
     { error: 'no se pudo crear el gasto' }.to_json
+  rescue GrupoNoEncontrado
+    status 400
+    { error: 'no se pudo crear el gasto, no existe el grupo' }.to_json
   else
     status 201
     "Gasto creado id: #{gasto.id}"
