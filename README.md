@@ -14,6 +14,7 @@ TOKIO: REST API
 - URL de API en ambiente de *producción*: https://restapi-prod-tokio-nicopaez.cloud.okteto.net/
 - Nombre del bot en ambiente de *test*: **tokio-test-bot**
 - Nombre del bot en ambiente de *producción*: **tokio-prod-bot**
+- Status page de monitoreo de API en test y produccion: https://stats.uptimerobot.com/v6pLOCOjzG
 
 Este proyecto está basado en:
 
