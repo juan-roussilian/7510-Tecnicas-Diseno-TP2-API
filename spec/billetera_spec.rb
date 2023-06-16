@@ -2,19 +2,23 @@ require 'spec_helper'
 require './dominio/billetera'
 
 def crear_billetera_con_saldo(saldo)
-  gestor = Billetera.new(nil)
+  gestor = Billetera.new(crear_propietario)
   gestor.cargar_saldo(saldo)
   gestor
+end
+
+def crear_propietario
+  MockUsuarioSinBilletera.new
 end
 
 describe Billetera do
   describe 'cargar saldo' do
     it 'nuevo gestor tiene saldo 0' do
-      gestor = described_class.new(nil)
+      gestor = described_class.new(crear_propietario)
       expect(gestor.saldo).to eq 0
     end
     it 'dado un saldo 0 quiero cargar 500 obtengo 500' do
-      gestor = described_class.new(nil)
+      gestor = described_class.new(crear_propietario)
       gestor.cargar_saldo(500)
       expect(gestor.saldo).to eq 500
     end
@@ -80,5 +84,11 @@ describe Billetera do
         expect(false).to eq true
       end
     end
+  end
+
+  it 'no se puede crear billetera sin propietario' do
+    expect do
+      described_class.new(nil)
+    end.to raise_error(SinPropietario)
   end
 end

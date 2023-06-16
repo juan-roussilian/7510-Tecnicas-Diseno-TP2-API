@@ -2,6 +2,8 @@ class Billetera
   attr_reader :saldo
 
   def initialize(propietario)
+    raise SinPropietario if propietario.nil?
+
     @propietario = propietario
     @saldo = 0
   end
@@ -24,8 +26,7 @@ class Billetera
   private
 
   def carga_posible(cantidad)
-    nombre = @propietario.nil? ? 'test' : @propietario.nombre
-    raise CargaNegativa.new(nombre, cantidad) unless cantidad.positive? || cantidad.zero?
+    raise CargaNegativa.new(@propietario.nombre, cantidad) unless cantidad.positive? || cantidad.zero?
   end
 
   def actualizar_saldo
@@ -33,8 +34,7 @@ class Billetera
   end
 
   def transferencia_posible(cantidad)
-    nombre = @propietario.nil? ? 'test' : @propietario.nombre
-    raise SaldoInsuficiente.new(self.class, nombre) unless cantidad <= @saldo && cantidad.positive?
+    raise SaldoInsuficiente.new(self.class, @propietario.nombre) unless cantidad <= @saldo && cantidad.positive?
   end
 end
 
@@ -51,5 +51,11 @@ class CargaNegativa < StandardError
     @nombre = nombre
     @carga = carga
     super("#{@nombre} intento cargar #{@carga} negativos")
+  end
+end
+
+class SinPropietario < StandardError
+  def initialize
+    super('Creacion de billetera sin propietario')
   end
 end

@@ -11,3 +11,13 @@ class MockUsuario
     @saldo.saldo
   end
 end
+
+class MockUsuarioSinBilletera
+  def nombre
+    'test'
+  end
+
+  def id
+    nil
+  end
+end
