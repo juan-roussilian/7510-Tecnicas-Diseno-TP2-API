@@ -1,5 +1,5 @@
 class MovimientoCarga
-  attr_reader :monto
+  attr_reader :usuario, :monto
 
   def initialize(usuario, monto)
     @usuario = usuario
