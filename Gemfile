@@ -12,6 +12,8 @@ gem 'semantic_logger'
 gem 'sequel'
 gem 'sinatra-contrib'
 
+gem 'net-smtp', '~> 0.2.1'
+
 group :development, :test do
   gem 'byebug'
   gem 'cucumber'
