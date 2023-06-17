@@ -32,4 +32,25 @@ describe GastoEquitativo do
       expect(gasto.deuda_por_usuario).to eq 250
     end
   end
+
+  it 'gasto equitativo debe ser del tipo equitativo' do
+    repositorio_usuarios = MockRepositorioUsuarios.new
+    grupo = crear_grupo_con_usuarios('casa', 2, repositorio_usuarios)
+    creador = repositorio_usuarios.find_by_telegram_username('user1')
+    gasto = described_class.new('supermercado', 500, grupo, creador)
+    expect(gasto.tipo).to eq 'equitativo'
+  end
+
+  describe 'gasto por usuario' do
+    it 'se crea un gasto y todos los usuarios estan pendientes en sus pagos' do
+      repositorio_usuarios = MockRepositorioUsuarios.new
+      grupo = crear_grupo_con_usuarios('casa', 4, repositorio_usuarios)
+      creador = repositorio_usuarios.find_by_telegram_username('user3')
+      gasto = described_class.new('supermercado', 500, grupo, creador)
+      usuario1 = { nombre: 'usuario1', estado: 'Pendiente' }
+      estado = gasto.estado_de_usuarios
+      expect(estado[0]).to eq usuario1
+      expect(estado.size).to eq 4
+    end
+  end
 end

@@ -13,16 +13,16 @@ class EMail
   ASUNTO = 'Movimiento realizado'.freeze
 
   def enviar_correo(mensaje_base, destinatario = DESTINATARIO_EMAIL)
-    mensaje = procesado_de_mensaje(mensaje_base)
+    mensaje = procesado_de_mensaje(mensaje_base, destinatario)
     enviar_email(mensaje, destinatario)
   end
 
   private
 
-  def procesado_de_mensaje(mensaje_base)
+  def procesado_de_mensaje(mensaje_base, destinatario)
     hoy = Date.today # pasar a RFC 2822
     ["From: Private Person <#{REMITENTE_EMAIL}>",
-     'To: A Test User <to@example.com>',
+     "To: A User <#{destinatario}>",
      "Date: #{hoy}",
      "Subject: #{ASUNTO}",
      '',

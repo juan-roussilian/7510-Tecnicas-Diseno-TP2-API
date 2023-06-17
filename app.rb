@@ -152,3 +152,31 @@ post '/gasto' do
     { id: gasto.id, nombre_gasto: gasto.nombre }.to_json
   end
 end
+
+get '/gasto' do
+  parametros_gasto = JSON.parse(@body)
+  id_usuario = parametros_gasto['usuario']
+  id_gasto = parametros_gasto['gasto']
+  begin
+    gasto = RepositorioGastos.new.find(id_gasto)
+    # nombre_usuario = RepositorioUsuarios.new.find_by_telegram_id(id_usuario).nombre
+    # estado = gasto.estado_de_usuarios
+  rescue GastoNoEncontrado
+    status 400
+    { error: 'no se ha encontrado el gasto' }.to_json
+  rescue ObjectNotFound
+    status 400
+    { error: 'debe registrarse primero' }.to_json
+  else
+    status 200
+    {
+      id: id_gasto,
+      nombre: gasto.nombre,
+      tipo: gasto.tipo,
+      saldo: gasto.monto,
+      grupo: gasto.grupo,
+      estado: gasto.usuario_pago(id_usuario),
+      usuarios:
+    }.to_json
+  end
+end
