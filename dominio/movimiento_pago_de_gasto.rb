@@ -1,5 +1,5 @@
 class MovimientoPagoDeGasto
-  attr_reader :gasto
+  attr_reader :usuario, :monto, :gasto, :usuario_pagador
 
   def initialize(usuario, monto, gasto, usuario_pagador)
     @usuario = usuario
