@@ -13,6 +13,7 @@ gem 'sequel'
 gem 'sinatra-contrib'
 
 gem 'net-smtp', '~> 0.2.1'
+gem 'pony', '~> 1.11'
 
 group :development, :test do
   gem 'byebug'

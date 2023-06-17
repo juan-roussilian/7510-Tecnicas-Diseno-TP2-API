@@ -30,6 +30,7 @@ GEM
     cucumber-messages (18.0.0)
     cucumber-tag-expressions (4.1.0)
     daemons (1.4.1)
+    date (3.3.3)
     debug (1.8.0)
       irb (>= 1.5.0)
       reline (>= 0.3.1)
@@ -46,13 +47,24 @@ GEM
     irb (1.6.4)
       reline (>= 0.3.0)
     json (2.6.3)
+    mail (2.8.1)
+      mini_mime (>= 0.1.1)
+      net-imap
+      net-pop
+      net-smtp
     mime-types (3.4.1)
       mime-types-data (~> 3.2015)
     mime-types-data (3.2023.0218.1)
+    mini_mime (1.1.2)
     multi_json (1.15.0)
     multi_test (1.1.0)
     mustermann (3.0.0)
       ruby2_keywords (~> 0.0.1)
+    net-imap (0.3.6)
+      date
+      net-protocol
+    net-pop (0.1.2)
+      net-protocol
     net-protocol (0.2.1)
       timeout
     net-smtp (0.2.2)
@@ -63,6 +75,8 @@ GEM
     parser (3.2.2.1)
       ast (~> 2.4.1)
     pg (1.5.3)
+    pony (1.13.1)
+      mail (>= 2.0)
     rack (2.2.7)
     rack-protection (3.0.6)
       rack
@@ -152,6 +166,7 @@ DEPENDENCIES
   faraday
   net-smtp (~> 0.2.1)
   pg
+  pony (~> 1.11)
   rack-test
   rake
   rspec

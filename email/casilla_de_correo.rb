@@ -1,5 +1,6 @@
 require 'rubygems'
 require 'net/smtp'
+require 'pony'
 
 class EMail
   REMITENTE_EMAIL = 'from@example.com'.freeze
@@ -24,22 +25,37 @@ class EMail
     ["From: Private Person <#{REMITENTE_EMAIL}>",
      "To: A User <#{destinatario}>",
      "Date: #{hoy}",
-     "Subject: #{ASUNTO}",
+     # "Subject: #{ASUNTO}",
      '',
      mensaje_base].join("\r\n")
   end
 
   def enviar_email(mensaje, destinatario)
+    Pony.options = { from: REMITENTE_EMAIL, via: :smtp, via_options: { host: HOST } }
+    Pony.mail({
+                to: destinatario,
+                subject: ASUNTO,
+                body: mensaje,
+                via: :smtp,
+                via_options: {
+                  address: HOST,
+                  port: PORT,
+                  user_name: USERNAME,
+                  password: PASSWORD,
+                  authentication: AUTH, # :plain, :login, :cram_md5, no auth by default
+                  domain: 'localhost.localdomain' # the HELO domain provided by the client to the server
+                }
+              })
     # todavia sigue con los datos de test refactor
-    Net::SMTP.start(HOST,
-                    PORT,
-                    HOST,
-                    USERNAME,
-                    PASSWORD,
-                    AUTH) do |smtp|
-      smtp.send_message mensaje,
-                        REMITENTE_EMAIL,
-                        destinatario
-    end
+    # Net::SMTP.start(HOST,
+    #                 PORT,
+    #                 HOST,
+    #                 USERNAME,
+    #                 PASSWORD,
+    #                 AUTH) do |smtp|
+    #   smtp.send_message mensaje,
+    #                     REMITENTE_EMAIL,
+    #                     destinatario
+    # end
   end
 end
