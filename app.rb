@@ -155,12 +155,19 @@ end
 
 get '/gasto' do
   parametros_gasto = JSON.parse(@body)
-  id_usuario = parametros_gasto['usuario']
-  id_gasto = parametros_gasto['gasto']
   begin
-    gasto = RepositorioGastos.new.find(id_gasto)
-    # nombre_usuario = RepositorioUsuarios.new.find_by_telegram_id(id_usuario).nombre
-    # estado = gasto.estado_de_usuarios
+    gasto = RepositorioGastos.new.find(parametros_gasto['gasto'])
+    nombre_usuario = RepositorioUsuarios.new.find_by_telegram_id(parametros_gasto['usuario']).nombre
+    estado_de_usuarios = gasto.estado_de_usuarios
+    estado_general = []
+    estado_propio = {}
+    estado_de_usuarios.each do |estado|
+      if estado['nombre'] == nombre_usuario
+        estado_propio = estado
+      else
+        estado_general.push(estado)
+      end
+    end
   rescue GastoNoEncontrado
     status 400
     { error: 'no se ha encontrado el gasto' }.to_json
@@ -169,14 +176,7 @@ get '/gasto' do
     { error: 'debe registrarse primero' }.to_json
   else
     status 200
-    {
-      id: id_gasto,
-      nombre: gasto.nombre,
-      tipo: gasto.tipo,
-      saldo: gasto.monto,
-      grupo: gasto.grupo,
-      estado: gasto.usuario_pago(id_usuario),
-      usuarios:
-    }.to_json
+    { id: id_gasto, nombre: gasto.nombre, tipo: gasto.tipo, saldo: gasto.monto,
+      grupo: gasto.grupo, estado: estado_propio, usuarios: estado_general }.to_json
   end
 end

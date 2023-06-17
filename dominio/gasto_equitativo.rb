@@ -25,11 +25,13 @@ class GastoEquitativo
   def estado_de_usuarios
     # completar con la US de pagar gasto
     resultado = []
-    @grupo.usuarios.each.each do |usuario|
+    @grupo.usuarios.each do |usuario|
       resultado.push({ nombre: usuario.nombre, estado: usuario_pago(usuario) })
     end
     resultado
   end
+
+  private
 
   def usuario_pago(_usuario)
     # completar con la US de pagar gasto
