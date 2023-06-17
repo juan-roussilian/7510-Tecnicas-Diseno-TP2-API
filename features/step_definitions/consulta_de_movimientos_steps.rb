@@ -9,7 +9,7 @@ Entonces('veo que no tengo movimientos') do
   expect(@movimientos).to eq ''
 end
 
-Dado('tengo un movimiento del tipo {string}') do |string|
+Dado('tengo un movimiento del tipo carga saldo') do
   pending # Write code here that turns the phrase above into concrete actions
 end
 

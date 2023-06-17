@@ -1,8 +1,6 @@
-class MovimientoCarga
-  attr_reader :usuario, :monto
-
-  def initialize(usuario, monto)
-    @usuario = usuario
-    @monto = monto
+require_relative './movimiento'
+class MovimientoCarga < Movimiento
+  def initialize(usuario, monto, id: nil)
+    super
   end
 end
