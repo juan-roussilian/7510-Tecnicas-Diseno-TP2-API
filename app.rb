@@ -154,29 +154,26 @@ post '/gasto' do
 end
 
 get '/gasto' do
-  parametros_gasto = JSON.parse(@body)
-  begin
-    gasto = RepositorioGastos.new.find(parametros_gasto['gasto'])
-    nombre_usuario = RepositorioUsuarios.new.find_by_telegram_id(parametros_gasto['usuario']).nombre
-    estado_de_usuarios = gasto.estado_de_usuarios
-    estado_general = []
-    estado_propio = {}
-    estado_de_usuarios.each do |estado|
-      if estado['nombre'] == nombre_usuario
-        estado_propio = estado
-      else
-        estado_general.push(estado)
-      end
+  gasto = RepositorioGastos.new.find_by_id(params[:gasto])
+  nombre_usuario = RepositorioUsuarios.new.find_by_telegram_username(params[:usuario]).nombre
+  estado_de_usuarios = gasto.estado_de_usuarios
+  estado_general = []
+  estado_propio = ''
+  estado_de_usuarios.each do |estado|
+    if estado[:nombre] == nombre_usuario
+      estado_propio = estado[:estado]
+    else
+      estado_general.push(estado)
     end
-  rescue GastoNoEncontrado
-    status 400
-    { error: 'no se ha encontrado el gasto' }.to_json
-  rescue ObjectNotFound
-    status 400
-    { error: 'debe registrarse primero' }.to_json
-  else
-    status 200
-    { id: id_gasto, nombre: gasto.nombre, tipo: gasto.tipo, saldo: gasto.monto,
-      grupo: gasto.grupo, estado: estado_propio, usuarios: estado_general }.to_json
   end
+rescue GastoNoEncontrado
+  status 400
+  { error: 'no se ha encontrado el gasto' }.to_json
+rescue ObjectNotFound
+  status 400
+  { error: 'debe registrarse primero' }.to_json
+else
+  status 200
+  { id: params[:gasto], nombre: gasto.nombre, tipo: gasto.tipo, saldo: gasto.monto,
+    grupo: gasto.nombre, estado: estado_propio, usuarios: estado_general }.to_json
 end

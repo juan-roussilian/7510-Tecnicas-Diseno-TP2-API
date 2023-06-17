@@ -10,6 +10,13 @@ class RepositorioGastos < AbstractRepository
     load_object dataset.first(found_record)
   end
 
+  def find_by_id(id)
+    found_record = dataset.where(id:).first
+    raise GastoNoEncontrado, id if found_record.nil?
+
+    load_object dataset.first(found_record)
+  end
+
   def find_by_creador(id_creador)
     gastos = []
     dataset.where(id_creador:).each do |gasto|
