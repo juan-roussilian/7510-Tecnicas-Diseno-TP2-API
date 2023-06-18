@@ -42,6 +42,7 @@ class RepositorioUsuarios < AbstractRepository
     grupos_usuario = DB[:grupos_usuarios].where(usuario_id: usuario.id)
     grupos_usuario.delete
     RepositorioGastos.new.find_by_creador(usuario.id).each(&:delete)
+    RepositorioMovimientos.new.find_by_usuario_principal(usuario.id).each(&:delete)
     super
   end
   alias delete destroy
@@ -50,6 +51,7 @@ class RepositorioUsuarios < AbstractRepository
     grupos_usuarios_dataset = DB[:grupos_usuarios]
     grupos_usuarios_dataset.delete
     RepositorioGastos.new.delete_all
+    RepositorioMovimientos.new.delete_all
     super
   end
 
