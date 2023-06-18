@@ -9,4 +9,12 @@ class MovimientoPagoDeGasto < Movimiento
     @usuario_pagador = usuario_pagador
     super(usuario, monto, id:)
   end
+
+  def obtener_changeset
+    changes = super
+    changes[:tipo] = 'pago gasto'
+    changes[:id_usuario_secundario] = @usuario_pagador.id
+    changes[:id_gasto] = @gasto.id
+    changes
+  end
 end

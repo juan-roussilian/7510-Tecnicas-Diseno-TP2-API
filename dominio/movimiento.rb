@@ -7,4 +7,11 @@ class Movimiento
     @monto = monto
     @id = id
   end
+
+  def obtener_changeset
+    {
+      id_usuario_principal: @usuario.id,
+      monto: @monto
+    }
+  end
 end

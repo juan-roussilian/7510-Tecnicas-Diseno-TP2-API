@@ -33,6 +33,17 @@ class RepositorioGastos < AbstractRepository
     gastos
   end
 
+  def destroy(gasto)
+    RepositorioMovimientos.new.find_by_gasto(gasto.id).each(&:delete)
+    super
+  end
+  alias delete destroy
+
+  def delete_all
+    RepositorioMovimientos.new.find_by_tipo('pago gasto').each(&:delete)
+    super
+  end
+
   protected
 
   def load_object(a_hash)
