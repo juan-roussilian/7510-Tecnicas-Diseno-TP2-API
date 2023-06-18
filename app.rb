@@ -177,3 +177,20 @@ else
   { id: params[:gasto], nombre: gasto.nombre, tipo: gasto.tipo, saldo: gasto.monto,
     grupo: gasto.nombre, estado: estado_propio, usuarios: estado_general }.to_json
 end
+
+get '/movimientos' do
+  usuario = RepositorioUsuarios.new.find_by_telegram_id(params[:usuario])
+  movimientos = RepositorioMovimientos.new.find_by_usuario_principal(usuario.id)
+  movimientos_salida = []
+  movimientos.each do |mov|
+    atributos = mov.atributos_serializables
+    atributos[:id] = mov.id
+    movimientos_salida << atributos
+  end
+rescue ObjectNotFound
+  status 400
+  { error: 'Usuario no registrado' }.to_json
+else
+  status 200
+  movimientos_salida.to_json
+end

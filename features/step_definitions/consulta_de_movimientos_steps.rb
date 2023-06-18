@@ -21,7 +21,8 @@ Dado('no tengo movimientos') do
 end
 
 Cuando('quiero consultar mis movimientos') do
-  @movimientos = JSON.parse(Faraday.get(get_url_for('/movimientos'),{ usuario: @respuesta['telegram_id'] } ).body)
+  params = {usuario: @usuario.telegram_id}  
+  @movimientos = JSON.parse(Faraday.get(get_url_for('/movimientos'), params).body)
 end
 
 Entonces('veo que no tengo movimientos') do
@@ -53,5 +54,5 @@ Entonces('veo que tengo un movimiento de tipo {string}') do |tipo_mov|
       encontrado = true 
     end
   end
-  expect(encontrado).to be_true
+  expect(encontrado).to be true
 end

@@ -8,10 +8,11 @@ class RepositorioMovimientos < AbstractRepository
   self.model_class = 'Movimiento'
 
   def find_by_usuario_principal(id_usuario_principal)
-    movimiento_buscado = DB[:movimientos].where(id_usuario_principal:).first
-    raise ObjectNotFound.new('movimiento de usuario principal', id_usuario_principal) if movimiento_buscado.nil?
-
-    load_object dataset.first(movimiento_buscado)
+    movimientos = []
+    dataset.where(id_usuario_principal:).each do |movimiento|
+      movimientos << load_object(movimiento)
+    end
+    movimientos
   end
 
   def find_by_usuario_secundario(id_usuario_secundario)

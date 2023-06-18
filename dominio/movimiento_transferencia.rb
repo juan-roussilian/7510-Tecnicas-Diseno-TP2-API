@@ -14,6 +14,7 @@ class MovimientoTransferencia < Movimiento
     atributos = super
     atributos[:tipo] = TIPO_DE_MOV_TRANSFERENCIA
     atributos[:id_usuario_secundario] = @destinatario.id
+    atributos[:id_gasto] = nil
     atributos
   end
 end
