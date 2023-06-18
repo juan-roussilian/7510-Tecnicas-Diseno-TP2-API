@@ -12,7 +12,7 @@ class GastoEquitativo
     @grupo = grupo
     @creador = creador
     @id = id
-    @cobro = {}
+    @cobro = iniciacion_de_cobro
   end
 
   def deuda_por_usuario
@@ -35,13 +35,49 @@ class GastoEquitativo
   def pagar(usuario, cantidad)
     return unless @grupo.es_miembro(usuario) # el usuario no pertenece al grupo y no puede pagar
 
-    usuario.pagar(cantidad)
+    return if usuario_pago(usuario) == ESTADO_PAGADO # el usuario ya pago lo que debia
+
+    if @cobro[usuario.nombre] > 0.0
+      pagar_resto(usuario, cantidad)
+    elsif cantidad < deuda_por_usuario
+      pagar_fraccion(usuario, cantidad)
+    else
+      pagar_todo(usuario)
+    end
   end
 
   private
 
-  def usuario_pago(_usuario)
-    # completar con la US de pagar gasto
+  def pagar_todo(usuario)
+    usuario.pagar(deuda_por_usuario)
+    @cobro[usuario.nombre] = deuda_por_usuario
+  end
+
+  def pagar_fraccion(usuario, cantidad)
+    usuario.pagar(cantidad)
+    @cobro[usuario.nombre] += cantidad
+  end
+
+  def pagar_resto(usuario, cantidad)
+    if @cobro[usuario.nombre] + cantidad < deuda_por_usuario
+      pagar_fraccion(usuario, cantidad)
+    else
+      usuario.pagar(deuda_por_usuario - @cobro[usuario.nombre])
+      @cobro[usuario.nombre] = deuda_por_usuario
+    end
+  end
+
+  def iniciacion_de_cobro
+    resultado = {}
+    @grupo.usuarios.each do |usuario|
+      resultado[usuario.nombre] = 0.0
+    end
+    resultado
+  end
+
+  def usuario_pago(usuario)
+    return ESTADO_PAGADO if @cobro[usuario.nombre] == deuda_por_usuario
+
     ESTADO_FALTA_PAGAR
   end
 end
