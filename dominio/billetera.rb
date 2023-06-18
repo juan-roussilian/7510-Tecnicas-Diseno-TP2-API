@@ -1,18 +1,23 @@
 class Billetera
   attr_reader :saldo
 
-  def initialize(propietario)
+  def initialize(propietario, repositorio = nil)
     raise SinPropietario if propietario.nil?
 
     @propietario = propietario
     @saldo = 0
+    @repositorio = repositorio
+  end
+
+  def repositorio(repositorio)
+    @repositorio = repositorio
   end
 
   def cargar_saldo(cantidad)
     carga_posible(cantidad)
 
     @saldo += cantidad
-    actualizar_saldo
+    actualizar_saldo unless @repositorio.nil?
   end
 
   def transferir(otro_usuario, cantidad)
@@ -20,7 +25,7 @@ class Billetera
 
     @saldo -= cantidad
     otro_usuario.cargar_saldo(cantidad)
-    actualizar_saldo
+    actualizar_saldo unless @repositorio.nil?
   end
 
   private
@@ -30,7 +35,7 @@ class Billetera
   end
 
   def actualizar_saldo
-    RepositorioUsuarios.new.save(@propietario) unless @propietario.nil? || @propietario.id.nil?
+    @repositorio.save(@propietario) unless @propietario.nil? || @propietario.id.nil?
   end
 
   def transferencia_posible(cantidad)

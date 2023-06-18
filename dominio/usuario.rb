@@ -21,6 +21,10 @@ class Usuario
     @saldo = Billetera.new(self)
   end
 
+  def repositorio(repositorio)
+    @saldo.repositorio(repositorio)
+  end
+
   def cargar_saldo(cantidad)
     @saldo.cargar_saldo(cantidad)
   end
