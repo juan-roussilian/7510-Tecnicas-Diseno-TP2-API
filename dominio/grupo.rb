@@ -12,6 +12,10 @@ class Grupo
     @usuarios = usuarios
   end
 
+  def es_miembro(usuario)
+    @usuarios.include? usuario
+  end
+
   private
 
   def miembros_suficientes(nombre, usuarios)

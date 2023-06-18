@@ -43,4 +43,20 @@ describe Grupo do
       crear_grupo_con_usuarios('grupoTest', 2, repositorio_usuarios, repositorio_grupos)
     end.to raise_error(NombreDeGrupoRepetido)
   end
+
+  it 'el usuario esta en el grupo' do
+    repositorio_grupos = RepositorioGrupos.new
+    repositorio_grupos.delete_all
+    repositorio_usuarios = MockRepositorioUsuarios.new
+    cantidad = 3
+    repositorio_usuarios.load_example_users(cantidad)
+    usuarios = []
+    cantidad.times do |i|
+      usuarios << repositorio_usuarios.find_by_telegram_username("user#{i + 1}")
+    end
+    grupo = Grupo.new('grupoTest', usuarios, repositorio_grupos)
+    repositorio_grupos.save(grupo)
+    expect(grupo.es_miembro(usuarios[0])).to eq true
+    expect(grupo.es_miembro(Usuario.new('asd', 'asd@asd.asd', 521, 'asd'))).to eq false
+  end
 end

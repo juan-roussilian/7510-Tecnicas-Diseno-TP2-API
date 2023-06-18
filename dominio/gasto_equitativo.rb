@@ -12,6 +12,7 @@ class GastoEquitativo
     @grupo = grupo
     @creador = creador
     @id = id
+    # @cobro = cobro_por_usuario
   end
 
   def deuda_por_usuario
@@ -31,10 +32,20 @@ class GastoEquitativo
     resultado
   end
 
+  def pagar(usuario, cantidad); end
+
   private
 
   def usuario_pago(_usuario)
     # completar con la US de pagar gasto
     ESTADO_FALTA_PAGAR
+  end
+
+  def cobro_por_usuario
+    cobro = {}
+    @usuarios.each do |usuario|
+      cobro[usuario.telegram_username] = 0.0
+    end
+    cobro
   end
 end
