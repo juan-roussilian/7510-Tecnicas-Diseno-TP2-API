@@ -5,9 +5,9 @@ class MovimientoCarga < Movimiento
     super
   end
 
-  def obtener_changeset
-    changes = super
-    changes[:tipo] = 'carga saldo'
-    changes
+  def atributos_serializables
+    atributos = super
+    atributos[:tipo] = 'carga saldo'
+    atributos
   end
 end

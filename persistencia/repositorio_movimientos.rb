@@ -1,5 +1,10 @@
 require_relative './abstract_repository'
 class RepositorioMovimientos < AbstractRepository
+
+  TIPO_DE_MOV_CARGA = 'carga'.freeze
+  TIPO_DE_MOV_TRANSFERENCIA = 'transferencia'.freeze
+  TIPO_DE_MOV_PAGO_GASTO = 'pago'.freeze
+
   self.table_name = :movimientos
   self.model_class = 'Movimiento'
 
@@ -37,12 +42,12 @@ class RepositorioMovimientos < AbstractRepository
 
   def cargar_movimiento_segun_tipo(a_hash, id, usuario, monto)
     case a_hash[:tipo]
-    when 'transferencia'
+    when TIPO_DE_MOV_TRANSFERENCIA
       usuario_secundario = RepositorioUsuarios.new.find(a_hash[:id_usuario_secundario])
       MovimientoTransferencia.new(usuario, monto, usuario_secundario, id:)
-    when 'carga saldo'
+    when TIPO_DE_MOV_CARGA
       MovimientoCarga.new(usuario, monto, id:)
-    when 'pago gasto'
+    when TIPO_DE_MOV_PAGO_GASTO
       usuario_pagador = RepositorioUsuarios.new.find(a_hash[:id_usuario_secundario])
       gasto = RepositorioGastos.new.find(a_hash[:id_gasto])
       MovimientoPagoDeGasto.new(usuario, monto, gasto, usuario_pagador, id:)
@@ -59,7 +64,7 @@ class RepositorioMovimientos < AbstractRepository
   end
 
   def changeset(movimiento)
-    movimiento.obtener_changeset
+    movimiento.atributos_serializables
   end
 end
 

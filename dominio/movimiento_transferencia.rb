@@ -8,10 +8,10 @@ class MovimientoTransferencia < Movimiento
     super(usuario, monto, id:)
   end
 
-  def obtener_changeset
-    changes = super
-    changes[:tipo] = 'transferencia'
-    changes[:id_usuario_secundario] = @destinatario.id
-    changes
+  def atributos_serializables
+    atributos = super
+    atributos[:tipo] = 'transferencia'
+    atributos[:id_usuario_secundario] = @destinatario.id
+    atributos
   end
 end

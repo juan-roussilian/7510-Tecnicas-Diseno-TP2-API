@@ -10,11 +10,11 @@ class MovimientoPagoDeGasto < Movimiento
     super(usuario, monto, id:)
   end
 
-  def obtener_changeset
-    changes = super
-    changes[:tipo] = 'pago gasto'
-    changes[:id_usuario_secundario] = @usuario_pagador.id
-    changes[:id_gasto] = @gasto.id
-    changes
+  def atributos_serializables
+    atributos = super
+    atributos[:tipo] = 'pago gasto'
+    atributos[:id_usuario_secundario] = @usuario_pagador.id
+    atributos[:id_gasto] = @gasto.id
+    atributos
   end
 end

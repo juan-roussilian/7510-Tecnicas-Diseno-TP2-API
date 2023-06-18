@@ -8,7 +8,7 @@ class Movimiento
     @id = id
   end
 
-  def obtener_changeset
+  def atributos_serializables
     {
       id_usuario_principal: @usuario.id,
       monto: @monto
