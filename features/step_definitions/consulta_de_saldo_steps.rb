@@ -1,6 +1,6 @@
 def usuario_de_prueba(saldo)
   usuario = Usuario.new('Juan', 'juan@test.com', "1", 'juan')
-  usuario.cargar_saldo(saldo)
+  usuario.cargar_saldo(saldo, RepositorioUsuarios.new, RepositorioMovimientos.new)
   usuario
 end
 
@@ -29,6 +29,7 @@ Entonces('veo en saldo "{int}"') do |saldo_esperado|
 end
 
 Dado('cargo saldo "{int}"') do |saldo|
-  @usuario = RepositorioUsuarios.new.find(@respuesta['id'])
-  @usuario.cargar_saldo(saldo)
+  repo_usuarios = RepositorioUsuarios.new
+  @usuario = repo_usuarios.find(@respuesta['id'])
+  @usuario.cargar_saldo(saldo,repo_usuarios)
 end

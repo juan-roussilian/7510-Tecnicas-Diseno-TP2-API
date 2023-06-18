@@ -1,6 +1,6 @@
 def usuario_de_prueba_telegram_id(nombre, telegram_id)
   usuario = Usuario.new(nombre, "#{nombre}n@test.com", telegram_id, nombre)
-  usuario.cargar_saldo(0)
+  usuario.cargar_saldo(0, RepositorioUsuarios.new)
   usuario
 end
 

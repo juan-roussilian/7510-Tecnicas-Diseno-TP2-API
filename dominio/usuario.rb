@@ -21,20 +21,16 @@ class Usuario
     @saldo = Billetera.new(self)
   end
 
-  def repositorio(repositorio)
-    @saldo.repositorio(repositorio)
-  end
-
-  def cargar_saldo(cantidad)
-    @saldo.cargar_saldo(cantidad)
+  def cargar_saldo(cantidad, repositorio_usuarios, repositorio_movimientos = nil)
+    @saldo.cargar_saldo(cantidad, repositorio_usuarios, repositorio_movimientos)
   end
 
   def saldo
     @saldo.saldo
   end
 
-  def transferir(otro_usuario, cantidad, casilla_de_email = nil)
-    @saldo.transferir(otro_usuario, cantidad)
+  def transferir(otro_usuario, cantidad, repositorio_usuarios, repositorio_movimientos, casilla_de_email = nil)
+    @saldo.transferir(otro_usuario, cantidad, repositorio_usuarios, repositorio_movimientos)
     casilla_de_email&.enviar_correo(mensaje_de_transferencia(otro_usuario.nombre, cantidad),
                                     @email)
   end

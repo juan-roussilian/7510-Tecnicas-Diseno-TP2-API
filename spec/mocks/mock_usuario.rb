@@ -3,8 +3,8 @@ class MockUsuario
     @saldo = crear_billetera_con_saldo(saldo)
   end
 
-  def cargar_saldo(monto)
-    @saldo.cargar_saldo(monto)
+  def cargar_saldo(monto, repositorio_usuarios = nil, repositorio_movimientos = nil)
+    @saldo.cargar_saldo(monto, repositorio_usuarios, repositorio_movimientos)
   end
 
   def saldo

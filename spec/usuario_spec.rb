@@ -9,21 +9,22 @@ describe Usuario do
 
     it 'usuario nuevo carga 500 saldo 500' do
       usuario = described_class.new('nuevo usuario', 'test@test.com', 'unId', 'username')
-      usuario.cargar_saldo(500)
+      usuario.cargar_saldo(500, MockRepositorioUsuarios.new)
       expect(usuario.saldo).to eq 500
     end
 
     it 'usuario con 10 carga 500 saldo 510' do
       usuario = described_class.new('nuevo usuario', 'test@test.com', 'unId', 'username')
-      usuario.cargar_saldo(10)
-      usuario.cargar_saldo(500)
+      repo_usuarios_mock = MockRepositorioUsuarios.new
+      usuario.cargar_saldo(10, repo_usuarios_mock)
+      usuario.cargar_saldo(500, repo_usuarios_mock)
       expect(usuario.saldo).to eq 510
     end
 
     it 'usuario no puede cargar saldo negativo' do
       usuario = described_class.new('nuevo usuario', 'test@test.com', 'unId', 'username')
       begin
-        usuario.cargar_saldo(-10)
+        usuario.cargar_saldo(-10, MockRepositorioUsuarios.new)
       rescue CargaNegativa
         expect(usuario.saldo).to eq 0
       else
@@ -33,9 +34,9 @@ describe Usuario do
 
     it 'usuario (con carga) no puede cargar saldo negativo' do
       usuario = described_class.new('nuevo usuario', 'test@test.com', 'unId', 'username')
-      usuario.cargar_saldo(500)
+      usuario.cargar_saldo(500, MockRepositorioUsuarios.new)
       begin
-        usuario.cargar_saldo(-10)
+        usuario.cargar_saldo(-10, MockRepositorioUsuarios.new)
       rescue CargaNegativa
         expect(usuario.saldo).to eq 500
       else

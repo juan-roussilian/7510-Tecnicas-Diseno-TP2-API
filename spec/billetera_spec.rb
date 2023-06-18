@@ -3,7 +3,7 @@ require './dominio/billetera'
 
 def crear_billetera_con_saldo(saldo)
   gestor = Billetera.new(crear_propietario)
-  gestor.cargar_saldo(saldo)
+  gestor.cargar_saldo(saldo, MockRepositorioUsuarios.new)
   gestor
 end
 
@@ -19,18 +19,18 @@ describe Billetera do
     end
     it 'dado un saldo 0 quiero cargar 500 obtengo 500' do
       gestor = described_class.new(crear_propietario)
-      gestor.cargar_saldo(500)
+      gestor.cargar_saldo(500, MockRepositorioUsuarios.new)
       expect(gestor.saldo).to eq 500
     end
     it 'dado un saldo 10 quiero cargar 500 obtengo 510' do
       gestor = crear_billetera_con_saldo(10)
-      gestor.cargar_saldo(500)
+      gestor.cargar_saldo(500, MockRepositorioUsuarios.new)
       expect(gestor.saldo).to eq 510
     end
     it 'dado un saldo 10 quiero cargar -10 obtengo 10' do
       gestor = crear_billetera_con_saldo(10)
       begin
-        gestor.cargar_saldo(-10)
+        gestor.cargar_saldo(-10, MockRepositorioUsuarios.new)
       rescue CargaNegativa
         expect(gestor.saldo).to eq 10
       else
@@ -39,13 +39,13 @@ describe Billetera do
     end
     it 'dado un saldo 10 quiero cargar 0 obtengo 10' do
       gestor = crear_billetera_con_saldo(10)
-      gestor.cargar_saldo(0)
+      gestor.cargar_saldo(0, MockRepositorioUsuarios.new)
       expect(gestor.saldo).to eq 10
     end
     it 'dado un saldo 50 y quiero cargar -10 y emite excepcion' do
       gestor = crear_billetera_con_saldo(50)
       begin
-        gestor.cargar_saldo(-10)
+        gestor.cargar_saldo(-10, MockRepositorioUsuarios.new)
       rescue CargaNegativa
         expect(gestor.saldo).to eq 50
       else
@@ -58,26 +58,26 @@ describe Billetera do
     it 'dado un saldo 50 quiero transferir 10 obtengo 40' do
       billetera = crear_billetera_con_saldo(50)
       usuario = MockUsuario.new(0)
-      billetera.transferir(usuario, 10)
+      billetera.transferir(usuario, 10, MockRepositorioUsuarios.new)
       expect(billetera.saldo).to eq 40
     end
     it 'dado un saldo 50 quiero transferir 10 y el receptor obtiene 10' do
       billetera = crear_billetera_con_saldo(50)
       usuario = MockUsuario.new(0)
-      billetera.transferir(usuario, 10)
+      billetera.transferir(usuario, 10, MockRepositorioUsuarios.new)
       expect(usuario.saldo).to eq 10
     end
     it 'dado un saldo 50 y un receptor con saldo 100 quiero transferir 20 y el receptor obtiene 120' do
       billetera = crear_billetera_con_saldo(50)
       usuario = MockUsuario.new(100)
-      billetera.transferir(usuario, 20)
+      billetera.transferir(usuario, 20, MockRepositorioUsuarios.new)
       expect(usuario.saldo).to eq 120
     end
     it 'dado un saldo 50 y un receptor con saldo 100 quiero transferir 51 y emite excepcion' do
       billetera = crear_billetera_con_saldo(50)
       usuario = MockUsuario.new(100)
       begin
-        billetera.transferir(usuario, 51)
+        billetera.transferir(usuario, 51, MockRepositorioUsuarios.new)
       rescue SaldoInsuficiente
         expect(usuario.saldo).to eq 100
       else
@@ -95,18 +95,18 @@ describe Billetera do
   describe 'pagar' do
     it 'usuario tiene 50 paga 50 se queda con 0' do
       billetera = crear_billetera_con_saldo(50)
-      billetera.pagar(50)
+      billetera.pagar(50, MockRepositorioUsuarios.new)
       expect(billetera.saldo).to eq 0
     end
     it 'usuario tiene 150 paga 50 se queda con 100' do
       billetera = crear_billetera_con_saldo(150)
-      billetera.pagar(50)
+      billetera.pagar(50, MockRepositorioUsuarios.new)
       expect(billetera.saldo).to eq 100
     end
     it 'usuario tiene 50 paga 150 lanza excepcion' do
       billetera = crear_billetera_con_saldo(50)
       expect do
-        billetera.pagar(150)
+        billetera.pagar(150, MockRepositorioUsuarios.new)
       end.to raise_error(SaldoInsuficiente)
     end
   end

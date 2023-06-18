@@ -62,8 +62,7 @@ class RepositorioUsuarios < AbstractRepository
   def load_object(a_hash)
     usuario = Usuario.new(a_hash[:nombre], a_hash[:email], a_hash[:telegram_id], a_hash[:telegram_username],
                           a_hash[:id])
-    usuario.repositorio(self)
-    usuario.cargar_saldo(a_hash[:saldo])
+    usuario.cargar_saldo(a_hash[:saldo], self, nil)
     usuario
   end
 

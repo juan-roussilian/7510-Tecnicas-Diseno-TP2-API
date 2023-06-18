@@ -4,8 +4,9 @@ Dado('que soy un usuario con saldo "{int}"') do |saldo|
   respuesta = JSON.parse(
     Faraday.post(get_url_for('/usuarios'), request_body, { 'Content-Type' => 'application/json' }).body
   )
-  @usuario = RepositorioUsuarios.new.find(respuesta['id'])
-  @usuario.cargar_saldo(saldo)
+  repo_usuarios = RepositorioUsuarios.new 
+  @usuario = repo_usuarios.find(respuesta['id'])
+  @usuario.cargar_saldo(saldo, repo_usuarios)
 end
 
 Cuando('quiero cargar saldo "{int}"') do |saldo|

@@ -66,8 +66,9 @@ post '/saldo' do
   @body ||= request.body.read
   parametros_usuario = JSON.parse(@body)
   begin
-    usuario = RepositorioUsuarios.new.find_by_telegram_id(parametros_usuario['telegram_id'].to_s)
-    usuario.cargar_saldo(parametros_usuario['saldo'])
+    repo_usuarios = RepositorioUsuarios.new
+    usuario = repo_usuarios.find_by_telegram_id(parametros_usuario['telegram_id'].to_s)
+    usuario.cargar_saldo(parametros_usuario['saldo'], repo_usuarios)
   rescue ObjectNotFound
     status 400
     { error: 'debe registrarse primero' }.to_json
@@ -83,15 +84,16 @@ end
 post '/transferir' do
   @body ||= request.body.read
   parametros_usuario = JSON.parse(@body)
+  repositorio_usuarios = RepositorioUsuarios.new
   begin
-    usuario = RepositorioUsuarios.new.find_by_telegram_id(parametros_usuario['usuario'].to_s)
+    usuario = repositorio_usuarios.find_by_telegram_id(parametros_usuario['usuario'].to_s)
   rescue ObjectNotFound
     status 400
     { error: 'debe registrarse primero' }.to_json
   else
     begin
-      destinatario = RepositorioUsuarios.new.find_by_telegram_username(parametros_usuario['destinatario'])
-      usuario.transferir(destinatario, parametros_usuario['monto'])
+      destinatario = repositorio_usuarios.find_by_telegram_username(parametros_usuario['destinatario'])
+      usuario.transferir(destinatario, parametros_usuario['monto'], repositorio_usuarios, RepositorioMovimientos.new)
     rescue ObjectNotFound
       status 400
       { error: 'destinatario no registrado' }.to_json

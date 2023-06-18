@@ -1,38 +1,41 @@
+require_relative './movimiento_carga'
+require_relative './movimiento_transferencia'
+require_relative './movimiento_pago_de_gasto'
+
 class Billetera
   attr_reader :saldo
 
-  def initialize(propietario, repositorio = nil)
+  def initialize(propietario)
     raise SinPropietario if propietario.nil?
 
     @propietario = propietario
     @saldo = 0
-    @repositorio = repositorio
   end
 
-  def repositorio(repositorio)
-    @repositorio = repositorio
-  end
-
-  def cargar_saldo(cantidad)
+  def cargar_saldo(cantidad, repositorio_usuarios, repositorio_movimientos = nil)
     carga_posible(cantidad)
 
     @saldo += cantidad
-    actualizar_saldo unless @repositorio.nil?
+    actualizar_saldo(repositorio_usuarios)
+    repositorio_movimientos&.save(MovimientoCarga.new(@propietario, cantidad))
   end
 
-  def transferir(otro_usuario, cantidad)
+  def transferir(otro_usuario, cantidad, repositorio_usuarios, repositorio_movimientos = nil)
     transferencia_posible(cantidad)
 
     @saldo -= cantidad
-    otro_usuario.cargar_saldo(cantidad)
-    actualizar_saldo unless @repositorio.nil?
+    otro_usuario.cargar_saldo(cantidad, repositorio_usuarios, repositorio_movimientos)
+    actualizar_saldo(repositorio_usuarios)
+    repositorio_movimientos&.save(MovimientoTransferencia.new(@propietario, cantidad,
+                                                              otro_usuario))
   end
 
-  def pagar(cantidad)
+  def pagar(cantidad, repositorio_usuarios, _repositorio_movimientos = nil)
     transferencia_posible(cantidad)
 
     @saldo -= cantidad
-    actualizar_saldo unless @repositorio.nil?
+    actualizar_saldo(repositorio_usuarios)
+    # repositorio_movimientos.save(MovimientoPagoDeSaldo.new(...))
   end
 
   private
@@ -41,8 +44,8 @@ class Billetera
     raise CargaNegativa.new(@propietario.nombre, cantidad) unless cantidad.positive? || cantidad.zero?
   end
 
-  def actualizar_saldo
-    @repositorio.save(@propietario) unless @propietario.nil? || @propietario.id.nil?
+  def actualizar_saldo(repositorio_usuarios)
+    repositorio_usuarios.save(@propietario) unless @propietario.nil? || @propietario.id.nil?
   end
 
   def transferencia_posible(cantidad)
