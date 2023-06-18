@@ -1,13 +1,15 @@
 require_relative './movimiento'
 
 class MovimientoCarga < Movimiento
+  TIPO_DE_MOV_CARGA = 'carga'.freeze
+
   def initialize(usuario, monto, id: nil)
     super
   end
 
   def atributos_serializables
     atributos = super
-    atributos[:tipo] = 'carga saldo'
+    atributos[:tipo] = TIPO_DE_MOV_CARGA
     atributos
   end
 end

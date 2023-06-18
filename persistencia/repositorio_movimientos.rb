@@ -1,6 +1,5 @@
 require_relative './abstract_repository'
 class RepositorioMovimientos < AbstractRepository
-
   TIPO_DE_MOV_CARGA = 'carga'.freeze
   TIPO_DE_MOV_TRANSFERENCIA = 'transferencia'.freeze
   TIPO_DE_MOV_PAGO_GASTO = 'pago'.freeze

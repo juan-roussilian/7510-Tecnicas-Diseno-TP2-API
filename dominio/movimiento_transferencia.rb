@@ -1,6 +1,8 @@
 require_relative './movimiento'
 
 class MovimientoTransferencia < Movimiento
+  TIPO_DE_MOV_TRANSFERENCIA = 'transferencia'.freeze
+
   attr_reader :usuario, :monto, :destinatario
 
   def initialize(usuario, monto, destinatario, id: nil)
@@ -10,7 +12,7 @@ class MovimientoTransferencia < Movimiento
 
   def atributos_serializables
     atributos = super
-    atributos[:tipo] = 'transferencia'
+    atributos[:tipo] = TIPO_DE_MOV_TRANSFERENCIA
     atributos[:id_usuario_secundario] = @destinatario.id
     atributos
   end
