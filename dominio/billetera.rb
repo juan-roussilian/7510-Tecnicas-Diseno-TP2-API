@@ -28,6 +28,13 @@ class Billetera
     actualizar_saldo unless @repositorio.nil?
   end
 
+  def pagar(cantidad)
+    transferencia_posible(cantidad)
+
+    @saldo -= cantidad
+    actualizar_saldo unless @repositorio.nil?
+  end
+
   private
 
   def carga_posible(cantidad)

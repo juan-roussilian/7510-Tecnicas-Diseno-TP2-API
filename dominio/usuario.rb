@@ -39,6 +39,10 @@ class Usuario
                                     @email)
   end
 
+  def pagar(cantidad)
+    @saldo.pagar(cantidad)
+  end
+
   private
 
   def email_valido(mail)
