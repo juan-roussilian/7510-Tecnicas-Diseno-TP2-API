@@ -1,4 +1,23 @@
+def usuario_auxiliar(nombre, telegram_id)
+  usuario = Usuario.new(nombre, "#{nombre}@mail.com", telegram_id, 'nombre')
+  RepositorioUsuarios.new.save(usuario)
+  usuario
+end
+
+def grupo_auxiliar(usuarios)
+  grupo = Grupo.new('GrupoTest', usuarios)
+  RepositorioGrupos.new.save(grupo)
+  grupo
+end
+
+def gasto_auxiliar(usuario_creador, grupo)
+  gasto = GastoEquitativo.new('gasto', 50, grupo, usuario_creador)
+  RepositorioGastos.new.save(gasto)
+  gasto
+end
+
 Dado('no tengo movimientos') do
+  RepositorioMovimientos.new.delete_all
 end
 
 Cuando('quiero consultar mis movimientos') do
@@ -6,13 +25,33 @@ Cuando('quiero consultar mis movimientos') do
 end
 
 Entonces('veo que no tengo movimientos') do
-  expect(@movimientos).to eq ''
+  expect(@movimientos).to eq []
 end
 
 Dado('tengo un movimiento del tipo carga saldo') do
-  pending # Write code here that turns the phrase above into concrete actions
+  @carga_saldo = MovimientoCarga.new(@usuario, 50)
+  RepositorioMovimientos.new.save(@carga_saldo)
 end
 
-Entonces('veo que tengo los {int} movimientos') do |int|
-  pending # Write code here that turns the phrase above into concrete actions
+Dado('tengo un movimiento del tipo transferencia') do
+  @usuario_secundario = usuario_auxiliar('usuario1', '1')
+  @transferencia = MovimientoTransferencia.new(@usuario, 50, @usuario_secundario)
+  RepositorioMovimientos.new.save(@transferencia)
+end 
+Dado('tengo un movimiento del tipo pago de gasto')do
+  @gasto = gasto_auxiliar(@usuario, grupo_auxiliar([@usuario, @usuario_secundario]))
+  @pago_de_gasto = MovimientoPagoDeGasto.new(@usuario, 50, @gasto, @usuario_secundario)
+  RepositorioMovimientos.new.save(@pago_de_gasto)
+end
+Entonces('veo que tengo un movimiento de tipo {string}') do |tipo_mov| 
+  encontrado = false
+  @movimientos.each do |movimiento|
+    if movimiento['tipo'] == tipo_mov and (
+      movimiento['id'] == @carga_saldo.id or
+      movimiento['id'] == @transferencia.id or
+      movimiento['id'] == @pago_de_gasto.id )
+      encontrado = true 
+    end
+  end
+  expect(encontrado).to be_true
 end
