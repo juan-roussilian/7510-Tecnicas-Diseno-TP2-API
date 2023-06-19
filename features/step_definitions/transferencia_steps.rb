@@ -30,7 +30,7 @@ Entonces('mi saldo pasa a ser {int}') do |saldo_esperado|
   expect(saldo).to eq saldo_esperado
 end
 
-When(/^veo que no se puede transferir$/) do
+Entonces(/^veo que no se puede transferir$/) do
   expect(@transferencia.status).to eq 400
 end
 

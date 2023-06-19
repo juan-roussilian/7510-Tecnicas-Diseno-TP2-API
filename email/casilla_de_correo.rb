@@ -3,59 +3,59 @@ require 'net/smtp'
 require 'pony'
 
 class EMail
-  REMITENTE_EMAIL = 'from@example.com'.freeze
+  REMITENTE_EMAIL = 'tokiomemo2@gmail.com'.freeze
   DESTINATARIO_EMAIL = 'to@example.com'.freeze
-  HOST = 'sandbox.smtp.mailtrap.io'.freeze
-  PORT = 2525 # 25 or 465 or 587 or 2525
-  USERNAME = '27d7476ac2888a'.freeze
-  # PASSWORD
-  AUTH = :PLAIN # PLAIN, LOGIN and CRAM-MD5
+  HOST = 'smtp.gmail.com'.freeze
+  PORT = '587'.freeze # 25 or 465 or 587 or 2525
+  USERNAME = 'tokiomemo2@gmail.com'.freeze
+  PASSWORD = 'lonuhrcabigzvztw'.freeze
+  AUTH = :plain # PLAIN, LOGIN and CRAM-MD5
 
   ASUNTO = 'Movimiento realizado'.freeze
 
-  def enviar_correo(mensaje_base, destinatario = DESTINATARIO_EMAIL)
+  LOCAL_VIA = :file
+  LOCAL_CONFIG = {
+    location: 'testmail/'
+  }.freeze
+  SMTP_VIA = :smtp
+  SMTP_CONFIG = {
+    address: HOST,
+    port: PORT,
+    enable_starttls_auto: true,
+    user_name: USERNAME,
+    password: PASSWORD,
+    authentication: AUTH,
+    domain: 'localhost.localdomain'
+  }.freeze
+
+  def enviar_correo(mensaje_base, destinatario = DESTINATARIO_EMAIL, test: false)
     mensaje = procesado_de_mensaje(mensaje_base, destinatario)
-    enviar_email(mensaje, destinatario)
+    if test
+      enviar_email(mensaje, destinatario, LOCAL_VIA, LOCAL_CONFIG)
+    else
+      enviar_email(mensaje, destinatario, SMTP_VIA, SMTP_CONFIG)
+    end
   end
 
   private
 
   def procesado_de_mensaje(mensaje_base, destinatario)
     hoy = Date.today # pasar a RFC 2822
-    ["From: Private Person <#{REMITENTE_EMAIL}>",
-     "To: A User <#{destinatario}>",
+    ["From: #{REMITENTE_EMAIL}",
+     "To: #{destinatario}",
      "Date: #{hoy}",
-     # "Subject: #{ASUNTO}",
      '',
      mensaje_base].join("\r\n")
   end
 
-  def enviar_email(mensaje, destinatario)
-    Pony.options = { from: REMITENTE_EMAIL, via: :smtp, via_options: { host: HOST } }
+  def enviar_email(mensaje, destinatario, via, config)
     Pony.mail({
+                from: REMITENTE_EMAIL,
                 to: destinatario,
                 subject: ASUNTO,
                 body: mensaje,
-                via: :smtp,
-                via_options: {
-                  address: HOST,
-                  port: PORT,
-                  user_name: USERNAME,
-                  password: PASSWORD,
-                  authentication: AUTH, # :plain, :login, :cram_md5, no auth by default
-                  domain: 'localhost.localdomain' # the HELO domain provided by the client to the server
-                }
+                via:,
+                via_options: config
               })
-    # todavia sigue con los datos de test refactor
-    # Net::SMTP.start(HOST,
-    #                 PORT,
-    #                 HOST,
-    #                 USERNAME,
-    #                 PASSWORD,
-    #                 AUTH) do |smtp|
-    #   smtp.send_message mensaje,
-    #                     REMITENTE_EMAIL,
-    #                     destinatario
-    # end
   end
 end
