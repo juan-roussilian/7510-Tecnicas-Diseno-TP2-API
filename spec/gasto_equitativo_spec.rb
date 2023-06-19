@@ -52,7 +52,7 @@ describe GastoEquitativo do
       expect(estado[0]).to eq usuario1
       expect(estado.size).to eq 4
     end
-    xit 'se crea un gasto y un usuario paga exacto' do
+    it 'se crea un gasto y un usuario paga exacto' do
       repositorio_usuarios = MockRepositorioUsuarios.new
       grupo = crear_grupo_con_usuarios('casa', 4, repositorio_usuarios)
       creador = repositorio_usuarios.find_by_telegram_username('user1')
@@ -60,13 +60,14 @@ describe GastoEquitativo do
       usuario = { nombre: 'usuario1', estado: 'Pagado' }
       saldo = 500 / 4
       creador.cargar_saldo(saldo, repositorio_usuarios)
-      gasto.pagar(creador, saldo)
+      cobrado = gasto.pagar(creador, saldo, repositorio_usuarios)
+      expect(cobrado).to eq saldo
       estado = gasto.estado_de_usuarios
       expect(creador.saldo).to eq 0
       expect(estado[0]).to eq usuario
       expect(estado.size).to eq 4
     end
-    xit 'se crea un gasto y un usuario paga de mas pero solo le cobra lo que debe' do
+    it 'se crea un gasto y un usuario paga de mas pero solo le cobra lo que debe' do
       repositorio_usuarios = MockRepositorioUsuarios.new
       grupo = crear_grupo_con_usuarios('casa', 4, repositorio_usuarios)
       creador = repositorio_usuarios.find_by_telegram_username('user1')
@@ -74,13 +75,14 @@ describe GastoEquitativo do
       usuario = { nombre: 'usuario1', estado: 'Pagado' }
       saldo = 500
       creador.cargar_saldo(saldo, repositorio_usuarios)
-      gasto.pagar(creador, saldo / 4)
+      cobrado = gasto.pagar(creador, saldo, repositorio_usuarios)
+      expect(cobrado).to eq saldo / 4
       estado = gasto.estado_de_usuarios
       expect(creador.saldo).to eq 375
       expect(estado[0]).to eq usuario
       expect(estado.size).to eq 4
     end
-    xit 'se crea un gasto y un usuario paga de menos (sigue pendiente) y luego paga el resto' do
+    it 'se crea un gasto y un usuario paga de menos (sigue pendiente) y luego paga el resto' do
       repositorio_usuarios = MockRepositorioUsuarios.new
       grupo = crear_grupo_con_usuarios('casa', 4, repositorio_usuarios)
       creador = repositorio_usuarios.find_by_telegram_username('user1')
@@ -89,17 +91,19 @@ describe GastoEquitativo do
       usuario_paga = { nombre: 'usuario1', estado: 'Pagado' }
       saldo = 500
       creador.cargar_saldo(saldo, repositorio_usuarios)
-      gasto.pagar(creador, 100)
+      cobrado = gasto.pagar(creador, 100, repositorio_usuarios)
+      expect(cobrado).to eq 100
       estado = gasto.estado_de_usuarios
       expect(creador.saldo).to eq 400
       expect(estado[0]).to eq usuario
       expect(estado.size).to eq 4
-      gasto.pagar(creador, 25)
+      cobrado = gasto.pagar(creador, 25, repositorio_usuarios)
+      expect(cobrado).to eq 25
       estado = gasto.estado_de_usuarios
       expect(creador.saldo).to eq 375
       expect(estado[0]).to eq usuario_paga
     end
-    xit 'se crea un gasto y un usuario paga de menos sigue pendiente y luego de mas del resto solo cobra lo que debe' do
+    it 'se crea un gasto y un usuario paga de menos sigue pendiente y luego de mas del resto solo cobra lo que debe' do
       repositorio_usuarios = MockRepositorioUsuarios.new
       grupo = crear_grupo_con_usuarios('casa', 4, repositorio_usuarios)
       creador = repositorio_usuarios.find_by_telegram_username('user1')
@@ -108,12 +112,14 @@ describe GastoEquitativo do
       usuario_paga = { nombre: 'usuario1', estado: 'Pagado' }
       saldo = 500
       creador.cargar_saldo(saldo, repositorio_usuarios)
-      gasto.pagar(creador, 100)
+      cobrado = gasto.pagar(creador, 100, repositorio_usuarios)
+      expect(cobrado).to eq 100
       estado = gasto.estado_de_usuarios
       expect(creador.saldo).to eq 400
       expect(estado[0]).to eq usuario
       expect(estado.size).to eq 4
-      gasto.pagar(creador, 100)
+      cobrado = gasto.pagar(creador, 100, repositorio_usuarios)
+      expect(cobrado).to eq 25
       estado = gasto.estado_de_usuarios
       expect(creador.saldo).to eq 375
       expect(estado[0]).to eq usuario_paga

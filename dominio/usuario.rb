@@ -35,8 +35,8 @@ class Usuario
                                     @email)
   end
 
-  def pagar(cantidad)
-    @saldo.pagar(cantidad)
+  def pagar(cantidad, repositorio_usuarios)
+    @saldo.pagar(cantidad, repositorio_usuarios)
   end
 
   private
