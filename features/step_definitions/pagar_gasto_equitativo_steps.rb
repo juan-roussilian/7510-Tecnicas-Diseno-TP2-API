@@ -6,12 +6,12 @@ Dado(/^el grupo tiene un gasto equitativo para pagar de "([^"]*)"$/) do |monto|
 end
 
 Cuando(/^quiero pagar el gasto del grupo$/) do
-  request_body = { usuario: @usuario.telegram_id, id_gasto: @id, monto: @usuario.saldo }
-  @respuesta = Faraday.get(get_url_for('/cobrar-gasto'), request_body, { 'Content-Type' => 'application/json' })
+  request_body = { usuario: @usuario.telegram_id, id_gasto: @id, monto: @usuario.saldo }.to_json
+  @respuesta = Faraday.post(get_url_for('/pagos'), request_body, { 'Content-Type' => 'application/json' })
 end
 
 Entonces(/^veo que pago "([^"]*)"$/) do |monto|
-  expect(@respuesta.status).to eq 200
+  expect(@respuesta.status).to eq 201
   respuesta = JSON.parse(@respuesta.body)
   expect(respuesta['cobro']).to eq monto.to_f
 end

@@ -205,11 +205,13 @@ else
   movimientos_salida.to_json
 end
 
-get '/cobrar-gasto' do
-  usuario = RepositorioUsuarios.new.find_by_telegram_id(params[:usuario])
-  gasto = RepositorioGastos.new.find_by_id(params[:id_gasto])
-  cobrado = gasto.pagar(usuario, params[:monto].to_f, RepositorioUsuarios.new)
-  pendiente = gasto.deuda_por_usuario - cobrado
+post '/pagos' do
+  @body ||= request.body.read
+  parametros_pago = JSON.parse(@body)
+  usuario = RepositorioUsuarios.new.find_by_telegram_id(parametros_pago['usuario'].to_s)
+  gasto = RepositorioGastos.new.find_by_id(parametros_pago['id_gasto'])
+  cantidad_cobrada = gasto.pagar(usuario, parametros_pago['monto'].to_f, RepositorioUsuarios.new)
+  pendiente = gasto.deuda_por_usuario - cantidad_cobrada
 rescue ObjectNotFound
   status 400
   { error: 'usuario no registrado' }.to_json
@@ -226,7 +228,7 @@ rescue ArgumentError
   status 400
   { error: 'monto invalido' }.to_json
 else
-  status 200
-  { id_gasto: params[:id_gasto], nombre_gasto: gasto.nombre, cobro: cobrado, pendiente:,
+  status 201
+  { id_gasto: parametros_pago['id_gasto'], nombre_gasto: gasto.nombre, cobro: cantidad_cobrada, pendiente:,
     nombre_grupo: gasto.grupo.nombre }.to_json
 end
