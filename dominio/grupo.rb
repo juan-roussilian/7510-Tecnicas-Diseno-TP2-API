@@ -12,8 +12,11 @@ class Grupo
     @usuarios = usuarios
   end
 
-  def es_miembro(usuario)
-    @usuarios.include? usuario
+  def es_miembro(nombre_usuario)
+    @usuarios.each do |usuario|
+      return true if usuario.nombre == nombre_usuario
+    end
+    false
   end
 
   private

@@ -13,5 +13,5 @@ end
 Entonces(/^veo que pago "([^"]*)"$/) do |monto|
   expect(@respuesta.status).to eq 200
   respuesta = JSON.parse(@respuesta.body)
-  expect(respuesta['cobro']).to eq monto
+  expect(respuesta['cobro']).to eq monto.to_f
 end

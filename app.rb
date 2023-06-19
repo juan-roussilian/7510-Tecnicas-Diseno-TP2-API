@@ -207,7 +207,7 @@ end
 get '/cobrar-gasto' do
   usuario = RepositorioUsuarios.new.find_by_telegram_username(params[:usuario])
   gasto = RepositorioGastos.new.find_by_id(params[:id_gasto])
-  cobrado = gasto.pagar(usuario, params[:monto], RepositorioUsuarios.new)
+  cobrado = gasto.pagar(usuario, params[:monto].to_f, RepositorioUsuarios.new)
   pendiente = gasto.deuda_por_usuario - cobrado
 rescue ObjectNotFound
   status 400
