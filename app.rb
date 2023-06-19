@@ -66,9 +66,10 @@ post '/saldo' do
   @body ||= request.body.read
   parametros_usuario = JSON.parse(@body)
   begin
-    repo_usuarios = RepositorioUsuarios.new
-    usuario = repo_usuarios.find_by_telegram_id(parametros_usuario['telegram_id'].to_s)
-    usuario.cargar_saldo(parametros_usuario['saldo'], repo_usuarios)
+    repositorio_usuarios = RepositorioUsuarios.new
+    usuario = repositorio_usuarios.find_by_telegram_id(parametros_usuario['telegram_id'].to_s)
+    repositorio_movimientos = RepositorioMovimientos.new
+    usuario.cargar_saldo(parametros_usuario['saldo'], repositorio_usuarios, repositorio_movimientos)
   rescue ObjectNotFound
     status 400
     { error: 'debe registrarse primero' }.to_json
@@ -157,7 +158,7 @@ end
 
 get '/gasto' do
   nombre_usuario = RepositorioUsuarios.new.find_by_telegram_id(params[:usuario]).nombre
-  gasto = RepositorioGastos.new.find_by_id(params[:gasto])
+  gasto = RepositorioGastos.new.find_by_id(params[:id_gasto])
   estado_de_usuarios = gasto.estado_de_usuarios
   estado_general = []
   estado_propio = ''
@@ -176,7 +177,7 @@ rescue ObjectNotFound
   { error: 'debe registrarse primero' }.to_json
 else
   status 200
-  { id: params[:gasto], nombre: gasto.nombre, tipo: gasto.tipo, saldo: gasto.monto,
+  { id: params[:id_gasto], nombre: gasto.nombre, tipo: gasto.tipo, saldo: gasto.monto,
     grupo: gasto.nombre, estado: estado_propio, usuarios: estado_general }.to_json
 end
 
