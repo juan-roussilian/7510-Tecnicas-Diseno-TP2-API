@@ -1,6 +1,6 @@
 class Movimiento
-  attr_reader :usuario, :monto, :updated_on, :created_on
-  attr_accessor :id
+  attr_reader :usuario, :monto
+  attr_accessor :id, :updated_on, :created_on
 
   def initialize(usuario, monto, id: nil)
     @usuario = usuario
@@ -11,7 +11,8 @@ class Movimiento
   def atributos_serializables
     {
       id_usuario_principal: @usuario.id,
-      monto: @monto
+      monto: @monto,
+      created_on: @created_on
     }
   end
 end

@@ -40,27 +40,50 @@ class RepositorioMovimientos < AbstractRepository
 
   protected
 
-  def cargar_movimiento_segun_tipo(a_hash, id, usuario, monto)
+  def cargar_movimiento_segun_tipo(a_hash, id, usuario, monto, fecha_creacion)
     case a_hash[:tipo]
     when TIPO_DE_MOV_TRANSFERENCIA
-      usuario_secundario = RepositorioUsuarios.new.find(a_hash[:id_usuario_secundario])
-      MovimientoTransferencia.new(usuario, monto, usuario_secundario, id:)
+      cargar_movimiento_transferencia(a_hash, id, usuario, monto, fecha_creacion)
     when TIPO_DE_MOV_CARGA
-      MovimientoCarga.new(usuario, monto, id:)
+      cargar_movimiento_carga(a_hash, id, usuario, monto, fecha_creacion)
     when TIPO_DE_MOV_PAGO_GASTO
-      usuario_pagador = RepositorioUsuarios.new.find(a_hash[:id_usuario_secundario])
-      gasto = RepositorioGastos.new.find(a_hash[:id_gasto])
-      MovimientoPagoDeGasto.new(usuario, monto, gasto, usuario_pagador, id:)
+      cargar_movimiento_pago_de_gasto(a_hash, id, usuario, monto, fecha_creacion)
     else
       raise TipoDeMovimientoInvalido, a_hash[:tipo]
     end
+  end
+
+  def cargar_movimiento_transferencia(a_hash, id, usuario, monto, fecha_creacion)
+    usuario_secundario = RepositorioUsuarios.new.find(a_hash[:id_usuario_secundario])
+    movimiento = MovimientoTransferencia.new(usuario, monto, usuario_secundario, id:)
+    set_created_on(movimiento, fecha_creacion)
+    movimiento
+  end
+
+  def cargar_movimiento_carga(_a_hash, id, usuario, monto, fecha_creacion)
+    movimiento = MovimientoCarga.new(usuario, monto, id:)
+    set_created_on(movimiento, fecha_creacion)
+    movimiento
+  end
+
+  def cargar_movimiento_pago_de_gasto(a_hash, id, usuario, monto, fecha_creacion)
+    usuario_pagador = RepositorioUsuarios.new.find(a_hash[:id_usuario_secundario])
+    gasto = RepositorioGastos.new.find(a_hash[:id_gasto])
+    movimiento = MovimientoPagoDeGasto.new(usuario, monto, gasto, usuario_pagador, id:)
+    set_created_on(movimiento, fecha_creacion)
+    movimiento
+  end
+
+  def set_created_on(movimiento, fecha_creacion)
+    movimiento.created_on = fecha_creacion
   end
 
   def load_object(a_hash)
     id = a_hash[:id]
     usuario = RepositorioUsuarios.new.find(a_hash[:id_usuario_principal])
     monto = a_hash[:monto]
-    cargar_movimiento_segun_tipo(a_hash, id, usuario, monto)
+    fecha_creacion = a_hash[:created_on]
+    cargar_movimiento_segun_tipo(a_hash, id, usuario, monto, fecha_creacion)
   end
 
   def changeset(movimiento)
