@@ -187,6 +187,13 @@ get '/movimientos' do
   movimientos.each do |mov|
     atributos = mov.atributos_serializables
     atributos[:id] = mov.id
+    atributos[:fecha] = mov.created_on.to_s
+    atributos[:usuario_secundario] = if atributos[:id_usuario_secundario].nil?
+                                       nil
+                                     else
+                                       RepositorioUsuarios.new.find(atributos[:id_usuario_secundario]).telegram_username
+                                     end
+    atributos.delete(:id_usuario_secundario)
     movimientos_salida << atributos
   end
 rescue ObjectNotFound
