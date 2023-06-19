@@ -221,6 +221,9 @@ rescue GastoNoEncontrado
 rescue UsuarioNoPerteneceAlGrupoDelGasto
   status 400
   { error: 'gasto no corresponde al usuario' }.to_json
+rescue ArgumentError
+  status 400
+  { error: 'monto invalido' }.to_json
 else
   status 200
   { id_gasto: params[:id_gasto], nombre_gasto: gasto.nombre, cobro: cobrado, pendiente:,
