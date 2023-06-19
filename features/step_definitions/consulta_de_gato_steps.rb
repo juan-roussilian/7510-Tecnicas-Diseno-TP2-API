@@ -11,7 +11,7 @@ Dado(/^estoy en un grupo que tiene gasto con un id$/) do
 end
 
 Cuando(/^quiero consultar los detalles del gasto con el id del gasto$/) do
-  request_body = { usuario: @usuario.telegram_username, gasto: @id }
+  request_body = { usuario: @usuario.telegram_id, gasto: @id }
   @respuesta = Faraday.get(get_url_for('/gasto'), request_body, { 'Content-Type' => 'application/json' })
 end
 

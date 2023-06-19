@@ -156,8 +156,8 @@ post '/gasto' do
 end
 
 get '/gasto' do
+  nombre_usuario = RepositorioUsuarios.new.find_by_telegram_id(params[:usuario]).nombre
   gasto = RepositorioGastos.new.find_by_id(params[:gasto])
-  nombre_usuario = RepositorioUsuarios.new.find_by_telegram_username(params[:usuario]).nombre
   estado_de_usuarios = gasto.estado_de_usuarios
   estado_general = []
   estado_propio = ''
