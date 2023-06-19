@@ -33,9 +33,9 @@ class GastoEquitativo
   end
 
   def pagar(usuario, cantidad, repositorio_usuarios)
-    return unless @grupo.es_miembro(usuario) # el usuario no pertenece al grupo y no puede pagar
+    raise UsuarioNoPerteneceAlGrupoDelGasto.new(usuario.nombre, @grupo.nombre) unless @grupo.es_miembro(usuario)
 
-    return if usuario_pago(usuario) == ESTADO_PAGADO # el usuario ya pago lo que debia
+    return 0.0 if usuario_pago(usuario) == ESTADO_PAGADO # el usuario ya pago lo que debia
 
     if @cobro[usuario.nombre] > 0.0
       pagar_resto(usuario, cantidad, repositorio_usuarios)
@@ -83,5 +83,13 @@ class GastoEquitativo
     return ESTADO_PAGADO if @cobro[usuario.nombre] == deuda_por_usuario
 
     ESTADO_FALTA_PAGAR
+  end
+end
+
+class UsuarioNoPerteneceAlGrupoDelGasto < StandardError
+  def initialize(nombre, nombre_grupo)
+    @nombre = nombre
+    @nombre_grupo = nombre_grupo
+    super("El usuario #{@nombre} no pertenece al grupo #{@nombre_grupo}")
   end
 end

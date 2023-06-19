@@ -124,5 +124,14 @@ describe GastoEquitativo do
       expect(creador.saldo).to eq 375
       expect(estado[0]).to eq usuario_paga
     end
+    it 'se crea un gasto y un usuario paga lo que no corresponde lanza excepcion' do
+      repositorio_usuarios = MockRepositorioUsuarios.new
+      grupo = crear_grupo_con_usuarios('casa', 4, repositorio_usuarios)
+      creador = repositorio_usuarios.find_by_telegram_username('user1')
+      gasto = described_class.new('supermercado', 500, grupo, creador)
+      expect do
+        gasto.pagar(Usuario.new('usuario40', 'test40@test.com', '40', 'user40'), 5, RepositorioUsuarios.new)
+      end.to raise_error(UsuarioNoPerteneceAlGrupoDelGasto)
+    end
   end
 end

@@ -200,14 +200,22 @@ end
 get '/cobrar-gasto' do
   usuario = RepositorioUsuarios.new.find_by_telegram_username(params[:usuario])
   gasto = RepositorioGastos.new.find_by_id(params[:id_gasto])
-  cobrado = gasto.pagar(usuario, params[:monto])
+  cobrado = gasto.pagar(usuario, params[:monto], RepositorioUsuarios.new)
+  pendiente = gasto.deuda_por_usuario - cobrado
 rescue ObjectNotFound
   status 400
   { error: 'usuario no registrado' }.to_json
 rescue SaldoInsuficiente
   status 400
   { error: 'saldo insuficiente para llevar a cabo la operacion' }.to_json
+rescue GastoNoEncontrado
+  status 400
+  { error: 'gasto no encontrado' }.to_json
+rescue UsuarioNoPerteneceAlGrupoDelGasto
+  status 400
+  { error: 'gasto no corresponde al usuario' }.to_json
 else
   status 200
-  { id_gasto: params[:id_gasto], nombre_gasto: gasto.nombre, cobro: cobrado }.to_json
+  { id_gasto: params[:id_gasto], nombre_gasto: gasto.nombre, cobro: cobrado, pendiente:,
+    nombre_grupo: gasto.grupo.nombre }.to_json
 end
