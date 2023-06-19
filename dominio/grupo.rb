@@ -27,8 +27,8 @@ class Grupo
     raise NombreDeGrupoRepetido, nombre if existe_grupo(nombre, repositorio_grupos)
   end
 
-  def existe_grupo(nombre, _repositorio_grupos)
-    RepositorioGrupos.new.find_by_name(nombre)
+  def existe_grupo(nombre, repositorio_grupos)
+    repositorio_grupos.find_by_name(nombre)
   rescue GrupoNoEncontrado
     false
   else
