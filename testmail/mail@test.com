@@ -78,3 +78,51 @@ Date: 2023-06-19
 
 Se ha transferido 500.0 a usuario con exito.
 
+Date: Tue, 20 Jun 2023 00:08:09 +0000
+From: tokiomemo2@gmail.com
+To: mail@test.com
+Message-ID: <6490ede960bbf_16bcfbc79537@d9354eab0a30.mail>
+Subject: Movimiento realizado
+Mime-Version: 1.0
+Content-Type: text/plain;
+ charset=UTF-8
+Content-Transfer-Encoding: 7bit
+
+From: tokiomemo2@gmail.com
+To: mail@test.com
+Date: 2023-06-20
+
+Se ha transferido 500.0 a usuario con exito.
+
+Date: Tue, 20 Jun 2023 00:08:56 +0000
+From: tokiomemo2@gmail.com
+To: mail@test.com
+Message-ID: <6490ee182f8f3_173cfbc856a0@d9354eab0a30.mail>
+Subject: Movimiento realizado
+Mime-Version: 1.0
+Content-Type: text/plain;
+ charset=UTF-8
+Content-Transfer-Encoding: 7bit
+
+From: tokiomemo2@gmail.com
+To: mail@test.com
+Date: 2023-06-20
+
+Se ha transferido 500.0 a usuario con exito.
+
+Date: Tue, 20 Jun 2023 00:09:54 +0000
+From: tokiomemo2@gmail.com
+To: mail@test.com
+Message-ID: <6490ee52f39f5_17acfbc1033c@d9354eab0a30.mail>
+Subject: Movimiento realizado
+Mime-Version: 1.0
+Content-Type: text/plain;
+ charset=UTF-8
+Content-Transfer-Encoding: 7bit
+
+From: tokiomemo2@gmail.com
+To: mail@test.com
+Date: 2023-06-20
+
+Se ha transferido 500.0 a usuario con exito.
+

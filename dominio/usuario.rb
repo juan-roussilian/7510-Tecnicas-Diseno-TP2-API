@@ -7,9 +7,6 @@ class Usuario
   SECCIONES_SEPARADOR_EMAIL = 2
   CARACTER_SEPARADOR_DOMINIO = '.'.freeze
   SECCIONES_SEPARADOR_DOMINIO = -1
-  INICIO_DE_MENSAJE_DE_TRANSFERENCIA = 'Se ha transferido '.freeze
-  MEDIO_DE_MENSAJE_DE_TRANSFERENCIA = ' a '.freeze
-  FIN_DE_MENSAJE_DE_TRANSFERENCIA = ' con exito.'.freeze
 
   def initialize(nombre, email, telegram_id, telegram_username, id = nil)
     @nombre = nombre
@@ -31,8 +28,7 @@ class Usuario
 
   def transferir(otro_usuario, cantidad, repositorio_usuarios, repositorio_movimientos, casilla_de_email = nil)
     @saldo.transferir(otro_usuario, cantidad, repositorio_usuarios, repositorio_movimientos)
-    casilla_de_email&.enviar_correo(mensaje_de_transferencia(otro_usuario.nombre, cantidad),
-                                    @email)
+    casilla_de_email&.enviar_correo_transferencia(@email, otro_usuario.nombre, cantidad)
   end
 
   def pagar(cantidad, repositorio_usuarios)
@@ -58,12 +54,6 @@ class Usuario
     raise EmailInvalido.new(@nombre, mail) if dominios.count == 1
 
     raise EmailInvalido.new(@nombre, mail) unless dominios.find_index('').nil?
-  end
-
-  def mensaje_de_transferencia(nombre, monto)
-    INICIO_DE_MENSAJE_DE_TRANSFERENCIA + monto +
-      MEDIO_DE_MENSAJE_DE_TRANSFERENCIA + nombre +
-      FIN_DE_MENSAJE_DE_TRANSFERENCIA
   end
 end
 

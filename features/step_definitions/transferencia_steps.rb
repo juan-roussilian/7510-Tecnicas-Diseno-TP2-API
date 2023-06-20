@@ -21,7 +21,7 @@ Entonces('el saldo del usuario al que le transferi es de {int}') do |saldo_esper
 end
 
 Cuando('quiero transferir {float} al usuario registrado {string}') do |monto, nombre|
-  request_body = { usuario: @usuario.telegram_id, monto: monto, destinatario: nombre }.to_json
+  request_body = { usuario: @usuario.telegram_id, monto: monto, destinatario: nombre, test_mode:true }.to_json
   @transferencia = Faraday.post(get_url_for('/transferir'), request_body, { 'Content-Type' => 'application/json' })
 end
 

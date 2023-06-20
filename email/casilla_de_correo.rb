@@ -1,15 +1,15 @@
 require 'rubygems'
 require 'net/smtp'
 require 'pony'
+require 'byebug'
 
-class EMail
+class CasillaCorreo
   REMITENTE_EMAIL = 'tokiomemo2@gmail.com'.freeze
-  DESTINATARIO_EMAIL = 'to@example.com'.freeze
   HOST = 'smtp.gmail.com'.freeze
-  PORT = '587'.freeze # 25 or 465 or 587 or 2525
+  PORT = '587'.freeze
   USERNAME = 'tokiomemo2@gmail.com'.freeze
   PASSWORD = 'lonuhrcabigzvztw'.freeze
-  AUTH = :plain # PLAIN, LOGIN and CRAM-MD5
+  AUTH = :plain
 
   ASUNTO = 'Movimiento realizado'.freeze
 
@@ -17,6 +17,7 @@ class EMail
   LOCAL_CONFIG = {
     location: 'testmail/'
   }.freeze
+
   SMTP_VIA = :smtp
   SMTP_CONFIG = {
     address: HOST,
@@ -28,9 +29,23 @@ class EMail
     domain: 'localhost.localdomain'
   }.freeze
 
-  def enviar_correo(mensaje_base, destinatario = DESTINATARIO_EMAIL, test: false)
+  def initialize(test_mode)
+    @test_mode = test_mode
+  end
+
+  def enviar_correo(mensaje_base, destinatario)
     mensaje = procesado_de_mensaje(mensaje_base, destinatario)
-    if test
+    if @test_mode
+      enviar_email(mensaje, destinatario, LOCAL_VIA, LOCAL_CONFIG)
+    else
+      enviar_email(mensaje, destinatario, SMTP_VIA, SMTP_CONFIG)
+    end
+  end
+
+  def enviar_correo_transferencia(destinatario, nombre, monto)
+    mensaje_base = "Se ha transferido #{monto} a #{nombre} con exito."
+    mensaje = procesado_de_mensaje(mensaje_base, destinatario)
+    if @test_mode
       enviar_email(mensaje, destinatario, LOCAL_VIA, LOCAL_CONFIG)
     else
       enviar_email(mensaje, destinatario, SMTP_VIA, SMTP_CONFIG)

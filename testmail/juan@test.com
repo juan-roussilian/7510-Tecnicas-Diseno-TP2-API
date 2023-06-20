@@ -158,3 +158,99 @@ Date: 2023-06-19
 
 Se ha transferido 200.0 a usuario con exito.
 
+Date: Tue, 20 Jun 2023 00:08:09 +0000
+From: tokiomemo2@gmail.com
+To: juan@test.com
+Message-ID: <6490ede9bd43e_16bcfbc796b5@d9354eab0a30.mail>
+Subject: Movimiento realizado
+Mime-Version: 1.0
+Content-Type: text/plain;
+ charset=UTF-8
+Content-Transfer-Encoding: 7bit
+
+From: tokiomemo2@gmail.com
+To: juan@test.com
+Date: 2023-06-20
+
+Se ha transferido 100.0 a usuario con exito.
+
+Date: Tue, 20 Jun 2023 00:08:10 +0000
+From: tokiomemo2@gmail.com
+To: juan@test.com
+Message-ID: <6490edeafd19_16bcfbc79732@d9354eab0a30.mail>
+Subject: Movimiento realizado
+Mime-Version: 1.0
+Content-Type: text/plain;
+ charset=UTF-8
+Content-Transfer-Encoding: 7bit
+
+From: tokiomemo2@gmail.com
+To: juan@test.com
+Date: 2023-06-20
+
+Se ha transferido 200.0 a usuario con exito.
+
+Date: Tue, 20 Jun 2023 00:08:56 +0000
+From: tokiomemo2@gmail.com
+To: juan@test.com
+Message-ID: <6490ee187315b_173cfbc857de@d9354eab0a30.mail>
+Subject: Movimiento realizado
+Mime-Version: 1.0
+Content-Type: text/plain;
+ charset=UTF-8
+Content-Transfer-Encoding: 7bit
+
+From: tokiomemo2@gmail.com
+To: juan@test.com
+Date: 2023-06-20
+
+Se ha transferido 100.0 a usuario con exito.
+
+Date: Tue, 20 Jun 2023 00:08:56 +0000
+From: tokiomemo2@gmail.com
+To: juan@test.com
+Message-ID: <6490ee18b1b2a_173cfbc858ca@d9354eab0a30.mail>
+Subject: Movimiento realizado
+Mime-Version: 1.0
+Content-Type: text/plain;
+ charset=UTF-8
+Content-Transfer-Encoding: 7bit
+
+From: tokiomemo2@gmail.com
+To: juan@test.com
+Date: 2023-06-20
+
+Se ha transferido 200.0 a usuario con exito.
+
+Date: Tue, 20 Jun 2023 00:09:55 +0000
+From: tokiomemo2@gmail.com
+To: juan@test.com
+Message-ID: <6490ee5356b37_17acfbc1041b@d9354eab0a30.mail>
+Subject: Movimiento realizado
+Mime-Version: 1.0
+Content-Type: text/plain;
+ charset=UTF-8
+Content-Transfer-Encoding: 7bit
+
+From: tokiomemo2@gmail.com
+To: juan@test.com
+Date: 2023-06-20
+
+Se ha transferido 100.0 a usuario con exito.
+
+Date: Tue, 20 Jun 2023 00:09:55 +0000
+From: tokiomemo2@gmail.com
+To: juan@test.com
+Message-ID: <6490ee539f7d4_17acfbc105c4@d9354eab0a30.mail>
+Subject: Movimiento realizado
+Mime-Version: 1.0
+Content-Type: text/plain;
+ charset=UTF-8
+Content-Transfer-Encoding: 7bit
+
+From: tokiomemo2@gmail.com
+To: juan@test.com
+Date: 2023-06-20
+
+Se ha transferido 200.0 a usuario con exito.
+

@@ -3,8 +3,10 @@ require 'sequel'
 require 'sinatra/custom_logger'
 require_relative './config/configuration'
 require_relative './lib/version'
+require_relative './email/casilla_de_correo'
 Dir[File.join(__dir__, 'dominio', '*.rb')].each { |file| require file }
 Dir[File.join(__dir__, 'persistencia', '*.rb')].each { |file| require file }
+require 'byebug'
 
 customer_logger = Configuration.logger
 set :logger, customer_logger
@@ -86,6 +88,7 @@ post '/transferir' do
   @body ||= request.body.read
   parametros_usuario = JSON.parse(@body)
   repositorio_usuarios = RepositorioUsuarios.new
+  test_mode = parametros_usuario['test_mode'] == true
   begin
     usuario = repositorio_usuarios.find_by_telegram_id(parametros_usuario['usuario'].to_s)
   rescue ObjectNotFound
@@ -94,7 +97,8 @@ post '/transferir' do
   else
     begin
       destinatario = repositorio_usuarios.find_by_telegram_username(parametros_usuario['destinatario'])
-      usuario.transferir(destinatario, parametros_usuario['monto'], repositorio_usuarios, RepositorioMovimientos.new)
+      usuario.transferir(destinatario, parametros_usuario['monto'], repositorio_usuarios, RepositorioMovimientos.new,
+                         CasillaCorreo.new(test_mode))
     rescue ObjectNotFound
       status 400
       { error: 'destinatario no registrado' }.to_json
