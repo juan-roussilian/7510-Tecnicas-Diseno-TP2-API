@@ -24,7 +24,7 @@ class Billetera
     transferencia_posible(cantidad)
 
     @saldo -= cantidad
-    otro_usuario.cargar_saldo(cantidad, repositorio_usuarios, repositorio_movimientos)
+    otro_usuario.cargar_saldo(cantidad, repositorio_usuarios)
     actualizar_saldo(repositorio_usuarios)
     repositorio_movimientos&.save(MovimientoTransferencia.new(@propietario, cantidad,
                                                               otro_usuario))

@@ -161,19 +161,10 @@ post '/gasto' do
 end
 
 get '/gasto' do
-  nombre_usuario = RepositorioUsuarios.new.find_by_telegram_id(params[:usuario]).nombre
+  RepositorioUsuarios.new.find_by_telegram_id(params[:usuario]).nombre
   gasto = RepositorioGastos.new.find_by_id(params[:id_gasto])
   gasto.repositorio_movimientos = RepositorioMovimientos.new
   estado_de_usuarios = gasto.estado_de_usuarios
-  estado_general = []
-  estado_propio = ''
-  estado_de_usuarios.each do |estado|
-    if estado[:nombre] == nombre_usuario
-      estado_propio = estado[:estado]
-    else
-      estado_general.push(estado)
-    end
-  end
 rescue GastoNoEncontrado
   status 400
   { error: 'no se ha encontrado el gasto' }.to_json
@@ -184,7 +175,7 @@ else
   status 200
   { id: params[:id_gasto], nombre: gasto.nombre, tipo: gasto.tipo, saldo: gasto.monto,
     grupo: gasto.grupo.nombre, creador: gasto.creador.telegram_username,
-    estado: estado_propio, usuarios: estado_general }.to_json
+    usuarios: estado_de_usuarios }.to_json
 end
 
 get '/movimientos' do
