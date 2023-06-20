@@ -13,5 +13,12 @@ Dado(/^el grupo tiene un gasto a la gorra para pagar de "([^"]*)"$/) do |monto|
 end
 
 When(/^el resto del grupo debe (\d+)$/) do |monto|
-  expect(@gasto.deuda_por_usuario).to eq monto.to_i
+  expect(JSON.parse(@respuesta.body)['pendiente']).to eq monto.to_i
+end
+
+When(/^"([^"]*)" paga (\d+) del gasto del grupo$/) do |usuario, monto|
+  usuario_pagador = RepositorioUsuarios.new.find_by_telegram_username(usuario)
+  usuario_pagador.cargar_saldo(monto, RepositorioUsuarios.new)
+  request_body = { usuario: usuario_pagador.telegram_id, id_gasto: @id, monto: monto }.to_json
+  @respuesta = Faraday.post(get_url_for('/pagos'), request_body, { 'Content-Type' => 'application/json' })
 end
