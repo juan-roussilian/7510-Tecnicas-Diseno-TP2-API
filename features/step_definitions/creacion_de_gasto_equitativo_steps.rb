@@ -1,7 +1,7 @@
 Dado('estoy en un grupo con {string}') do |nombre_otro_usuario|
   repositorio_usuarios = RepositorioUsuarios.new
   repositorio_usuarios.delete_all
-  otro_usuario = Usuario.new('user', 'userprueba@test.com', 'IdTelegram', nombre_otro_usuario)
+  otro_usuario = Usuario.new('user', 'userprueba@test.com', 'IdTelegram1', nombre_otro_usuario)
   repositorio_usuarios.save(otro_usuario)
   repositorio_grupos = RepositorioGrupos.new
   repositorio_grupos.delete_all

@@ -1,7 +1,7 @@
 # language: es
 Característica: Como Usuario quiero que la app me permita pagar un gasto a la gorra de mi grupo
 
-  @wip @local
+  @local
   Escenario: 12.1 Usuario en un grupo de 4 personas paga un gasto equitativo
     Dado que soy un usuario registrado y poseo saldo 500
     Y estoy en un grupo con "juan", "pedro" y "lucas"
@@ -10,7 +10,7 @@ Característica: Como Usuario quiero que la app me permita pagar un gasto a la g
     Entonces veo que pago "100"
     Y mi saldo pasa a ser 400
 
-  @wip @local
+  @local
   Escenario: 12.2 Usuario en un grupo de 2 personas paga un gasto equitativo
     Dado que soy un usuario registrado y poseo saldo 75
     Y estoy en un grupo con "juan"
@@ -18,3 +18,11 @@ Característica: Como Usuario quiero que la app me permita pagar un gasto a la g
     Cuando quiero pagar el gasto del grupo
     Entonces veo que pago "75"
     Y mi saldo pasa a ser 0
+
+  @wip @local
+  Escenario: 12.3 Un miembro del grupo paga una parte el resto debe pagar lo que falta
+    Dado que soy un usuario registrado y poseo saldo 75
+    Y estoy en un grupo con "juan"
+    Y el grupo tiene un gasto a la gorra para pagar de "150"
+    Cuando "juan" paga 10 del gasto del grupo
+    Entonces el resto del grupo debe 75

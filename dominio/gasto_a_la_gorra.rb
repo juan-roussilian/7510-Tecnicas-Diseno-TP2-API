@@ -18,10 +18,12 @@ class GastoALaGorra
   end
 
   def deuda_por_usuario
+    actualizar_cobros_segun_movimientos
     falta_pagar
   end
 
   def deuda_pendiente_de(_usuario)
+    actualizar_cobros_segun_movimientos
     falta_pagar
   end
 
