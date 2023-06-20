@@ -11,3 +11,5 @@ data:
   HOST_MAILER: "smtp.gmail.com"
   PUERTO_MAILER: "587"
   CONTRASENA_MAILER: "lonuhrcabigzvztw"
+  URL_API_CLIMA: "http://api.weatherapi.com/v1/current.json"
+  API_CLIMA_KEY: "d584af55f0324c59a4941429231606"
