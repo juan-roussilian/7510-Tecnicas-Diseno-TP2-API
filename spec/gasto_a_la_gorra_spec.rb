@@ -85,5 +85,62 @@ describe GastoALaGorra do
       expect(estado[0]).to eq usuario
       expect(estado.size).to eq 3
     end
+    it 'se crea un gasto y un usuario paga de menos y luego paga el resto de su fraccion sigue pendiente' do
+      repositorio_usuarios = MockRepositorioUsuarios.new
+      grupo = crear_grupo_con_usuarios('casa', 4, repositorio_usuarios)
+      creador = repositorio_usuarios.find_by_telegram_username('user1')
+      usuario_pagador = repositorio_usuarios.find_by_telegram_username('user2')
+      gasto = described_class.new('supermercado', 500, grupo, creador)
+      saldo = 500
+      usuario_pagador.cargar_saldo(saldo, repositorio_usuarios)
+      cobrado = gasto.pagar(usuario_pagador, 100, repositorio_usuarios)
+      expect(cobrado).to eq 100
+      estado = gasto.estado_de_usuarios
+      expect(creador.saldo).to eq 100
+      expect(usuario_pagador.saldo).to eq 400
+      estado_pendiente = { nombre: 'usuario2', estado: 'Pendiente', cobro: 100.0 }
+      expect(estado[0]).to eq estado_pendiente
+      expect(estado.size).to eq 3
+      cobrado = gasto.pagar(usuario_pagador, 25, repositorio_usuarios)
+      expect(cobrado).to eq 25
+      estado = gasto.estado_de_usuarios
+      expect(creador.saldo).to eq 125
+      expect(usuario_pagador.saldo).to eq 375
+      estado_paga = { nombre: 'usuario2', estado: 'Pendiente', cobro: 125.0 }
+      expect(estado[0]).to eq estado_paga
+    end
+    it 'se crea un gasto y un usuario paga de menos sigue pendiente y luego de mas del resto solo cobra lo que falta' do
+      repositorio_usuarios = MockRepositorioUsuarios.new
+      grupo = crear_grupo_con_usuarios('casa', 4, repositorio_usuarios)
+      creador = repositorio_usuarios.find_by_telegram_username('user1')
+      usuario_pagador = repositorio_usuarios.find_by_telegram_username('user2')
+      gasto = described_class.new('supermercado', 500, grupo, creador)
+      saldo = 5500
+      usuario_pagador.cargar_saldo(saldo, repositorio_usuarios)
+      cobrado = gasto.pagar(usuario_pagador, 100, repositorio_usuarios)
+      expect(cobrado).to eq 100
+      estado = gasto.estado_de_usuarios
+      expect(creador.saldo).to eq 100
+      expect(usuario_pagador.saldo).to eq 5400
+      estado_pendiente = { nombre: 'usuario2', estado: 'Pendiente', cobro: 100.0 }
+      expect(estado[0]).to eq estado_pendiente
+      expect(estado.size).to eq 3
+      cobrado = gasto.pagar(usuario_pagador, 600, repositorio_usuarios)
+      expect(cobrado).to eq 400
+      estado = gasto.estado_de_usuarios
+      expect(creador.saldo).to eq 500
+      expect(usuario_pagador.saldo).to eq 5000
+      estado_paga = { nombre: 'usuario2', estado: 'Pagado', cobro: 500.0 }
+      expect(estado[0]).to eq estado_paga
+    end
+    it 'se crea un gasto y un usuario paga lo que no corresponde lanza excepcion' do
+      repositorio_usuarios = MockRepositorioUsuarios.new
+      grupo = crear_grupo_con_usuarios('casa', 4, repositorio_usuarios)
+      creador = repositorio_usuarios.find_by_telegram_username('user1')
+      gasto = described_class.new('supermercado', 500, grupo, creador)
+      expect do
+        gasto.pagar(Usuario.new('usuario40', 'test40@test.com', '40', 'user40'), 5, RepositorioUsuarios.new)
+      end.to raise_error(UsuarioNoPerteneceAlGrupoDelGasto)
+    end
   end
 end
