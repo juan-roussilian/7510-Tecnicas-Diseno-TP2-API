@@ -32,4 +32,25 @@ describe GastoALaGorra do
       expect(gasto.deuda_por_usuario).to eq 500
     end
   end
+
+  it 'gasto a la gorra debe ser del tipo a la gorra' do
+    repositorio_usuarios = MockRepositorioUsuarios.new
+    grupo = crear_grupo_con_usuarios('casa', 2, repositorio_usuarios)
+    creador = repositorio_usuarios.find_by_telegram_username('user1')
+    gasto = described_class.new('supermercado', 500, grupo, creador)
+    expect(gasto.tipo).to eq 'gorra'
+  end
+
+  describe 'gasto por usuario' do
+    it 'se crea un gasto y todos los usuarios estan pendientes en sus pagos' do
+      repositorio_usuarios = MockRepositorioUsuarios.new
+      grupo = crear_grupo_con_usuarios('casa', 4, repositorio_usuarios)
+      creador = repositorio_usuarios.find_by_telegram_username('user3')
+      gasto = described_class.new('supermercado', 500, grupo, creador)
+      usuario1 = { nombre: 'usuario1', estado: 'Pendiente', cobro: 0.0 }
+      estado = gasto.estado_de_usuarios
+      expect(estado[0]).to eq usuario1
+      expect(estado.size).to eq 3
+    end
+  end
 end
