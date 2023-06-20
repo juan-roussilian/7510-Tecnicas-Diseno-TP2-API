@@ -139,24 +139,26 @@ end
 post '/gasto' do
   @body ||= request.body.read
   parametros_gasto = JSON.parse(@body)
-  begin
-    nombre = parametros_gasto['nombre_gasto']
-    monto = parametros_gasto['monto']
-    grupo = RepositorioGrupos.new.find_by_name(parametros_gasto['nombre_grupo'])
-    creador = RepositorioUsuarios.new.find_by_telegram_id(parametros_gasto['usuario'].to_s)
-    repositorio_gastos = RepositorioGastos.new
-    gasto = GastoEquitativo.new(nombre, monto, grupo, creador)
-    repositorio_gastos.save(gasto)
-  rescue ObjectNotFound
-    status 400
-    { error: 'no se pudo crear el gasto' }.to_json
-  rescue GrupoNoEncontrado
-    status 400
-    { error: 'no se pudo crear el gasto, no existe el grupo' }.to_json
-  else
-    status 201
-    { id: gasto.id, nombre_gasto: gasto.nombre }.to_json
-  end
+  nombre = parametros_gasto['nombre_gasto']
+  monto = parametros_gasto['monto']
+  grupo = RepositorioGrupos.new.find_by_name(parametros_gasto['nombre_grupo'])
+  creador = RepositorioUsuarios.new.find_by_telegram_id(parametros_gasto['usuario'].to_s)
+  repositorio_gastos = RepositorioGastos.new
+  gasto = if parametros_gasto['tipo'] == 'gorra'
+            GastoALaGorra.new(nombre, monto, grupo, creador)
+          else
+            GastoEquitativo.new(nombre, monto, grupo, creador)
+          end
+  repositorio_gastos.save(gasto)
+rescue ObjectNotFound
+  status 400
+  { error: 'no se pudo crear el gasto' }.to_json
+rescue GrupoNoEncontrado
+  status 400
+  { error: 'no se pudo crear el gasto, no existe el grupo' }.to_json
+else
+  status 201
+  { id: gasto.id, nombre_gasto: gasto.nombre }.to_json
 end
 
 get '/gasto' do
