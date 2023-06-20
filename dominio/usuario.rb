@@ -31,10 +31,6 @@ class Usuario
     casilla_de_email&.enviar_correo_transferencia(@email, otro_usuario.nombre, cantidad)
   end
 
-  def pagar(cantidad, repositorio_usuarios)
-    @saldo.pagar(cantidad, repositorio_usuarios)
-  end
-
   private
 
   def email_valido(mail)

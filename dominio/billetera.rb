@@ -30,14 +30,6 @@ class Billetera
                                                               otro_usuario))
   end
 
-  def pagar(cantidad, repositorio_usuarios, _repositorio_movimientos = nil)
-    transferencia_posible(cantidad)
-
-    @saldo -= cantidad
-    actualizar_saldo(repositorio_usuarios)
-    # repositorio_movimientos.save(MovimientoPagoDeSaldo.new(...))
-  end
-
   private
 
   def carga_posible(cantidad)

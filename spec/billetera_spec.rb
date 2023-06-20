@@ -91,23 +91,4 @@ describe Billetera do
       described_class.new(nil)
     end.to raise_error(SinPropietario)
   end
-
-  describe 'pagar' do
-    it 'usuario tiene 50 paga 50 se queda con 0' do
-      billetera = crear_billetera_con_saldo(50)
-      billetera.pagar(50, MockRepositorioUsuarios.new)
-      expect(billetera.saldo).to eq 0
-    end
-    it 'usuario tiene 150 paga 50 se queda con 100' do
-      billetera = crear_billetera_con_saldo(150)
-      billetera.pagar(50, MockRepositorioUsuarios.new)
-      expect(billetera.saldo).to eq 100
-    end
-    it 'usuario tiene 50 paga 150 lanza excepcion' do
-      billetera = crear_billetera_con_saldo(50)
-      expect do
-        billetera.pagar(150, MockRepositorioUsuarios.new)
-      end.to raise_error(SaldoInsuficiente)
-    end
-  end
 end

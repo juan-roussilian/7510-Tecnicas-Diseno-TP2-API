@@ -45,7 +45,7 @@ class GastoEquitativo
     return 0.0 if usuario_pago(usuario) == ESTADO_PAGADO # el usuario ya pago lo que debia
 
     deuda_a_pagar = determinar_deuda_a_pagar(usuario, cantidad)
-    usuario.pagar(deuda_a_pagar, repositorio_usuarios)
+    usuario.transferir(@creador, deuda_a_pagar, repositorio_usuarios, @repositorio_movimientos)
     @cobro[usuario.nombre] += deuda_a_pagar
     @repositorio_movimientos&.save(MovimientoPagoDeGasto.new(@creador, deuda_a_pagar, self,
                                                              usuario))
