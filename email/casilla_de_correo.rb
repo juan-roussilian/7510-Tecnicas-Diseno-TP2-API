@@ -1,7 +1,6 @@
 require 'rubygems'
 require 'net/smtp'
 require 'pony'
-require 'byebug'
 
 class CasillaCorreo
   def initialize(test_mode)

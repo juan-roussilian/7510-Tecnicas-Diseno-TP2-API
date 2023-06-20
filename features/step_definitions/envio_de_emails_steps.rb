@@ -1,5 +1,4 @@
 require 'mail'
-require 'byebug'
 
 RUTA_ARCHIVOS_MAIL_TEST = './tmp/testmail/'.freeze
 

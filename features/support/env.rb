@@ -3,7 +3,6 @@ ENV['APP_ENV'] = 'test'
 require 'rack/test'
 require 'rspec/expectations'
 require_relative '../../app.rb'
-require 'byebug'
 require 'faraday'
 
 DB = Configuration.db

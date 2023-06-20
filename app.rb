@@ -6,7 +6,6 @@ require_relative './lib/version'
 require_relative './email/casilla_de_correo'
 Dir[File.join(__dir__, 'dominio', '*.rb')].each { |file| require file }
 Dir[File.join(__dir__, 'persistencia', '*.rb')].each { |file| require file }
-require 'byebug'
 
 customer_logger = Configuration.logger
 set :logger, customer_logger
