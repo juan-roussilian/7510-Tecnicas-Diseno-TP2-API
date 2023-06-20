@@ -52,5 +52,38 @@ describe GastoALaGorra do
       expect(estado[0]).to eq usuario1
       expect(estado.size).to eq 3
     end
+    it 'se crea un gasto y un usuario paga exacto su parte sigue pendiente por ser gasto a la gorra' do
+      repositorio_usuarios = MockRepositorioUsuarios.new
+      grupo = crear_grupo_con_usuarios('casa', 4, repositorio_usuarios)
+      creador = repositorio_usuarios.find_by_telegram_username('user1')
+      usuario_pagador = repositorio_usuarios.find_by_telegram_username('user2')
+      gasto = described_class.new('supermercado', 500, grupo, creador)
+      saldo = 500 / 4
+      usuario_pagador.cargar_saldo(saldo, repositorio_usuarios)
+      cobrado = gasto.pagar(usuario_pagador, saldo, repositorio_usuarios)
+      expect(cobrado).to eq saldo
+      estado = gasto.estado_de_usuarios
+      expect(creador.saldo).to eq saldo
+      usuario = { nombre: 'usuario2', estado: 'Pendiente', cobro: 125.0 }
+      expect(estado[0]).to eq usuario
+      expect(estado.size).to eq 3
+    end
+    it 'se crea un gasto y un usuario paga todo el gasto' do
+      repositorio_usuarios = MockRepositorioUsuarios.new
+      grupo = crear_grupo_con_usuarios('casa', 4, repositorio_usuarios)
+      creador = repositorio_usuarios.find_by_telegram_username('user1')
+      usuario_pagador = repositorio_usuarios.find_by_telegram_username('user2')
+      gasto = described_class.new('supermercado', 500, grupo, creador)
+      saldo = 500
+      usuario_pagador.cargar_saldo(saldo, repositorio_usuarios)
+      cobrado = gasto.pagar(usuario_pagador, saldo, repositorio_usuarios)
+      expect(cobrado).to eq 500
+      expect(creador.saldo).to eq 500
+      expect(usuario_pagador.saldo).to eq 0
+      estado = gasto.estado_de_usuarios
+      usuario = { nombre: 'usuario2', estado: 'Pagado', cobro: 500.0 }
+      expect(estado[0]).to eq usuario
+      expect(estado.size).to eq 3
+    end
   end
 end
