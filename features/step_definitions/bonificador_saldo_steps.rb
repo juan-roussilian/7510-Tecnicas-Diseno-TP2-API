@@ -1,25 +1,17 @@
 require 'webmock'
+require 'webmock/cucumber'
 
-def get_clima_mock(respuesta)
-  WebMock.stub_request(:get, "http://api.weatherapi.com/v1/current.json?key=d584af55f0324c59a4941429231606&q=Buenos Aires&aqi=no")
-         .to_return(status: 200, body: respuesta.to_json, headers: {})
-end
-Dado('el dia es {string}') do |dia|
-  if dia == 'domingo'
-    @fecha = '2023-06-18 13:00'
+Dado('el dia es {string} y el clima es {string}') do|dia, clima|
+  if dia == 'domingo' && clima == 'lluvia'
+    @estado_bonificador = true
   else
-    @fecha = '2023-06-19 13:00'
+    @estado_bonificador= false
   end  
 end
 
-Dado('el clima es {string}') do |clima|
-  if clima == 'lluvia'
-    @mm_lluvia == 0.9
-  else
-    @mm_lluvia == 0.0
-  end
-  respuesta = {location:{localtime:@fecha}, current:{precip_mm:@mm_lluvia}}
-  get_clima_mock(respuesta)
+Cuando('cargo un monto de {float}') do |saldo|
+  request_body = { telegram_id: @usuario.telegram_id, saldo: saldo, estado_bonificador_test: @estado_bonificador }.to_json
+  @resultado_carga = Faraday.post(get_url_for('/saldo'), request_body, { 'Content-Type' => 'application/json' })
 end
 
 Entonces('mi saldo es de {float}') do |saldo_esperado|

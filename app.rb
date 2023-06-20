@@ -1,9 +1,11 @@
 require 'sinatra'
 require 'sequel'
 require 'sinatra/custom_logger'
+require 'dotenv/load'
 require_relative './config/configuration'
 require_relative './lib/version'
 require_relative './email/casilla_de_correo'
+require_relative './spec/mocks/mock_bonificador_exitoso'
 Dir[File.join(__dir__, 'dominio', '*.rb')].each { |file| require file }
 Dir[File.join(__dir__, 'persistencia', '*.rb')].each { |file| require file }
 
@@ -66,11 +68,16 @@ end
 post '/saldo' do
   @body ||= request.body.read
   parametros_usuario = JSON.parse(@body)
+  bonificador = Bonificador.new
+  if parametros_usuario['estado_bonificador_test'] == true
+    bonificador = MockBonificadorExitoso.new(ENV['COEFICIENTE_BONIFICACION'].to_f)
+  end
   begin
     repositorio_usuarios = RepositorioUsuarios.new
     usuario = repositorio_usuarios.find_by_telegram_id(parametros_usuario['telegram_id'].to_s)
     repositorio_movimientos = RepositorioMovimientos.new
-    usuario.cargar_saldo(parametros_usuario['saldo'], repositorio_usuarios, repositorio_movimientos)
+    usuario.cargar_saldo(parametros_usuario['saldo'], repositorio_usuarios, repositorio_movimientos,
+                         bonificador:)
   rescue ObjectNotFound
     status 400
     { error: 'debe registrarse primero' }.to_json
