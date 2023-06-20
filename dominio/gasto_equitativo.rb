@@ -33,7 +33,7 @@ class GastoEquitativo
     resultado = []
     actualizar_cobros_segun_movimientos
     @grupo.usuarios.each do |usuario|
-      resultado.push({ nombre: usuario.nombre, estado: usuario_pago(usuario) })
+      resultado.push({ nombre: usuario.nombre, estado: usuario_pago(usuario), cobro: @cobro[usuario.nombre] })
     end
     resultado
   end

@@ -47,7 +47,7 @@ describe GastoEquitativo do
       grupo = crear_grupo_con_usuarios('casa', 4, repositorio_usuarios)
       creador = repositorio_usuarios.find_by_telegram_username('user3')
       gasto = described_class.new('supermercado', 500, grupo, creador)
-      usuario1 = { nombre: 'usuario1', estado: 'Pendiente' }
+      usuario1 = { nombre: 'usuario1', estado: 'Pendiente', cobro: 0.0 }
       estado = gasto.estado_de_usuarios
       expect(estado[0]).to eq usuario1
       expect(estado.size).to eq 4
@@ -64,7 +64,7 @@ describe GastoEquitativo do
       expect(cobrado).to eq saldo
       estado = gasto.estado_de_usuarios
       expect(creador.saldo).to eq saldo
-      usuario = { nombre: 'usuario2', estado: 'Pagado' }
+      usuario = { nombre: 'usuario2', estado: 'Pagado', cobro: 125.0 }
       expect(estado[1]).to eq usuario
       expect(estado.size).to eq 4
     end
@@ -81,7 +81,7 @@ describe GastoEquitativo do
       expect(creador.saldo).to eq 125
       expect(usuario_pagador.saldo).to eq 375
       estado = gasto.estado_de_usuarios
-      usuario = { nombre: 'usuario2', estado: 'Pagado' }
+      usuario = { nombre: 'usuario2', estado: 'Pagado', cobro: 125.0 }
       expect(estado[1]).to eq usuario
       expect(estado.size).to eq 4
     end
@@ -98,7 +98,7 @@ describe GastoEquitativo do
       estado = gasto.estado_de_usuarios
       expect(creador.saldo).to eq 100
       expect(usuario_pagador.saldo).to eq 400
-      estado_pendiente = { nombre: 'usuario2', estado: 'Pendiente' }
+      estado_pendiente = { nombre: 'usuario2', estado: 'Pendiente', cobro: 100.0 }
       expect(estado[1]).to eq estado_pendiente
       expect(estado.size).to eq 4
       cobrado = gasto.pagar(usuario_pagador, 25, repositorio_usuarios)
@@ -106,7 +106,7 @@ describe GastoEquitativo do
       estado = gasto.estado_de_usuarios
       expect(creador.saldo).to eq 125
       expect(usuario_pagador.saldo).to eq 375
-      estado_paga = { nombre: 'usuario2', estado: 'Pagado' }
+      estado_paga = { nombre: 'usuario2', estado: 'Pagado', cobro: 125.0 }
       expect(estado[1]).to eq estado_paga
     end
     it 'se crea un gasto y un usuario paga de menos sigue pendiente y luego de mas del resto solo cobra lo que debe' do
@@ -122,7 +122,7 @@ describe GastoEquitativo do
       estado = gasto.estado_de_usuarios
       expect(creador.saldo).to eq 100
       expect(usuario_pagador.saldo).to eq 400
-      estado_pendiente = { nombre: 'usuario2', estado: 'Pendiente' }
+      estado_pendiente = { nombre: 'usuario2', estado: 'Pendiente', cobro: 100.0 }
       expect(estado[1]).to eq estado_pendiente
       expect(estado.size).to eq 4
       cobrado = gasto.pagar(usuario_pagador, 100, repositorio_usuarios)
@@ -130,7 +130,7 @@ describe GastoEquitativo do
       estado = gasto.estado_de_usuarios
       expect(creador.saldo).to eq 125
       expect(usuario_pagador.saldo).to eq 375
-      estado_paga = { nombre: 'usuario2', estado: 'Pagado' }
+      estado_paga = { nombre: 'usuario2', estado: 'Pagado', cobro: 125.0 }
       expect(estado[1]).to eq estado_paga
     end
     it 'se crea un gasto y un usuario paga lo que no corresponde lanza excepcion' do
