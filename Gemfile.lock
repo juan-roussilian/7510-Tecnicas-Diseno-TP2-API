@@ -164,9 +164,8 @@ DEPENDENCIES
   cucumber
   debug (>= 1.0.0)
   faraday
-  net-smtp (~> 0.2.1)
   pg
-  pony (~> 1.11)
+  pony
   rack-test
   rake
   rspec
