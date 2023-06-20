@@ -17,7 +17,7 @@ describe Bonificador do
       respuesta = { location: { localtime: '2023-06-18 13:00' }, current: { precip_mm: 0.9 } }
       get_clima_mock(respuesta)
       saldo_bonificado = bonificador.aplicar_bonificacion_segun_clima_y_dia(saldo_inicial)
-      expect(saldo_bonificado).to eq(saldo_inicial / 10 + saldo_inicial)
+      expect(saldo_bonificado).to eq(saldo_inicial * 1.1)
     end
 
     it 'dia lunes con lluvia no bonifica' do

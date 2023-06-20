@@ -14,3 +14,4 @@ data:
   URL_API_CLIMA: "http://api.weatherapi.com/v1/current.json"
   API_CLIMA_KEY: "d584af55f0324c59a4941429231606"
   CIUDAD_API_CLIMA: "Buenos Aires"
+  COEFICIENTE_BONIFICACION: 1.1

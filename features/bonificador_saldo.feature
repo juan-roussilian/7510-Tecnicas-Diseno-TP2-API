@@ -1,7 +1,6 @@
 # language: es
 
 Característica: Como usuario quiero recibir un obsequio del 10% al cargar saldo si el dia es domingo y el clima lluvia
-  
   @wip
   Escenario: 22.1 Cargar saldo dia domingo con lluvia carga con obsequio
     Dado que soy un usuario registrado con saldo "0"
