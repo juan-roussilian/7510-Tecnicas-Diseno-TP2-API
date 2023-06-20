@@ -39,7 +39,10 @@ class GastoEquitativo
   end
 
   def pagar(usuario, cantidad, repositorio_usuarios)
-    raise UsuarioNoPerteneceAlGrupoDelGasto.new(usuario.nombre, @grupo.nombre) unless @grupo.es_miembro(usuario.nombre)
+    unless @grupo.es_miembro(usuario.telegram_username)
+      raise UsuarioNoPerteneceAlGrupoDelGasto.new(usuario.nombre,
+                                                  @grupo.nombre)
+    end
 
     actualizar_cobros_segun_movimientos
     return 0.0 if usuario_pago(usuario) == ESTADO_PAGADO # el usuario ya pago lo que debia

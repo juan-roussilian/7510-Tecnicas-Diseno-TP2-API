@@ -14,7 +14,7 @@ class Grupo
 
   def es_miembro(nombre_usuario)
     @usuarios.each do |usuario|
-      return true if usuario.nombre == nombre_usuario
+      return true if usuario.telegram_username == nombre_usuario
     end
     false
   end

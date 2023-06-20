@@ -56,7 +56,7 @@ describe Grupo do
     end
     grupo = Grupo.new('grupoTest', usuarios, repositorio_grupos)
     repositorio_grupos.save(grupo)
-    expect(grupo.es_miembro(usuarios[0].nombre)).to eq true
+    expect(grupo.es_miembro(usuarios[0].telegram_username)).to eq true
     expect(grupo.es_miembro('asd')).to eq false
   end
 end
