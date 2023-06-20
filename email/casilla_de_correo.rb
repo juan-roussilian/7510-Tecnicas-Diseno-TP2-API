@@ -4,41 +4,34 @@ require 'pony'
 require 'byebug'
 
 class CasillaCorreo
-  REMITENTE_EMAIL = 'tokiomemo2@gmail.com'.freeze
-  HOST = 'smtp.gmail.com'.freeze
-  PORT = '587'.freeze
-  USERNAME = 'tokiomemo2@gmail.com'.freeze
-  PASSWORD = 'lonuhrcabigzvztw'.freeze
-  AUTH = :plain
-
-  ASUNTO = 'Movimiento realizado'.freeze
-
-  LOCAL_VIA = :file
-  LOCAL_CONFIG = {
-    location: 'tmp/testmail'
-  }.freeze
-
-  SMTP_VIA = :smtp
-  SMTP_CONFIG = {
-    address: HOST,
-    port: PORT,
-    enable_starttls_auto: true,
-    user_name: USERNAME,
-    password: PASSWORD,
-    authentication: AUTH,
-    domain: 'localhost.localdomain'
-  }.freeze
-
   def initialize(test_mode)
     @test_mode = test_mode
+
+    @asunto = 'Movimiento realizado'.freeze
+
+    @local_via = :file
+    @local_config = {
+      location: 'tmp/testmail'
+    }
+    @direccion_mail = ENV['DIRECION_MAILER'] || 'tokiomemo2@gmail.com'
+    @smtp_via = :smtp
+    @smtp_config = {
+      address: ENV['HOST_MAILER'],
+      port: ENV['PUERTO_MAILER'],
+      enable_starttls_auto: true,
+      user_name: @direccion_mail,
+      password: ENV['CONTRASENA_MAILER'],
+      authentication: :plain,
+      domain: ENV['MAILING_DOMAIN']
+    }
   end
 
   def enviar_correo(mensaje_base, destinatario)
     mensaje = procesado_de_mensaje(mensaje_base, destinatario)
     if @test_mode
-      enviar_email(mensaje, destinatario, LOCAL_VIA, LOCAL_CONFIG)
+      enviar_email(mensaje, destinatario, @local_via, @local_config)
     else
-      enviar_email(mensaje, destinatario, SMTP_VIA, SMTP_CONFIG)
+      enviar_email(mensaje, destinatario, @smtp_via, @smtp_config)
     end
   end
 
@@ -46,9 +39,9 @@ class CasillaCorreo
     mensaje_base = "Se ha transferido #{monto} a #{nombre} con exito."
     mensaje = procesado_de_mensaje(mensaje_base, destinatario)
     if @test_mode
-      enviar_email(mensaje, destinatario, LOCAL_VIA, LOCAL_CONFIG)
+      enviar_email(mensaje, destinatario, @local_via, @local_config)
     else
-      enviar_email(mensaje, destinatario, SMTP_VIA, SMTP_CONFIG)
+      enviar_email(mensaje, destinatario, @smtp_via, @smtp_config)
     end
   end
 
@@ -56,7 +49,7 @@ class CasillaCorreo
 
   def procesado_de_mensaje(mensaje_base, destinatario)
     hoy = Date.today
-    ["From: #{REMITENTE_EMAIL}",
+    ["From: #{@direccion_mail}",
      "To: #{destinatario}",
      "Date: #{hoy}",
      '',
@@ -65,9 +58,9 @@ class CasillaCorreo
 
   def enviar_email(mensaje, destinatario, via, config)
     Pony.mail({
-                from: REMITENTE_EMAIL,
+                from: @direccion_mail,
                 to: destinatario,
-                subject: ASUNTO,
+                subject: @asunto,
                 body: mensaje,
                 via:,
                 via_options: config

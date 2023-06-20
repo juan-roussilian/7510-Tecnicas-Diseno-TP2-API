@@ -1,5 +1,5 @@
 class Version
   def self.current
-    '0.13.1'
+    '0.13.2'
   end
 end

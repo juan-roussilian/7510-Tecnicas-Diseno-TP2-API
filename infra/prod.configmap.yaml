@@ -6,3 +6,8 @@ data:
   PORT: "3000"
   LOG_LEVEL: "info"
   APP_ENV: "production"
+  DIRECCION_MAILER: "tokiomemo2@gmail.com"
+  DOMINIO_MAILER: "localhost.localdomain"
+  HOST_MAILER: "smtp.gmail.com"
+  PUERTO_MAILER: "587"
+  CONTRASENA_MAILER: "lonuhrcabigzvztw"
