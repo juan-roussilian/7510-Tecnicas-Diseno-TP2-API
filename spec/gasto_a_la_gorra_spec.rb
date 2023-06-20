@@ -24,5 +24,12 @@ describe GastoALaGorra do
       gasto = described_class.new('supermercado', 500, grupo, creador)
       expect(gasto.monto).to eq 500
     end
+    it 'dado un gasto a la gorra con monto 500 para un grupo de 2 usuarios, obtengo que la deuda de cada uno es 500' do
+      repositorio_usuarios = MockRepositorioUsuarios.new
+      grupo = crear_grupo_con_usuarios('casa', 2, repositorio_usuarios)
+      creador = repositorio_usuarios.find_by_telegram_username('user1')
+      gasto = described_class.new('almacen', 500, grupo, creador)
+      expect(gasto.deuda_por_usuario).to eq 500
+    end
   end
 end
