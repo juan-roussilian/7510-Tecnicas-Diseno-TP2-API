@@ -1,6 +1,8 @@
 require 'mail'
 require 'byebug'
 
+RUTA_ARCHIVOS_MAIL_TEST = './tmp/testmail/'.freeze
+
 Dado('que soy un usuario registrado con mail {string}') do |mail|
   @mail = mail
   repo_usuarios = RepositorioUsuarios.new
@@ -12,7 +14,7 @@ Dado('que soy un usuario registrado con mail {string}') do |mail|
 end
 
 Entonces('se me notifica que transferí {float} a {string}') do |monto, nombre|
-  archivo = File.open("./testmail/#{@mail}")
+  archivo = File.open("#{RUTA_ARCHIVOS_MAIL_TEST}#{@mail}")
   contenido = archivo.read
   expect(contenido.include?(monto.to_s)).to eq true
   expect(contenido.include?(nombre)).to eq true

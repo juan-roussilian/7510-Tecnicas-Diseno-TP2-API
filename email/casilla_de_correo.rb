@@ -15,7 +15,7 @@ class CasillaCorreo
 
   LOCAL_VIA = :file
   LOCAL_CONFIG = {
-    location: 'testmail/'
+    location: 'tmp/testmail'
   }.freeze
 
   SMTP_VIA = :smtp
@@ -55,7 +55,7 @@ class CasillaCorreo
   private
 
   def procesado_de_mensaje(mensaje_base, destinatario)
-    hoy = Date.today # pasar a RFC 2822
+    hoy = Date.today
     ["From: #{REMITENTE_EMAIL}",
      "To: #{destinatario}",
      "Date: #{hoy}",
