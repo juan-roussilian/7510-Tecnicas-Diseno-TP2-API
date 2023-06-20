@@ -13,13 +13,8 @@ variables:
   TEST_DB_URL: postgres://webapi:Passw0rd!@postgres/db_test
   DB_HOST: postgres
   K8SNAMESPACE: tokio-nicopaez
-  DIRECCION_MAILER: tokiomemo2@gmail.com
-  DOMINIO_MAILER: localhost.localdomain
-  HOST_MAILER: smtp.gmail.com
-  PUERTO_MAILER: 587
-  CONTRASENA_MAILER: lonuhrcabigzvztw
   URL_API_CLIMA: http://api.weatherapi.com/v1/current.json
-  API_CLIMA_KEY: d584af55f0324c59a4941429231606
+  API_CLIMA_KEY: "d584af55f0324c59a4941429231606"
   CIUDAD_API_CLIMA: Buenos Aires
   COEFICIENTE_BONIFICACION: "1.1"
 
