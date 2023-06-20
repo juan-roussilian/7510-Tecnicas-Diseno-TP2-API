@@ -183,7 +183,8 @@ rescue ObjectNotFound
 else
   status 200
   { id: params[:id_gasto], nombre: gasto.nombre, tipo: gasto.tipo, saldo: gasto.monto,
-    grupo: gasto.grupo.nombre, creador: gasto.creador, estado: estado_propio, usuarios: estado_general }.to_json
+    grupo: gasto.grupo.nombre, creador: gasto.creador.telegram_username,
+    estado: estado_propio, usuarios: estado_general }.to_json
 end
 
 get '/movimientos' do
