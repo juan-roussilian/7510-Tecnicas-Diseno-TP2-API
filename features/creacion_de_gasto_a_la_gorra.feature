@@ -1,6 +1,6 @@
 # language: es
 Característica: Como usuario quiero poder crear un gasto a la gorra para repartirlo con un grupo
-  @wip @local
+  @local
   Escenario: 21.1 Usuario registrado en un grupo de dos personas crea un gasto equitativo y todos los miembros deben pagar hasta completar el monto
     Dado que soy un usuario registrado
     Y estoy en un grupo con "juan"
@@ -9,7 +9,7 @@ Característica: Como usuario quiero poder crear un gasto a la gorra para repart
     Y debo pagar "100"
     Y "juan" debe pagar "100"
 
-  @wip @local
+  @local
   Escenario: 21.2 Usuario registrado en un grupo de cuatro personas crea un gasto equitativo y este se divide igualmente entre los miembros
     Dado que soy un usuario registrado
     Y estoy en un grupo con "juan", "pedro" y "lucas"

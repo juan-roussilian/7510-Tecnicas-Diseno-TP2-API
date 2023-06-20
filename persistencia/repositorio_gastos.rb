@@ -3,6 +3,8 @@ class RepositorioGastos < AbstractRepository
   self.table_name = :gastos
   self.model_class = 'GastoEquitativo'
 
+  TIPO_GORRA = 'gorra'.freeze
+
   def find_by_name(nombre)
     found_record = dataset.where(nombre:).first
     raise GastoNoEncontrado, nombre if found_record.nil?
@@ -53,7 +55,11 @@ class RepositorioGastos < AbstractRepository
     id_grupo = a_hash[:id_grupo]
     creador = RepositorioUsuarios.new.find(a_hash[:id_creador])
     grupo = RepositorioGrupos.new.find(id_grupo)
-    GastoEquitativo.new(nombre, monto, grupo, creador, id:)
+    if a_hash[:tipo] == TIPO_GORRA
+      GastoALaGorra.new(nombre, monto, grupo, creador, id:)
+    else
+      GastoEquitativo.new(nombre, monto, grupo, creador, id:)
+    end
   end
 
   def changeset(gasto)
@@ -61,7 +67,8 @@ class RepositorioGastos < AbstractRepository
       nombre: gasto.nombre,
       monto: gasto.monto,
       id_grupo: gasto.grupo.id,
-      id_creador: gasto.creador.id
+      id_creador: gasto.creador.id,
+      tipo: gasto.tipo
     }
   end
 end
