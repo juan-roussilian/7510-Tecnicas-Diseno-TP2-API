@@ -12,6 +12,7 @@ end
 
 def gasto_auxiliar(usuario_creador, grupo)
   gasto = GastoEquitativo.new('gasto', 50, grupo, usuario_creador)
+  gasto.repositorio_movimientos = RepositorioMovimientos.new
   RepositorioGastos.new.save(gasto)
   gasto
 end

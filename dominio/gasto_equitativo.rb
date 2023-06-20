@@ -1,6 +1,6 @@
 class GastoEquitativo
   attr_reader :monto, :grupo, :nombre, :creador, :updated_on, :created_on
-  attr_accessor :id
+  attr_accessor :id, :repositorio_movimientos
 
   TIPO_DE_GASTO = 'equitativo'.freeze
   ESTADO_FALTA_PAGAR = 'Pendiente'.freeze
@@ -13,10 +13,15 @@ class GastoEquitativo
     @creador = creador
     @id = id
     @cobro = iniciacion_de_cobro
+    actualizar_cobros_segun_movimientos
   end
 
   def deuda_por_usuario
     @monto / @grupo.usuarios.count
+  end
+
+  def deuda_pendiente_de(usuario)
+    deuda_por_usuario - @cobro[usuario.nombre]
   end
 
   def tipo
@@ -26,6 +31,7 @@ class GastoEquitativo
   def estado_de_usuarios
     # completar con la US de pagar gasto
     resultado = []
+    actualizar_cobros_segun_movimientos
     @grupo.usuarios.each do |usuario|
       resultado.push({ nombre: usuario.nombre, estado: usuario_pago(usuario) })
     end
@@ -35,40 +41,32 @@ class GastoEquitativo
   def pagar(usuario, cantidad, repositorio_usuarios)
     raise UsuarioNoPerteneceAlGrupoDelGasto.new(usuario.nombre, @grupo.nombre) unless @grupo.es_miembro(usuario.nombre)
 
+    actualizar_cobros_segun_movimientos
     return 0.0 if usuario_pago(usuario) == ESTADO_PAGADO # el usuario ya pago lo que debia
 
-    if @cobro[usuario.nombre] > 0.0
-      pagar_resto(usuario, cantidad, repositorio_usuarios)
-    elsif deuda_por_usuario > cantidad
-      pagar_fraccion(usuario, cantidad, repositorio_usuarios)
-    else
-      pagar_todo(usuario, repositorio_usuarios)
-    end
+    deuda_a_pagar = determinar_deuda_a_pagar(usuario, cantidad)
+    usuario.pagar(deuda_a_pagar, repositorio_usuarios)
+    @cobro[usuario.nombre] += deuda_a_pagar
+    @repositorio_movimientos&.save(MovimientoPagoDeGasto.new(@creador, deuda_a_pagar, self,
+                                                             usuario))
+    deuda_a_pagar
   end
 
   private
 
-  def pagar_todo(usuario, repositorio_usuarios)
-    usuario.pagar(deuda_por_usuario, repositorio_usuarios)
-    @cobro[usuario.nombre] = deuda_por_usuario
-    deuda_por_usuario
-  end
+  def actualizar_cobros_segun_movimientos
+    return if @repositorio_movimientos.nil?
 
-  def pagar_fraccion(usuario, cantidad, repositorio_usuarios)
-    usuario.pagar(cantidad, repositorio_usuarios)
-    @cobro[usuario.nombre] += cantidad
-    cantidad
-  end
-
-  def pagar_resto(usuario, cantidad, repositorio_usuarios)
-    if @cobro[usuario.nombre] + cantidad < deuda_por_usuario
-      pagar_fraccion(usuario, cantidad, repositorio_usuarios)
-    else
-      cobro = deuda_por_usuario - @cobro[usuario.nombre]
-      usuario.pagar(cobro, repositorio_usuarios)
-      @cobro[usuario.nombre] = deuda_por_usuario
-      cobro
+    @grupo.usuarios.each do |usuario|
+      @repositorio_movimientos.find_by_gasto(@id).each do |movimiento|
+        @cobro[usuario.nombre] += movimiento.monto if movimiento.usuario_pagador.id == usuario.id
+      end
     end
+  end
+
+  def determinar_deuda_a_pagar(usuario, monto_recibido)
+    deuda_restante = deuda_por_usuario - @cobro[usuario.nombre]
+    monto_recibido > deuda_restante ? deuda_restante : monto_recibido
   end
 
   def iniciacion_de_cobro
