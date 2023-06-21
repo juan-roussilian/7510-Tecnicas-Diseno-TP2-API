@@ -1,18 +1,9 @@
-class GastoALaGorra
-  attr_reader :monto, :grupo, :nombre, :creador, :updated_on, :created_on
-  attr_accessor :id, :repositorio_movimientos
-
+require_relative 'gasto'
+class GastoALaGorra < Gasto
   TIPO_DE_GASTO = 'gorra'.freeze
-  ESTADO_FALTA_PAGAR = 'Pendiente'.freeze
-  ESTADO_PAGADO = 'Pagado'.freeze
 
   def initialize(nombre, monto, grupo, creador, id: nil)
-    @nombre = nombre
-    @monto = monto
-    @grupo = grupo
-    @creador = creador
-    @id = id
-    @cobro = iniciacion_de_cobro
+    super
     @total_cobrado = 0.0
     actualizar_cobros_segun_movimientos
   end
@@ -27,18 +18,6 @@ class GastoALaGorra
 
   def tipo
     TIPO_DE_GASTO
-  end
-
-  def estado_de_usuarios
-    # completar con la US de pagar gasto
-    resultado = []
-    actualizar_cobros_segun_movimientos
-    @grupo.usuarios.each do |usuario|
-      unless usuario.telegram_id == @creador.telegram_id
-        resultado.push({ nombre: usuario.nombre, estado: usuario_pago(usuario), cobro: @cobro[usuario.nombre] })
-      end
-    end
-    resultado
   end
 
   def pagar(usuario, cantidad, repositorio_usuarios)
@@ -84,14 +63,6 @@ class GastoALaGorra
     return monto_recibido if monto_recibido.zero?
 
     monto_recibido > deuda_restante ? deuda_restante : monto_recibido
-  end
-
-  def iniciacion_de_cobro
-    resultado = {}
-    @grupo.usuarios.each do |usuario|
-      resultado[usuario.nombre] = 0.0
-    end
-    resultado
   end
 
   def usuario_pago(_usuario)
