@@ -151,11 +151,7 @@ post '/gasto' do
   grupo = RepositorioGrupos.new.find_by_name(parametros_gasto['nombre_grupo'])
   creador = RepositorioUsuarios.new.find_by_telegram_id(parametros_gasto['usuario'].to_s)
   repositorio_gastos = RepositorioGastos.new
-  gasto = if parametros_gasto['tipo'] == 'gorra'
-            GastoALaGorra.new(nombre, monto, grupo, creador)
-          else
-            GastoEquitativo.new(nombre, monto, grupo, creador)
-          end
+  gasto = CreadorDeGasto.new.crear_gasto(nombre, monto, grupo, creador, parametros_gasto['tipo'])
   repositorio_gastos.save(gasto)
 rescue ObjectNotFound
   status 400

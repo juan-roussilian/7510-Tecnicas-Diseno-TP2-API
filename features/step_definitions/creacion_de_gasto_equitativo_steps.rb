@@ -25,7 +25,7 @@ Dado('estoy en un grupo con {string}, {string} y {string}') do |nombre_otro_usua
 end
 
 Cuando('quiero crear un gasto equitativo de {string} con el nombre {string}') do |monto, nombre_gasto|
-  request_body = { usuario: @usuario.telegram_id, nombre_gasto:, monto:, nombre_grupo: @grupo.nombre }.to_json
+  request_body = { usuario: @usuario.telegram_id, nombre_gasto:, monto:, nombre_grupo: @grupo.nombre, tipo: 'equitativo' }.to_json
   @respuesta = Faraday.post(get_url_for('/gasto'), request_body, { 'Content-Type' => 'application/json' })
 end
 

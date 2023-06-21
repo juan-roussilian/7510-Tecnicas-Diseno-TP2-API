@@ -6,7 +6,7 @@ Dado(/^estoy en un grupo que tiene gasto con un id$/) do
   request_body = { nombre_grupo: 'grupo', usuarios: [@usuario.telegram_username, @otro_usuario.telegram_username] }.to_json
   Faraday.post(get_url_for('/grupo'), request_body, { 'Content-Type' => 'application/json' })
   @monto = 100
-  request_body_gasto = { usuario: 0, nombre_gasto: 'gasto', monto: @monto, nombre_grupo: 'grupo' }.to_json
+  request_body_gasto = { usuario: 0, nombre_gasto: 'gasto', monto: @monto, nombre_grupo: 'grupo', tipo: 'equitativo' }.to_json
   respuesta = Faraday.post(get_url_for('/gasto'), request_body_gasto, { 'Content-Type' => 'application/json' })
   @id = JSON.parse(respuesta.body)['id']
 end
