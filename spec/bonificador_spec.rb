@@ -28,5 +28,14 @@ describe Bonificador do
       saldo_bonificado = bonificador.aplicar_bonificacion_segun_clima_y_dia(saldo_inicial)
       expect(saldo_bonificado).to eq(saldo_inicial)
     end
+
+    it 'dia domingo sin lluvia no bonifica' do
+      bonificador = described_class.new
+      saldo_inicial = 4000
+      respuesta = { location: { localtime: '2023-06-18 13:00' }, current: { precip_mm: 0.2 } }
+      get_clima_mock(respuesta)
+      saldo_bonificado = bonificador.aplicar_bonificacion_segun_clima_y_dia(saldo_inicial)
+      expect(saldo_bonificado).to eq(saldo_inicial)
+    end
   end
 end
