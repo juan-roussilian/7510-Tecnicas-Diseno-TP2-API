@@ -1,6 +1,3 @@
-require 'webmock'
-require 'webmock/cucumber'
-
 Dado('el dia es {string} y el clima es {string}') do|dia, clima|
   if dia == 'domingo' && clima == 'lluvia'
     @bonificar_siempre = true
