@@ -23,8 +23,8 @@ Característica: Como usuario quiero recibir un obsequio del 10% al cargar saldo
     Dado que soy un usuario registrado con saldo "400"
     Y el dia es domingo 
     Y el clima es soleado
-    Cuando cargo un monto de 300
-    Entonces mi saldo es de 700
+    Cuando cargo un monto de 300.0
+    Entonces mi saldo es de 700.0
   
   @local
   Escenario: 22.4 Cargar saldo dia que no es domingo sin clima de lluvia carga sin obsequio
@@ -34,10 +34,10 @@ Característica: Como usuario quiero recibir un obsequio del 10% al cargar saldo
     Cuando cargo un monto de 420.0
     Entonces mi saldo es de 1000.0
   
-  @local
+ @local
   Escenario: 22.5 Cargar saldo dia domingo con lluvia carga con obsequio
     Dado que soy un usuario registrado con saldo "0"
     Y el dia es domingo
     Y el clima es lluvia
-    Cuando cargo un monto de 1000
-    Entonces mi saldo es de 1100
+    Cuando cargo un monto de 1000.0
+    Entonces mi saldo es de 1100.0

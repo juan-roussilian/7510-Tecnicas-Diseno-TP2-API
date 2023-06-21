@@ -51,14 +51,14 @@ describe Usuario do
     it 'usuario con bonificador exitoso debe cargar saldo con bonificacion del 10%' do
       usuario = described_class.new('nuevo usuario', 'test@test.com', 'unId', 'username')
       bonificador = MockBonificadorExitoso.new(ENV['COEFICIENTE_BONIFICACION'].to_f)
-      usuario.cargar_saldo(500, MockRepositorioUsuarios.new, bonificador:)
+      usuario.cargar_saldo(500, MockRepositorioUsuarios.new, nil, bonificador)
       expect(usuario.saldo).to eq 550
     end
 
     it 'usuario con bonificador sin exito debe cargar saldo sin bonificacion' do
       usuario = described_class.new('nuevo usuario', 'test@test.com', 'unId', 'username')
       bonificador = MockBonificadorSinExito.new
-      usuario.cargar_saldo(500, MockRepositorioUsuarios.new, bonificador:)
+      usuario.cargar_saldo(500, MockRepositorioUsuarios.new, nil, bonificador)
       expect(usuario.saldo).to eq 500
     end
   end

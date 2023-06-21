@@ -1,6 +1,10 @@
 class ProveedorFecha
-  def initialize(fecha)
-    @fecha = Date.parse fecha
+  def initialize(fecha = nil)
+    @fecha = if fecha.nil?
+               Date.today
+             else
+               Date.parse fecha
+             end
   end
 
   def es_domingo?

@@ -23,8 +23,9 @@ end
 
 Cuando('cargo un monto de {float}') do |saldo|
   repositorio_usuarios = RepositorioUsuarios.new
+  repositorio_movimientos = RepositorioMovimientos.new
   bonificador = Bonificador.new(@proveedor_fecha, @proveedor_clima)
-  @usuario.cargar_saldo(saldo, repositorio_usuarios,nil,bonificador:bonificador)
+  @usuario.cargar_saldo(saldo, repositorio_usuarios, repositorio_movimientos, bonificador)
 end
 
 Entonces('mi saldo es de {float}') do |saldo_esperado|

@@ -69,10 +69,12 @@ post '/saldo' do
   parametros_usuario = JSON.parse(@body)
 
   begin
+    consultor_clima = ConsultorClima.new
+    bonificador = Bonificador.new(ProveedorFecha.new, ProveedorClima.new(consultor_clima))
     repositorio_usuarios = RepositorioUsuarios.new
     usuario = repositorio_usuarios.find_by_telegram_id(parametros_usuario['telegram_id'].to_s)
     repositorio_movimientos = RepositorioMovimientos.new
-    usuario.cargar_saldo(parametros_usuario['saldo'], repositorio_usuarios, repositorio_movimientos)
+    usuario.cargar_saldo(parametros_usuario['saldo'], repositorio_usuarios, repositorio_movimientos, bonificador)
   rescue ObjectNotFound
     status 400
     { error: 'debe registrarse primero' }.to_json

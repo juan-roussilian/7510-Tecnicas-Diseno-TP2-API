@@ -18,7 +18,7 @@ class Usuario
     @saldo = Billetera.new(self)
   end
 
-  def cargar_saldo(cantidad, repositorio_usuarios, repositorio_movimientos = nil, bonificador: nil)
+  def cargar_saldo(cantidad, repositorio_usuarios, repositorio_movimientos = nil, bonificador = nil)
     cantidad = bonificador.aplicar_bonificacion_segun_clima_y_dia(cantidad) unless bonificador.nil?
     @saldo.cargar_saldo(cantidad, repositorio_usuarios, repositorio_movimientos)
   end
