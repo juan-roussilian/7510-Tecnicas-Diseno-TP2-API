@@ -5,10 +5,13 @@ Dado('el dia es domingo') do
 
 end
 
+Dado('el dia es lunes') do
+  @proveedor_fecha = ProveedorFecha.new('2023-06-19')
+end
+
 Dado('el clima es lluvia') do
   @proveedor_clima = ProveedorClima.new(MockConsultorClimaLluvioso.new) 
 end
-
 
 Cuando('cargo un monto de {float}') do |saldo|
   repositorio_usuarios = RepositorioUsuarios.new

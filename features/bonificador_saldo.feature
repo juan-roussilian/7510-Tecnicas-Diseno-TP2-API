@@ -10,7 +10,7 @@ Característica: Como usuario quiero recibir un obsequio del 10% al cargar saldo
     Cuando cargo un monto de 505.0
     Entonces mi saldo es de 555.5
 
-  @wip @local
+  @local
   Escenario: 22.2 Cargar saldo dia que no es domingo con lluvia carga sin obsequio
     Dado que soy un usuario registrado con saldo "1000"
     Y el dia es lunes
