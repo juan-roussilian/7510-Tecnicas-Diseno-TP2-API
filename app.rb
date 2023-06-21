@@ -5,8 +5,7 @@ require 'dotenv/load'
 require_relative './config/configuration'
 require_relative './lib/version'
 require_relative './email/casilla_de_correo'
-require_relative './spec/mocks/mock_bonificador_exitoso'
-require_relative './spec/mocks/mock_bonificador_sin_exito'
+require 'byebug'
 Dir[File.join(__dir__, 'dominio', '*.rb')].each { |file| require file }
 Dir[File.join(__dir__, 'persistencia', '*.rb')].each { |file| require file }
 
@@ -69,14 +68,10 @@ end
 post '/saldo' do
   @body ||= request.body.read
   parametros_usuario = JSON.parse(@body)
-  bonificador = Bonificador.new
-  if parametros_usuario['estado_bonificador_test'] == true
-    bonificador = MockBonificadorExitoso.new(ENV['COEFICIENTE_BONIFICACION'].to_f)
-  elsif parametros_usuario['estado_bonificador_test'] == false
-    bonificador = MockBonificadorSinExito.new
-  end
 
   begin
+    bonificador = Bonificador.new(bonificar_siempre: parametros_usuario['bonificar_siempre'],
+                                  nunca_bonificar: parametros_usuario['no_bonificar'])
     repositorio_usuarios = RepositorioUsuarios.new
     usuario = repositorio_usuarios.find_by_telegram_id(parametros_usuario['telegram_id'].to_s)
     repositorio_movimientos = RepositorioMovimientos.new
