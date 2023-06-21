@@ -210,13 +210,22 @@ else
   movimientos_salida.to_json
 end
 
+def determinar_monto(monto_recibido)
+  begin
+    monto = monto_recibido.to_f
+  rescue KeyError
+    monto = 0
+  end
+  monto
+end
+
 post '/pagos' do
-  @body ||= request.body.read
-  parametros_pago = JSON.parse(@body)
+  parametros_pago = JSON.parse(request.body.read)
   usuario = RepositorioUsuarios.new.find_by_telegram_id(parametros_pago['usuario'].to_s)
   gasto = RepositorioGastos.new.find_by_id(parametros_pago['id_gasto'])
   gasto.repositorio_movimientos = RepositorioMovimientos.new
-  cantidad_cobrada = gasto.pagar(usuario, parametros_pago['monto'].to_f, RepositorioUsuarios.new)
+  monto = determinar_monto(parametros_pago['monto'])
+  cantidad_cobrada = gasto.pagar(usuario, monto, RepositorioUsuarios.new)
 rescue ObjectNotFound
   status 400
   { error: 'usuario no registrado' }.to_json

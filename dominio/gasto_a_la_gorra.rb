@@ -81,6 +81,8 @@ class GastoALaGorra
 
   def determinar_deuda_a_pagar(usuario, monto_recibido)
     deuda_restante = deuda_pendiente_de(usuario)
+    return monto_recibido if monto_recibido.zero?
+
     monto_recibido > deuda_restante ? deuda_restante : monto_recibido
   end
 

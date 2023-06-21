@@ -40,7 +40,7 @@ class GastoEquitativo
     resultado
   end
 
-  def pagar(usuario, cantidad, repositorio_usuarios)
+  def pagar(usuario, _cantidad, repositorio_usuarios)
     unless @grupo.es_miembro(usuario.telegram_username)
       raise UsuarioNoPerteneceAlGrupoDelGasto.new(usuario.nombre,
                                                   @grupo.nombre)
@@ -49,7 +49,7 @@ class GastoEquitativo
     actualizar_cobros_segun_movimientos
     return 0.0 if usuario_pago(usuario) == ESTADO_PAGADO # el usuario ya pago lo que debia
 
-    deuda_a_pagar = determinar_deuda_a_pagar(usuario, cantidad)
+    deuda_a_pagar = deuda_por_usuario
     usuario.transferir(@creador, deuda_a_pagar, repositorio_usuarios, @repositorio_movimientos)
     @cobro[usuario.nombre] += deuda_a_pagar
     @repositorio_movimientos&.save(MovimientoPagoDeGasto.new(@creador, deuda_a_pagar, self,
@@ -67,11 +67,6 @@ class GastoEquitativo
         @cobro[usuario.nombre] += movimiento.monto if movimiento.usuario_pagador.id == usuario.id
       end
     end
-  end
-
-  def determinar_deuda_a_pagar(usuario, monto_recibido)
-    deuda_restante = deuda_por_usuario - @cobro[usuario.nombre]
-    monto_recibido > deuda_restante ? deuda_restante : monto_recibido
   end
 
   def iniciacion_de_cobro
