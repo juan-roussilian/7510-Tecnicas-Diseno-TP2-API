@@ -5,7 +5,6 @@ require 'dotenv/load'
 require_relative './config/configuration'
 require_relative './lib/version'
 require_relative './email/casilla_de_correo'
-require 'byebug'
 Dir[File.join(__dir__, 'dominio', '*.rb')].each { |file| require file }
 Dir[File.join(__dir__, 'persistencia', '*.rb')].each { |file| require file }
 
@@ -70,13 +69,10 @@ post '/saldo' do
   parametros_usuario = JSON.parse(@body)
 
   begin
-    bonificador = Bonificador.new(bonificar_siempre: parametros_usuario['bonificar_siempre'],
-                                  nunca_bonificar: parametros_usuario['no_bonificar'])
     repositorio_usuarios = RepositorioUsuarios.new
     usuario = repositorio_usuarios.find_by_telegram_id(parametros_usuario['telegram_id'].to_s)
     repositorio_movimientos = RepositorioMovimientos.new
-    usuario.cargar_saldo(parametros_usuario['saldo'], repositorio_usuarios, repositorio_movimientos,
-                         bonificador:)
+    usuario.cargar_saldo(parametros_usuario['saldo'], repositorio_usuarios, repositorio_movimientos)
   rescue ObjectNotFound
     status 400
     { error: 'debe registrarse primero' }.to_json
