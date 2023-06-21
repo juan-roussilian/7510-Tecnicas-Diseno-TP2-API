@@ -1,9 +1,9 @@
 class ProveedorFecha
-  def initialize(_fecha)
-    @fecha = Date.parse
+  def initialize(fecha)
+    @fecha = Date.parse fecha
   end
 
   def es_domingo?
-    true
+    @fecha.sunday?
   end
 end
