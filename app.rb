@@ -6,6 +6,7 @@ require_relative './config/configuration'
 require_relative './lib/version'
 require_relative './email/casilla_de_correo'
 require_relative './spec/mocks/mock_bonificador_exitoso'
+require_relative './spec/mocks/mock_bonificador_sin_exito'
 Dir[File.join(__dir__, 'dominio', '*.rb')].each { |file| require file }
 Dir[File.join(__dir__, 'persistencia', '*.rb')].each { |file| require file }
 
@@ -71,7 +72,10 @@ post '/saldo' do
   bonificador = Bonificador.new
   if parametros_usuario['estado_bonificador_test'] == true
     bonificador = MockBonificadorExitoso.new(ENV['COEFICIENTE_BONIFICACION'].to_f)
+  elsif parametros_usuario['estado_bonificador_test'] == false
+    bonificador = MockBonificadorSinExito.new
   end
+
   begin
     repositorio_usuarios = RepositorioUsuarios.new
     usuario = repositorio_usuarios.find_by_telegram_id(parametros_usuario['telegram_id'].to_s)
