@@ -11,11 +11,10 @@ class Bonificador
     @api_key = ENV['KEY_API_CLIMA']
     @ciudad_bonificada = ENV['CIUDAD_API_CLIMA']
     @coeficiente_bonificacion = ENV['COEFICIENTE_BONIFICACION'].to_f
-    raise EstadoInvalido if bonificar_siempre && nunca_bonificar
   end
 
   def aplicar_bonificacion_segun_clima_y_dia(saldo)
-    saldo *= coeficiente_bonificacion if @fecha.es_domingo? && @clima.llueve?
+    saldo *= @coeficiente_bonificacion if @fecha.es_domingo? && @clima.llueve?
     saldo
   end
 end
