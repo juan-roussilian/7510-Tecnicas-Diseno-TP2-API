@@ -1,6 +1,7 @@
 require 'spec_helper'
 require 'dotenv/load'
 require './spec/mocks/mock_bonificador_exitoso'
+require './spec/mocks/mock_bonificador_sin_exito'
 
 describe Usuario do
   describe 'pruebas de saldo' do
@@ -52,6 +53,13 @@ describe Usuario do
       bonificador = MockBonificadorExitoso.new(ENV['COEFICIENTE_BONIFICACION'].to_f)
       usuario.cargar_saldo(500, MockRepositorioUsuarios.new, bonificador:)
       expect(usuario.saldo).to eq 550
+    end
+
+    it 'usuario con bonificador sin exito debe cargar saldo sin bonificacion' do
+      usuario = described_class.new('nuevo usuario', 'test@test.com', 'unId', 'username')
+      bonificador = MockBonificadorSinExito.new
+      usuario.cargar_saldo(500, MockRepositorioUsuarios.new, bonificador:)
+      expect(usuario.saldo).to eq 500
     end
   end
 end
